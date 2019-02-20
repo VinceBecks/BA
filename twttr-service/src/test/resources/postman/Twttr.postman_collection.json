@@ -1,0 +1,108 @@
+{
+	"info": {
+		"_postman_id": "1a4c55bb-0d33-4581-b0a0-a399d5d0c100",
+		"name": "Twttr",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "@stephan",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "twttr-service",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "password",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/auth/realms/twttr/protocol/openid-connect/token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"auth",
+						"realms",
+						"twttr",
+						"protocol",
+						"openid-connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get customer with id",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJGSjg2R2NGM2pUYk5MT2NvNE52WmtVQ0lVbWZZQ3FvcXRPUWVNZmJoTmxFIn0.eyJqdGkiOiIzNDdiNzk0Ny02YTUyLTRkNTItYWM2NS04OTkyMGM0ZTU2ODkiLCJleHAiOjE1NTA2NjIyNjMsIm5iZiI6MCwiaWF0IjoxNTUwNjYyMDgzLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvYXV0aC9yZWFsbXMvdHd0dHIiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiYjUwYjBhYjctY2FiMS00MzgxLWE2ZDMtNjA4YjAyM2Q5ZWQ0IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoidHd0dHItc2VydmljZSIsImF1dGhfdGltZSI6MCwic2Vzc2lvbl9zdGF0ZSI6ImIxZDkwMWU4LWM3NmYtNDMzZC1iNmM3LTQ1Njg2Zjc2MTdlYiIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiL3R3dHRyLXNlcnZpY2UvKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiLCJ1c2VyIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIl19fSwic2NvcGUiOiJlbWFpbCBwcm9maWxlIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJuYW1lIjoiU3RlcGhhbiBNdWVsbGVyIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiQHN0ZXBoYW4iLCJnaXZlbl9uYW1lIjoiU3RlcGhhbiIsImZhbWlseV9uYW1lIjoiTXVlbGxlciIsImVtYWlsIjoic3RlcGhhbi5tdWVsbGVyQG9wZW5rbm93bGVkZ2UuZGUifQ.TLWihsHv7cvIWRmFEdDRpuTqEaiksjzJp5ASP2zm6edNW7x23IHpMJTCjgUcMp2uCk1GlTKoG8eMimRxCVwY6S0J-bt41EqTm97uMeobFnJZlsP59TQ4BUDw26cGLS1JotfYhjStErSSIGfrMUad9UV8C4NbBqYWpEpBw9O7eLI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/twttr-service/api/customers/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"twttr-service",
+						"api",
+						"customers",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

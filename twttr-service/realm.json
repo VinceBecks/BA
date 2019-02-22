@@ -188,7 +188,7 @@
     {
       "clientId": "twttr-service",
       "enabled": true,
-      "bearer-only": true,
+      "publicClient": true,
       "directAccessGrantsEnabled": true,
       "baseUrl": "/twttr-service",
       "redirectUris": [

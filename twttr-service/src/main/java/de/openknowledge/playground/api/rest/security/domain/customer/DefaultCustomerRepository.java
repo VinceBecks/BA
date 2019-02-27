@@ -17,13 +17,14 @@ package de.openknowledge.playground.api.rest.security.domain.customer;
 
 import static org.apache.commons.lang3.Validate.notNull;
 
+import de.openknowledge.playground.api.rest.security.infrastructure.stereotypes.Repository;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.util.List;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -34,7 +35,7 @@ import javax.persistence.criteria.Root;
 /**
  * Implementation of the repository {@link CustomerRepository}.
  */
-@ApplicationScoped
+@Repository
 public class DefaultCustomerRepository implements Serializable, CustomerRepository {
 
   private static final Logger LOG = LoggerFactory.getLogger(DefaultCustomerRepository.class);

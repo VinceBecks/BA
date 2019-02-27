@@ -24,8 +24,8 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -39,7 +39,7 @@ public class DefaultCustomerRepository implements Serializable, CustomerReposito
 
   private static final Logger LOG = LoggerFactory.getLogger(DefaultCustomerRepository.class);
 
-  @PersistenceContext
+  @Inject
   private EntityManager entityManager;
 
   @Override

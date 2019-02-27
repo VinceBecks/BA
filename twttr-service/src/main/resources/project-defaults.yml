@@ -1,6 +1,8 @@
 thorntail:
+  http:
+    port: 8080
   context:
-    path: /twttr-service
+    path: twttr-service
 
   datasources:
     data-sources:

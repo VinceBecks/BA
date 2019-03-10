@@ -19,10 +19,28 @@
 
         <timestamp>${maven.build.timestamp}</timestamp>
 
+        <thorntail.bind.address>0.0.0.0</thorntail.bind.address>
+        <thorntail.http.port>8080</thorntail.http.port>
+        <thorntail.port.offset>0</thorntail.port.offset>
+        <thorntail.context.path>twttr-service</thorntail.context.path>
+
         <version.thorntail>2.3.0.Final</version.thorntail>
+
+        <version.h2>1.4.197</version.h2>
 
         <version.apache_commons-lang>3.6</version.apache_commons-lang>
 
+        <version.junit>4.12</version.junit>
+        <version.assertj>3.9.1</version.assertj>
+        <version.mockito>2.18.0</version.mockito>
+
+        <version.database-rider>1.4.0</version.database-rider>
+        <version.eclipselink>2.7.3</version.eclipselink>
+
+        <version.rest-assured>3.0.7</version.rest-assured>
+        <version.wiremock>2.6.0</version.wiremock>
+
+        <version.keycloak-authz-client>4.8.3.Final</version.keycloak-authz-client>
     </properties>
 
     <build>
@@ -35,14 +53,78 @@
         </resources>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.1</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.maven.surefire</groupId>
+                        <artifactId>surefire-junit47</artifactId>
+                        <version>2.22.1</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.22.1</version>
+                <executions>
+                    <execution>
+                        <id>integration-test</id>
+                        <phase>integration-test</phase>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                        <configuration>
+                            <systemPropertyVariables>
+                                <thorntail.test.host>${thorntail.bind.address}</thorntail.test.host>
+                                <thorntail.test.port>${thorntail.http.port}</thorntail.test.port>
+                                <thorntail.test.port-offset>${thorntail.port.offset}</thorntail.test.port-offset>
+                                <thorntail.test.context-path>${thorntail.context.path}</thorntail.test.context-path>
+                            </systemPropertyVariables>
+                        </configuration>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.maven.surefire</groupId>
+                        <artifactId>surefire-junit47</artifactId>
+                        <version>2.22.1</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
                 <groupId>io.thorntail</groupId>
                 <artifactId>thorntail-maven-plugin</artifactId>
                 <version>${version.thorntail}</version>
-
+                <configuration>
+                    <properties>
+                        <thorntail.bind.address>${thorntail.bind.address}</thorntail.bind.address>
+                        <thorntail.http.port>${thorntail.http.port}</thorntail.http.port>
+                        <thorntail.port.offset>${thorntail.port.offset}</thorntail.port.offset>
+                        <thorntail.context.path>${thorntail.context.path}</thorntail.context.path>
+                    </properties>
+                </configuration>
                 <executions>
                     <execution>
+                        <id>thorntail-package</id>
                         <goals>
                             <goal>package</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>thorntail-start</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>start</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>thorntail-stop</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>stop</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -74,11 +156,11 @@
         </dependency>
         <dependency>
             <groupId>io.thorntail</groupId>
-            <artifactId>jpa</artifactId>
+            <artifactId>jaxrs-jsonb</artifactId>
         </dependency>
         <dependency>
             <groupId>io.thorntail</groupId>
-            <artifactId>jsonb</artifactId>
+            <artifactId>jpa</artifactId>
         </dependency>
 
         <!-- Microprofiles -->
@@ -107,6 +189,13 @@
             <artifactId>microprofile-restclient</artifactId>
         </dependency>
 
+        <!-- Database -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>${version.h2}</version>
+        </dependency>
+
         <!-- Keycloak -->
         <dependency>
             <groupId>io.thorntail</groupId>
@@ -128,6 +217,67 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>${version.apache_commons-lang}</version>
+        </dependency>
+
+        <!-- unit testing -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${version.junit}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${version.assertj}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${version.mockito}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.tomakehurst</groupId>
+            <artifactId>wiremock</artifactId>
+            <version>${version.wiremock}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- persistence testing -->
+        <dependency>
+            <groupId>com.github.database-rider</groupId>
+            <artifactId>rider-core</artifactId>
+            <version>${version.database-rider}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>eclipselink</artifactId>
+            <version>${version.eclipselink}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- integration testing -->
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>${version.rest-assured}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>json-schema-validator</artifactId>
+            <version>${version.rest-assured}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- other testing dependencies -->
+        <dependency>
+            <groupId>org.keycloak</groupId>
+            <artifactId>keycloak-authz-client</artifactId>
+            <version>${version.keycloak-authz-client}</version>
         </dependency>
     </dependencies>
 </project>

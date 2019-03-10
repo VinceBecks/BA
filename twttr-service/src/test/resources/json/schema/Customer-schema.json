@@ -1,0 +1,26 @@
+{
+  "type": "object",
+  "required": [
+    "firstName",
+    "lastName",
+    "emailAddress",
+    "gender"
+  ],
+  "properties": {
+    "firstName": {
+      "type": "string"
+    },
+    "lastName": {
+      "type": "string"
+    },
+    "emailAddress": {
+      "type": "string"
+    },
+    "gender": {
+      "type": "string",
+      "enum": [
+        "FEMALE", "MALE"
+      ]
+    }
+  }
+}

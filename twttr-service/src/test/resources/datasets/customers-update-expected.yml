@@ -1,0 +1,6 @@
+TAB_CUSTOMER:
+  - CUS_ID: 1
+    CUS_FIRST_NAME: Marta
+    CUS_LAST_NAME: Musterfrau
+    CUS_EMAIL: marta.musterfrau@openknowledge.de
+    CUS_GENDER: FEMALE

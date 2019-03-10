@@ -13,24 +13,19 @@
  * See the License for the specific language governing permissions
  * and limitations under the License.
  */
-package de.openknowledge.playground.api.rest.security.infrastructure.persistence;
-
-import javax.annotation.Resource;
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Produces;
-import javax.sql.DataSource;
+package de.openknowledge.playground.api.rest.security.domain.customer;
 
 /**
- * CDI producer that provides the {@link javax.sql.DataSource}.
+ * Test data builder for the entity {@link Customer}.
  */
-@ApplicationScoped
-public class DatasourceProducer {
+public class TestCustomers {
 
-  @Resource(lookup = "java:jboss/datasources/TwttrDS")
-  private DataSource dataSource;
-
-  @Produces
-  public DataSource getDataSource(){
-    return dataSource;
+  public static Customer newDefaultCustomer() {
+    Customer customer = new Customer();
+    customer.setFirstName("Max");
+    customer.setLastName("Mustermann");
+    customer.setEmailAddress("max.mustermann@openknowledge.de");
+    customer.setGender(Gender.MALE);
+    return customer;
   }
 }

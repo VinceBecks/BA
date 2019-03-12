@@ -49,3 +49,21 @@ Feature: Create tweet
       | number |
       | 0      |
       | 141    |
+
+
+    #todo: Szenario mit dem überprüft wird ob neuer Datensatz angelegt wurde?
+
+
+  Scenario: Request is not authorized
+  The request must contain a valid token of an user
+
+    When a client sends a request to create a new tweet withoud a valid token
+    Then the HTTP response state will be 401
+
+
+  Scenario: Token belongs to a moderator
+  Account must be from an user
+
+    Given the moderator "werner" is authenticated
+    When a client sends a request to create a tweet for the moderator "werner"
+    Then the HTTP response state will be 403

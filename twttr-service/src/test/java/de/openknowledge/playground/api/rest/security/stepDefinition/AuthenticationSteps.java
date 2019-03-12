@@ -35,7 +35,12 @@ public class AuthenticationSteps {
     public void the_user_is_authenticated(String userName) {
         AuthorizationResponse response = AuthzClient.create().authorization(userName, "password").authorize();
         domain.addValidToken(userName, response.getToken());
-        System.out.println(response.getToken());
+    }
+
+    @Given("the moderator {string} is authenticated")
+    public void the_moderator_is_authenticated(String moderatorName) {
+        AuthorizationResponse response = AuthzClient.create().authorization(moderatorName, "password").authorize();
+        domain.addValidToken(moderatorName, response.getToken());
     }
 
 
@@ -51,7 +56,7 @@ public class AuthenticationSteps {
     @Then("the response body should contain a valid token for the account of {string}")
     public void the_response_body_should_contain_a_valid_token_for_the_account_of(String userName) {
         //todo: Prüfung reicht nicht .. KeyCloak gibt immer einen Token zurück nur ist dieser nicht immer gültig
-        Assert.assertNotNull(domain.tokenFromUser(userName));
+        Assert.assertNotNull(domain.tokenFromAccount(userName));
     }
 
 

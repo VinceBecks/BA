@@ -1,14 +1,10 @@
 package de.openknowledge.playground.api.rest.security.stepDefinition;
 
-import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import de.openknowledge.playground.api.rest.security.domain.tweet.NewTweet;
-import de.openknowledge.playground.api.rest.security.domain.tweet.TweetDTO;
 import de.openknowledge.playground.api.rest.security.supportCode.SharedDomain;
-import de.openknowledge.playground.api.rest.security.supportCode.converter.convertedClasses.ErrorMessage;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import org.hamcrest.Matchers;
 
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
@@ -27,7 +23,7 @@ public class CreateTweetSteps {
                 .given()
                     .accept(MediaType.APPLICATION_JSON)
                     .contentType(MediaType.APPLICATION_JSON)
-                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + domain.tokenFromUser(userName))
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + domain.tokenFromAccount(userName))
                     .body(newTweet)
                     .when()
                     .post(domain.basePath() + additionalPath);
@@ -46,11 +42,40 @@ public class CreateTweetSteps {
                 .given()
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + domain.tokenFromUser(userName))
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + domain.tokenFromAccount(userName))
                 .body(newTweet)
                 .when()
                 .post(domain.basePath() + "/tweets");
         domain.setResponse(response);
     }
 
+    @When("a client sends a request to create a new tweet withoud a valid token")
+    public void a_client_sends_a_request_to_create_a_new_tweet_withoud_a_valid_token() {
+        NewTweet newTweet = new NewTweet("An example content");
+        String randomToken = "xxx";
+
+        Response response = RestAssured
+                .given()
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + randomToken)
+                .body(newTweet)
+                .when()
+                .post(domain.basePath() + "/tweets");
+        domain.setResponse(response);
+    }
+
+    @When("a client sends a request to create a tweet for the moderator {string}")
+    public void a_client_sends_a_request_to_create_a_tweet_for_the_moderator(String moderatorName) {
+        NewTweet newTweet = new NewTweet("An example content");
+        Response response = RestAssured
+                .given()
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + domain.tokenFromAccount(moderatorName))
+                .body(newTweet)
+                .when()
+                .post(domain.basePath() + "/tweets");
+        domain.setResponse(response);
+    }
 }

@@ -19,7 +19,7 @@ public class SharedDomain {
         this.tokenMap.put(userName,token);
     }
 
-    public String tokenFromUser (String userName) {
+    public String tokenFromAccount(String userName) {
         return tokenMap.get(userName);
     }
 

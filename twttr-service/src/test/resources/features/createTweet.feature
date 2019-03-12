@@ -30,3 +30,22 @@ Feature: Create tweet
                 "rootTweet": null
             }
         """
+
+
+  Scenario Outline: Wrong number of characters
+  The number of characters for the new tweet should be between 1 and 140
+
+    Given the user "max" is authenticated
+    When a client sends a request for "max" to create a new tweet with <number> characters
+    Then the HTTP response state will be 400
+    And the HTTP response body contains following JSON of an error message:
+      """
+      {
+        "errorMessage": "Wrong number of character"
+      }
+      """
+
+    Examples:
+      | number |
+      | 0      |
+      | 141    |

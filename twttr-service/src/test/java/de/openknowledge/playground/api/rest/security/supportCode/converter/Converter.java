@@ -5,6 +5,7 @@ import cucumber.api.TypeRegistry;
 import cucumber.api.TypeRegistryConfigurer;
 import de.openknowledge.playground.api.rest.security.domain.tweet.NewTweet;
 import de.openknowledge.playground.api.rest.security.domain.tweet.TweetDTO;
+import de.openknowledge.playground.api.rest.security.supportCode.converter.convertedClasses.ErrorMessage;
 import io.cucumber.datatable.DataTableType;
 
 import java.util.Locale;
@@ -30,5 +31,8 @@ public class Converter implements TypeRegistryConfigurer{
 
         typeRegistry.defineDataTableType(new DataTableType (TweetDTO.class,
                 (String s)-> new ObjectMapper().readValue(s, TweetDTO.class)));
+
+        typeRegistry.defineDataTableType(new DataTableType (ErrorMessage.class,
+                (String s)-> new ObjectMapper().readValue(s, ErrorMessage.class)));
     }
 }

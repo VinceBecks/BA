@@ -31,6 +31,13 @@ public class AuthenticationSteps {
         domain.addAccountCredentials(account.get("userName"), account.get("password"));
     }
 
+    @Given("the user {string} is authenticated")
+    public void the_user_is_authenticated(String userName) {
+        AuthorizationResponse response = AuthzClient.create().authorization(userName, "password").authorize();
+        domain.addValidToken(userName, response.getToken());
+        System.out.println(response.getToken());
+    }
+
 
 
     @When("a client sends a POST request to \\/auth\\/realms\\/twttr\\/protocol\\/openid-connect\\/token to get a valid token for {string}")

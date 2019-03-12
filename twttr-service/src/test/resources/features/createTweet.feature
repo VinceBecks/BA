@@ -22,9 +22,9 @@ Feature: Create tweet
                 "tweetId": 5,
                 "content": "An example content",
                 "author" : {
-                    "userId": 1,
-                    "firstName": "Phillipp",
-                    "lastName": "Otto",
+                    "userId": 0,
+                    "firstName": "Max",
+                    "lastName": "Mustermann",
                     "role": "USER"
                 },
                 "rootTweet": null

@@ -1,18 +1,37 @@
 package de.openknowledge.playground.api.rest.security.supportCode;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class SharedDomain {
 
     private final String BASE_PATH = "http://localhost:8080/twttr-service/api";
+    private Map<String, Account> accounts;
     private Map<String, String> accountCredentials = new HashMap<>();
     private Map<String, String> tokenMap = new HashMap<>();
 
     private Response response;
+
+    public SharedDomain () {
+        accounts = new HashMap<>();
+
+        //todo: wie auslesen aus accounts.json?
+        accounts.put("max", new Account(0, "max", "password"));
+        accounts.put("marta", new Account(1, "marta", "password"));
+        accounts.put("john", new Account(2, "john", "password"));
+        accounts.put("jane", new Account(3, "jane", "password"));
+        accounts.put("werner", new Account(4, "werner", "password"));
+        accounts.put("karl", new Account(5, "karl", "password"));
+        accounts.put("lena", new Account(6, "lena", "password"));
+    }
 
 
     public void addValidToken (String userName, String token) {
@@ -41,5 +60,9 @@ public class SharedDomain {
 
     public void setResponse(Response response) {
         this.response = response;
+    }
+
+    public Account getAccount (String userName) {
+        return accounts.get(userName);
     }
 }

@@ -4,7 +4,6 @@ import com.github.database.rider.core.api.dataset.DataSetExecutor;
 import com.github.database.rider.core.connection.ConnectionHolderImpl;
 import com.github.database.rider.core.dataset.DataSetExecutorImpl;
 import com.github.database.rider.core.util.EntityManagerProvider;
-import cucumber.api.PendingException;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import de.openknowledge.playground.api.rest.security.supportCode.SharedDomain;
@@ -27,12 +26,28 @@ public class TweetSteps {
         this.domain = domain;
     }
 
-
-    @Given("a stored tweet from {string} with id {int}")
-    public void a_stored_tweet_from_with_id(String string, Integer tweetId) {
+    @Given("a stored tweet with id {int}")
+    public void a_stored_tweet_with_id(Integer tweetId) {
         String [] stmts = new String [2];
         stmts[0] = "DELETE FROM TAB_TWEET WHERE TWEET_ID = " + tweetId + ";";
-        stmts[1] = "INSERT INTO TAB_TWEET(TWEET_ID, CONTENT, PUBLISH_DATE, STATE, AUTHOR, ROOT_TWEET) VALUES (" + tweetId + ", 'Example content',CURRENT_TIMESTAMP,  0,  0, NULL );" ;
+        stmts[1] = "INSERT INTO TAB_TWEET(TWEET_ID, CONTENT, PUBLISH_DATE, STATE, AUTHOR, ROOT_TWEET) VALUES (" + tweetId + ", 'Example Bla content',CURRENT_TIMESTAMP,  0,  0, NULL );" ;
         dbExecutor.executeStatements(stmts);
     }
+
+    @Given("a stored tweet with id {int} from user {string}")
+    public void a_stored_tweet_with_id_from_user(Integer tweetId, String userName) {
+        String [] stmts = new String [2];
+        stmts[0] = "DELETE FROM TAB_TWEET WHERE TWEET_ID = " + tweetId + ";";
+        stmts[1] = "INSERT INTO TAB_TWEET(TWEET_ID, CONTENT, PUBLISH_DATE, STATE, AUTHOR, ROOT_TWEET) VALUES (" + tweetId + ", 'Example Bla content',CURRENT_TIMESTAMP,  0,  " + domain.getAccount(userName).getAccountId() + ", NULL );" ;
+        dbExecutor.executeStatements(stmts);
+    }
+
+    @Given("there is no tweet with id {int}")
+    public void there_is_no_tweet_with_id(Integer tweetId) {
+        String [] stmts = new String [1];
+        stmts[0] = "DELETE FROM TAB_TWEET WHERE TWEET_ID = " + tweetId + ";";
+        dbExecutor.executeStatements(stmts);
+    }
+
+
 }

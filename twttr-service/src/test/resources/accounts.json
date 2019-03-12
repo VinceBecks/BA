@@ -5,32 +5,32 @@
     "password": "password"
   },
   {
-    "idInTwttrDB" : 1,
+    "accountId" : 1,
     "userName": "marta",
     "password": "password"
   },
   {
-    "idInTwttrDB" : 2,
+    "accountId" : 2,
     "userName": "john",
     "password": "password"
   },
   {
-    "idInTwttrDB" : 3,
+    "accountId" : 3,
     "userName": "jane",
     "password": "password"
   },
   {
-    "idInTwttrDB" : 4,
+    "accountId" : 4,
     "userName": "werner",
     "password": "password"
   },
   {
-    "idInTwttrDB" : 5,
+    "accountId" : 5,
     "userName": "karl",
     "password": "password"
   },
   {
-    "idInTwttrDB" : 6,
+    "accountId" : 6,
     "userName": "lena",
     "password": "password"
   }

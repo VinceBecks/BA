@@ -12,6 +12,44 @@ Feature: Delete a tweet
   Request to like a specified tweet
 
     Given the user "max" is authenticated
-    And a stored tweet from "max" with id 1
+    And a stored tweet with id 1 from user "max"
     When a client sends a "DELETE" "/tweets/1" request for user "max"
     Then the HTTP response state will be 204
+
+
+  Scenario: Requesting user isn´t the author
+  Users can just delete their own tweets
+
+    #todo: im "And" Part schreiben, dass der Tweet in Status PUBLISH ist?
+    Given the user "max" is authenticated
+    And a stored tweet with id 1 from user "john"
+    When a client sends a request for user "max" to delete the tweet with id 1
+    Then the HTTP response state will be 403
+
+
+  Scenario: Moderator deletes tweet
+  Moderators can delete the tweets from every user
+
+    Given the moderator "werner" is authenticated
+    And a stored tweet with id 1 from user "max"
+    When a client sends a request for moderator "werner" to delete the tweet with id 1
+    Then the HTTP response state will be 204
+
+
+
+    #todo: prüfen, ob es tweet nach request noch gibt? und in status PUBLISH ist?
+  Scenario: Request is not authorized
+  The request must contain a valid token of a user
+
+    Given a stored tweet with id 1
+    When a client sends a request without a valid token to delete the tweet with id 1
+    Then the HTTP response state will be 401
+
+
+  Scenario: Tweet doesn´t exist
+  The tweet must exist
+
+    Given the user "max" is authenticated
+    But there is no tweet with id 9999
+    When a client sends a request for user "max" to delete the tweet with id 9999
+    Then the HTTP response state will be 404

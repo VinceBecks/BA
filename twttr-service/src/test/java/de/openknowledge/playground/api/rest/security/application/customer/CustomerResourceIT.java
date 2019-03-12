@@ -17,6 +17,7 @@ package de.openknowledge.playground.api.rest.security.application.customer;
 
 import com.github.database.rider.core.DBUnitRule;
 import com.github.database.rider.core.api.dataset.DataSet;
+import com.github.database.rider.core.api.dataset.DataSetExecutor;
 import com.github.database.rider.core.api.dataset.ExpectedDataSet;
 import com.github.database.rider.core.api.dataset.SeedStrategy;
 import com.github.database.rider.core.util.EntityManagerProvider;
@@ -58,16 +59,21 @@ public class CustomerResourceIT {
   @Rule
   public DBUnitRule dbUnitRule = DBUnitRule.instance(() -> entityManagerProvider.connection());
 
+  private DataSetExecutor dataSetExecutor;
+
   @Before
   public void setUp() {
     AuthorizationResponse response = AuthzClient.create().authorization("@admin", "password").authorize();
     token = response.getToken();
+
+    dataSetExecutor = dbUnitRule.getDataSetExecutor();
   }
 
   @Test
   @DataSet(strategy = SeedStrategy.CLEAN_INSERT, cleanBefore = true, transactional = true)
   @ExpectedDataSet(value = "datasets/customers-create-expected.yml", ignoreCols = "CUS_ID")
   public void createCustomer() {
+
     Customer defaultCustomer = TestCustomers.newDefaultCustomer();
 
     NewCustomer newCustomer = new NewCustomer();
@@ -75,6 +81,7 @@ public class CustomerResourceIT {
     newCustomer.setLastName(defaultCustomer.getLastName());
     newCustomer.setEmailAddress(defaultCustomer.getEmailAddress());
     newCustomer.setGender(defaultCustomer.getGender());
+
 
     RestAssured.given()
         .accept(MediaType.APPLICATION_JSON)

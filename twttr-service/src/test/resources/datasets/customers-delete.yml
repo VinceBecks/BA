@@ -1,6 +1,0 @@
-TAB_CUSTOMER:
-  - CUS_ID: 1
-    CUS_FIRST_NAME: Max
-    CUS_LAST_NAME: Mustermann
-    CUS_EMAIL: max.mustermann@openknowledge.de
-    CUS_GENDER: MALE

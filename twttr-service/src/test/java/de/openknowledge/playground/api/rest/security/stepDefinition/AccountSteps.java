@@ -54,12 +54,12 @@ public class AccountSteps {
 
     @Given("the user max isn´t a follower of user john with id 2")
     public void the_user_isn_t_a_follower_of_user_with_id() {
-        dbExecutor.createDataSet(new DataSetConfig("follower/emptyFollowerTable.json"));
+        dbExecutor.createDataSet(new DataSetConfig("follower/empty-follower-list.json"));
     }
 
     @Given("the user max is already a follower of user john")
     public void the_user_max_is_already_a_follower_of_user_john() {
-        dbExecutor.createDataSet(new DataSetConfig("follower/maxFollowsJohn.json"));
+        dbExecutor.createDataSet(new DataSetConfig("follower/max-follows-john.json"));
     }
 
     @Given("user max follows the users john and jane")

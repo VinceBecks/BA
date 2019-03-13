@@ -122,7 +122,7 @@ public class FollowUserSteps {
     @Then("the user max will be a follower of user john")
     public void the_user_max_will_be_a_follower_of_user_john() {
         try {
-            dbExecutor.compareCurrentDataSetWith(new DataSetConfig("follower/maxFollowsJohn.json"), new String [0]);
+            dbExecutor.compareCurrentDataSetWith(new DataSetConfig("follower/max-follows-john.json"), new String [0]);
         } catch (DatabaseUnitException e) {
             //todo: Gibt bestimmt eine bessere Exception zu werfen
             throw new PendingException( );

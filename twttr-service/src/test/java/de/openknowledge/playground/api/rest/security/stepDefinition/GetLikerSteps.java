@@ -63,7 +63,8 @@ public class GetLikerSteps {
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + validToken)
                 .when()
                 .get(domain.basePath() + "/tweets/" + tweetId + "/liker");
-        domain.setResponse(response);    }
+        domain.setResponse(response);
+    }
 
 
 }

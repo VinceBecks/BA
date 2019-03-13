@@ -67,8 +67,8 @@ public class GetFollowerSteps {
     }
 
 
-    @When("a client sends a request to get a list of follower from a user")
-    public void a_client_sends_a_request_to_get_a_list_of_follower_from_a_user() {
+    @When("a client sends a request without a valid token to get a list of follower from a user")
+    public void a_client_sends_a_request_without_a_valid_token_to_get_a_list_of_follower_from_a_user() {
         String randomToken = "XXX";
 
         Response response = RestAssured
@@ -91,6 +91,19 @@ public class GetFollowerSteps {
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + domain.tokenFromAccount(moderatorName))
                 .when()
                 .get(domain.basePath() + "/users/0/follower");
+        domain.setResponse(response);
+    }
+
+    @When("a client sends a request to get a list of follower from the user with id {int}")
+    public void a_client_sends_a_request_to_get_a_list_of_follower_from_the_user_with_id(Integer userId) {
+        String validToken = AuthzClient.create().authorization("max", "password").authorize().getToken();
+        Response response = RestAssured
+                .given()
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + validToken)
+                .when()
+                .get(domain.basePath() + "/users/" + userId + "/follower");
         domain.setResponse(response);
     }
 }

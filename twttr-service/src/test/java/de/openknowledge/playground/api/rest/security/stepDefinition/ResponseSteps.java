@@ -2,6 +2,7 @@ package de.openknowledge.playground.api.rest.security.stepDefinition;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import cucumber.api.PendingException;
 import cucumber.api.java.en.Then;
 import de.openknowledge.playground.api.rest.security.domain.tweet.TweetDTO;
 import de.openknowledge.playground.api.rest.security.supportCode.SharedDomain;
@@ -53,10 +54,40 @@ public class ResponseSteps {
         try {
             List<UserDTO> users = new ObjectMapper().readValue(expectedJson, new TypeReference<List<UserDTO>>() {});
             domain.getResponse().then()
+                    .body("size()", Matchers.equalTo(users.size()));
+
+            for (int i=0; i<users.size(); i++) {
+            domain.getResponse().then()
                     .contentType(MediaType.APPLICATION_JSON)
-                    .body("[0].userId", Matchers.equalTo(users.get(0).getUserId()));
+                    .body("["+i+"].userId", Matchers.equalTo(users.get(i).getUserId()))
+                    .body("["+i+"].firstName", Matchers.equalTo(users.get(i).getFirstName()))
+                    .body("["+i+"].lastName", Matchers.equalTo(users.get(i).getLastName()))
+                    .body("["+i+"].role", Matchers.equalTo(users.get(i).getRole().toString()));
+            }
+
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new PendingException();
+        }
+    }
+
+    @Then("the HTTP response body will contain following JSON with a list of users who liked the stored tweet:")
+    public void the_HTTP_response_body_will_contain_following_JSON_with_a_list_of_users_who_liked_the_stored_tweet(String expectedJson) {
+        try {
+            List<UserDTO> users = new ObjectMapper().readValue(expectedJson, new TypeReference<List<UserDTO>>() {});
+            domain.getResponse().then()
+                    .body("size()", Matchers.equalTo(users.size()));
+
+            for (int i=0; i<users.size(); i++) {
+                domain.getResponse().then()
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body("["+i+"].userId", Matchers.equalTo(users.get(i).getUserId()))
+                        .body("["+i+"].firstName", Matchers.equalTo(users.get(i).getFirstName()))
+                        .body("["+i+"].lastName", Matchers.equalTo(users.get(i).getLastName()))
+                        .body("["+i+"].role", Matchers.equalTo(users.get(i).getRole().toString()));
+            }
+
+        } catch (IOException e) {
+            throw new PendingException();
         }
     }
 }

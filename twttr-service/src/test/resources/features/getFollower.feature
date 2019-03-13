@@ -45,7 +45,7 @@ Feature: Show follower
   Scenario: Request is not authorized
   The request must contain a valid token of a user
 
-    When a client sends a request to get a list of follower from a user
+    When a client sends a request without a valid token to get a list of follower from a user
     Then the HTTP response status-code will be 401
 
 
@@ -64,4 +64,4 @@ Feature: Show follower
 
     Given there is no user with id 9999
     When a client sends a request to get a list of follower from the user with id 9999
-    Then the HTTP response state will be 404
+    Then the HTTP response status-code will be 404

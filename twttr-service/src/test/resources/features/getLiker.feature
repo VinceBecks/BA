@@ -59,4 +59,9 @@ Feature: Get liker of a specified tweet
     Then the HTTP response status-code will be 404
 
 
-    #todo: Szenario: status Canceled
+  Scenario: Tweet to get the list of retweeter from is in status CANCELED
+  The tweet must not be in status CANCELED
+
+    Given a stored tweet with id 1 in status CANCELED from user "max"
+    When a client sends a request to get a list of liker from  the tweet with id 1
+    Then the HTTP response status-code will be 404

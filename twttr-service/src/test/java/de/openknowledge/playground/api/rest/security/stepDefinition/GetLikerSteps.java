@@ -67,5 +67,19 @@ public class GetLikerSteps {
         domain.setResponse(response);
     }
 
+    @When("a client sends a request to get a list of liker from  the tweet with id {int}")
+    public void a_client_sends_a_request_to_get_a_list_of_liker_from_the_tweet_with_id(Integer tweetId) {
+        String validToken = AuthzClient.create().authorization("max", "password").authorize().getToken();
+
+        Response response = RestAssured
+                .given()
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + validToken)
+                .when()
+                .get(domain.basePath() + "/tweets/"+tweetId+"/retweets/authors");
+        domain.setResponse(response);
+    }
+
 
 }

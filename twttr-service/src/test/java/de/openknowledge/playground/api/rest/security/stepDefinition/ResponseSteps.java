@@ -1,13 +1,18 @@
 package de.openknowledge.playground.api.rest.security.stepDefinition;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import cucumber.api.java.en.Then;
 import de.openknowledge.playground.api.rest.security.domain.tweet.TweetDTO;
 import de.openknowledge.playground.api.rest.security.supportCode.SharedDomain;
 import de.openknowledge.playground.api.rest.security.supportCode.converter.convertedClasses.ErrorMessage;
+import de.openknowledge.playground.api.rest.security.domain.accounts.UserDTO;
 import io.restassured.response.Response;
 import org.hamcrest.Matchers;
 
 import javax.ws.rs.core.MediaType;
+import java.io.IOException;
+import java.util.List;
 
 public class ResponseSteps {
     private SharedDomain domain;
@@ -40,5 +45,20 @@ public class ResponseSteps {
                 .body("author.lastName", Matchers.equalTo(expectedTweet.getAuthor().getLastName()))
                 .body("author.role", Matchers.equalTo(expectedTweet.getAuthor().getRole().toString()))
                 .body("rootTweet", Matchers.isEmptyOrNullString());
+    }
+
+
+    @Then("the HTTP response body contains following JSON of the follower from user john")
+    public void the_HTTP_response_body_contains_following_JSON_of_the_follower_from_user_john(String expectedJson) {
+        try {
+            List<UserDTO> users = new ObjectMapper().readValue(expectedJson, new TypeReference<List<UserDTO>>() {});
+            System.out.println(users.get(0).toString());
+            System.out.println(users.get(1).toString());
+            domain.getResponse().then()
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body("[0].userId", Matchers.equalTo(users.get(0).getUserId()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

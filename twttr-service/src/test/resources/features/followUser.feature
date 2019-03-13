@@ -26,6 +26,12 @@ Feature: Follow a Member
     And the user max is already a follower of user john
     When a client sends a request for user "max" to follow user "john"
     Then the HTTP response status-code will be 400
+    And the HTTP response body contains following JSON of an error message:
+      """
+      {
+        "errorMessage": "User is already a follower of the specified user"
+      }
+      """
 
 
 

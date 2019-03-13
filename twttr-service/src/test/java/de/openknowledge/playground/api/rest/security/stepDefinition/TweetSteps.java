@@ -49,5 +49,13 @@ public class TweetSteps {
         dbExecutor.executeStatements(stmts);
     }
 
+    @Given("a stored tweet with id {int} in status CANCELED from user {string}")
+    public void a_stored_tweet_with_id_in_status_CANCELED_from_user(Integer tweetId, String userName) {
+        String [] stmts = new String [2];
+        stmts[0] = "DELETE FROM TAB_TWEET WHERE TWEET_ID = " + tweetId + ";";
+        stmts[1] = "INSERT INTO TAB_TWEET(TWEET_ID, CONTENT, PUBLISH_DATE, STATE, AUTHOR, ROOT_TWEET) VALUES (" + tweetId + ", 'Example Bla content',CURRENT_TIMESTAMP,  1,  " + domain.getAccount(userName).getAccountId() + ", NULL );" ;
+        dbExecutor.executeStatements(stmts);
+    }
+
 
 }

@@ -24,8 +24,8 @@ public class ResponseSteps {
                 .body("errorMessage", Matchers.equalTo(expectedErrorMessage.getErrorMessage()));
     }
 
-    @Then("the HTTP response state will be {int}")
-    public void the_HTTP_response_state_will_be(Integer expectedStatusCode) {
+    @Then("the HTTP response status-code will be {int}")
+    public void the_HTTP_response_status_code_will_be(Integer expectedStatusCode) {
         Response response = domain.getResponse();
         response.then()
                 .statusCode(expectedStatusCode);

@@ -14,7 +14,7 @@ Feature: Delete a tweet
     Given the user "max" is authenticated
     And a stored tweet with id 1 from user "max"
     When a client sends a "DELETE" "/tweets/1" request for user "max"
-    Then the HTTP response state will be 204
+    Then the HTTP response status-code will be 204
 
 
   Scenario: Requesting user isn´t the author
@@ -24,7 +24,7 @@ Feature: Delete a tweet
     Given the user "max" is authenticated
     And a stored tweet with id 1 from user "john"
     When a client sends a request for user "max" to delete the tweet with id 1
-    Then the HTTP response state will be 403
+    Then the HTTP response status-code will be 403
 
 
   Scenario: Moderator deletes tweet
@@ -33,7 +33,7 @@ Feature: Delete a tweet
     Given the moderator "werner" is authenticated
     And a stored tweet with id 1 from user "max"
     When a client sends a request for moderator "werner" to delete the tweet with id 1
-    Then the HTTP response state will be 204
+    Then the HTTP response status-code will be 204
 
 
 
@@ -43,7 +43,7 @@ Feature: Delete a tweet
 
     Given a stored tweet with id 1
     When a client sends a request without a valid token to delete the tweet with id 1
-    Then the HTTP response state will be 401
+    Then the HTTP response status-code will be 401
 
 
   Scenario: Tweet doesn´t exist
@@ -52,4 +52,14 @@ Feature: Delete a tweet
     Given the user "max" is authenticated
     But there is no tweet with id 9999
     When a client sends a request for user "max" to delete the tweet with id 9999
-    Then the HTTP response state will be 404
+    Then the HTTP response status-code will be 404
+
+
+
+  Scenario: Tweet to delete is in status CANCELED
+  The tweet must exist
+
+    Given the user "max" is authenticated
+    And a stored tweet with id 1 in status CANCELED from user "max"
+    When a client sends a request for user "max" to delete the tweet with id 1
+    Then the HTTP response status-code will be 404

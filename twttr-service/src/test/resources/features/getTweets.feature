@@ -16,17 +16,17 @@ Feature: Get all Tweets
   Background: Persist tweets and let max follow john and jane
     Given the user "max" is authenticated
     And following tweets got persisted in presented order
-      | tweetId | content  | state    | author |
-      | 1       | 1. tweet | PUBLISH  | john   |
-      | 2       | 2. tweet | PUBLISH  | jane   |
-      | 3       | 3. tweet | CANCELED | john   |
-      | 4       | 4. tweet | PUBLISH  | max    |
-      | 5       | 5. tweet | PUBLISH  | john   |
-      | 6       | 6. tweet | CANCELED | karl   |
-      | 7       | 7. tweet | PUBLISH  | jane   |
-      | 7       | 7. tweet | PUBLISH  | lena   |
-      | 7       | 7. tweet | PUBLISH  | jane   |
-      | 7       | 7. tweet | PUBLISH  | jane   |
+      | tweetId | content   | state    | author |
+      | 1       | 1. tweet  | PUBLISH  | john   |
+      | 2       | 2. tweet  | PUBLISH  | jane   |
+      | 3       | 3. tweet  | CANCELED | john   |
+      | 4       | 4. tweet  | PUBLISH  | max    |
+      | 5       | 5. tweet  | PUBLISH  | john   |
+      | 6       | 6. tweet  | CANCELED | karl   |
+      | 7       | 7. tweet  | PUBLISH  | jane   |
+      | 8       | 8. tweet  | PUBLISH  | lena   |
+      | 9       | 9. tweet  | PUBLISH  | jane   |
+      | 10      | 10. tweet | PUBLISH  | jane   |
     And user max follows the users john and jane
 
 

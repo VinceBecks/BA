@@ -13,6 +13,7 @@ import de.openknowledge.playground.api.rest.security.supportCode.SharedDomain;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.junit.Rule;
+import org.keycloak.authorization.client.AuthzClient;
 
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
@@ -49,6 +50,47 @@ public class GetFollowerSteps {
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + domain.tokenFromAccount(userName))
                 .when()
                 .get(domain.basePath() + additionalPath);
+        domain.setResponse(response);
+    }
+
+    @When("a client sends a request to to get a list of follower from a moderator")
+    public void a_client_sends_a_request_to_to_get_a_list_of_follower_from_a_moderator() {
+        String validToken = AuthzClient.create().authorization("max", "password").authorize().getToken();
+        Response response = RestAssured
+                .given()
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + validToken)
+                .when()
+                .get(domain.basePath() + "/users/4/follower");
+        domain.setResponse(response);
+    }
+
+
+    @When("a client sends a request to get a list of follower from a user")
+    public void a_client_sends_a_request_to_get_a_list_of_follower_from_a_user() {
+        String randomToken = "XXX";
+
+        Response response = RestAssured
+                .given()
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + randomToken)
+                .when()
+                .get(domain.basePath() + "/users/0/follower");
+        domain.setResponse(response);
+    }
+
+
+    @When("a client sends a request for moderator {string} to get a list of follower from a user")
+    public void a_client_sends_a_request_for_moderator_to_get_a_list_of_follower_from_a_user(String moderatorName) {
+        Response response = RestAssured
+                .given()
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + domain.tokenFromAccount(moderatorName))
+                .when()
+                .get(domain.basePath() + "/users/0/follower");
         domain.setResponse(response);
     }
 }

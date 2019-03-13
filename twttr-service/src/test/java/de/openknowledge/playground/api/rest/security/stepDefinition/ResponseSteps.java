@@ -52,8 +52,6 @@ public class ResponseSteps {
     public void the_HTTP_response_body_contains_following_JSON_of_the_follower_from_user_john(String expectedJson) {
         try {
             List<UserDTO> users = new ObjectMapper().readValue(expectedJson, new TypeReference<List<UserDTO>>() {});
-            System.out.println(users.get(0).toString());
-            System.out.println(users.get(1).toString());
             domain.getResponse().then()
                     .contentType(MediaType.APPLICATION_JSON)
                     .body("[0].userId", Matchers.equalTo(users.get(0).getUserId()));

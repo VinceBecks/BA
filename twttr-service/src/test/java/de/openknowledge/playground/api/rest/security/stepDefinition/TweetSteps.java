@@ -67,11 +67,8 @@ public class TweetSteps {
         dbExecutor.createDataSet(new DataSetConfig("retweets/max-and-john-retweeted-tweet-with-id-1.json"));
     }
 
-    @Given("the tweet with id {int} got liked by {int} user and retweeted by {int} users")
-    public void the_tweet_with_id_got_liked_by_user_and_retweeted_by_users(Integer int1, Integer int2, Integer int3) {
+    @Given("the tweet with id 1 got liked by 1 user and retweeted by 2 users")
+    public void the_tweet_with_id_got_liked_by_user_and_retweeted_by_users() {
         dbExecutor.createDataSet(new DataSetConfig("tweet/tweet-with-id-1-got-liked-1-times-and-retweeted-2-times.json"));
     }
-
-
-
 }

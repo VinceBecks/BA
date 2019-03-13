@@ -8,6 +8,7 @@ Feature: Show details of a Tweet
 
 
 
+  #todo: ggf. scenario outline draus machen einmal für einen moderator und einmal für einen user
   Scenario: Get information about specified tweet
   Requesting information about a specified tweet
 
@@ -31,3 +32,29 @@ Feature: Show details of a Tweet
             "numRetweets": 2
         }
         """
+
+
+
+  Scenario: Request to get detailed information about a tweet is not authorized
+  The request must contain a valid token of a user
+
+    When a client sends a request without a valid token to get detailed information about a tweet
+    Then the HTTP response status-code will be 401
+
+
+
+  Scenario: Tweet to get detailed information about doesn´t exist
+  The user must exist
+
+    Given there is no tweet with id 9999
+    When a client sends a request to get detailed information about a tweet of the tweet with id 9999
+    Then the HTTP response status-code will be 404
+
+
+
+  Scenario: Tweet to get detailed information about is in status CANCELED
+  The tweet must not be in status CANCELED
+
+    Given a stored tweet with id 1 in status CANCELED from user "max"
+    When a client sends a request to get detailed information about a tweet from  the tweet with id 1
+    Then the HTTP response status-code will be 404

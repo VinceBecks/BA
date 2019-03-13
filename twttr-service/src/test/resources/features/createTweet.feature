@@ -59,7 +59,7 @@ Feature: Create tweet
   Scenario: Request is not authorized
   The request must contain a valid token of an user
 
-    When a client sends a request to create a new tweet withoud a valid token
+    When a client sends a request to create a new tweet without a valid token
     Then the HTTP response status-code will be 401
 
 

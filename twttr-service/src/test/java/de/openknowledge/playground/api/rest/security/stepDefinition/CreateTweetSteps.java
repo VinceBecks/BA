@@ -49,8 +49,8 @@ public class CreateTweetSteps {
         domain.setResponse(response);
     }
 
-    @When("a client sends a request to create a new tweet withoud a valid token")
-    public void a_client_sends_a_request_to_create_a_new_tweet_withoud_a_valid_token() {
+    @When("a client sends a request to create a new tweet without a valid token")
+    public void a_client_sends_a_request_to_create_a_new_tweet_without_a_valid_token() {
         NewTweet newTweet = new NewTweet("An example content");
         String randomToken = "xxx";
 

@@ -51,7 +51,8 @@ public class GetLikerSteps {
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + domain.tokenFromAccount(moderatorName))
                 .when()
                 .get(domain.basePath() + "/tweets/0/liker");
-        domain.setResponse(response);    }
+        domain.setResponse(response);
+    }
 
     @When("a client sends a request to get a list of liker of the tweet with id {int}")
     public void a_client_sends_a_request_to_get_a_list_of_liker_of_the_tweet_with_id(Integer tweetId) {

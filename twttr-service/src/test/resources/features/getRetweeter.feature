@@ -33,3 +33,37 @@ Feature: Get list of retweeter
               }
           ]
         """
+
+
+
+  Scenario: Request is not authorized
+  The request must contain a valid token of a user
+
+    When a client sends a request without a valid token to get a list of retweeter of a tweet
+    Then the HTTP response status-code will be 401
+
+
+
+  Scenario: Token belongs to a moderator
+  Account must be from an user
+
+    Given the moderator "werner" is authenticated
+    When a client sends a request for moderator "werner" to get a list of retweeter of a tweet
+    Then the HTTP response status-code will be 403
+
+
+
+  Scenario: User to get the list of follower from doesn´t exist
+  The user must exist
+
+    Given there is no tweet with id 9999
+    When a client sends a request to get a list of retweeter of the tweet with id 9999
+    Then the HTTP response status-code will be 404
+
+
+  Scenario: Tweet to get the list of retweeter from is in status CANCELED
+  The tweet must not be in status CANCELED
+
+    Given a stored tweet with id 1 in status CANCELED from user "max"
+    When a client sends a request to get a list of retweeter from  the tweet with id 1
+    Then the HTTP response status-code will be 404

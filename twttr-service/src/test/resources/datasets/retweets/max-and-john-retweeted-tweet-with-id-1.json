@@ -1,0 +1,31 @@
+{
+  "TAB_LIKER": [],
+  "TAB_FOLLOWER": [],
+
+
+  "TAB_TWEET": [
+    {
+      "TWEET_ID" : 1,
+      "CONTENT" : "Example content",
+      "PUBLISH_DATE": "2019-02-01 11:11:11",
+      "STATE": 0,
+      "AUTHOR": 1
+    },
+    {
+      "TWEET_ID" : 2,
+      "CONTENT" : "Example content",
+      "PUBLISH_DATE": "2019-02-01 11:11:13",
+      "STATE": 0,
+      "AUTHOR": 0,
+      "ROOT_TWEET": 1
+    },
+    {
+      "TWEET_ID" : 3,
+      "CONTENT" : "Example content",
+      "PUBLISH_DATE": "2019-02-01 11:11:15",
+      "STATE": 0,
+      "AUTHOR": 2,
+      "ROOT_TWEET": 1
+    }
+  ]
+}

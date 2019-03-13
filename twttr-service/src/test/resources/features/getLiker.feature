@@ -57,3 +57,6 @@ Feature: Get liker of a specified tweet
     Given there is no tweet with id 9999
     When a client sends a request to get a list of liker of the tweet with id 9999
     Then the HTTP response status-code will be 404
+
+
+    #todo: Szenario: status Canceled

@@ -6,8 +6,6 @@ Feature: Show details of a Tweet
   - If the specified tweet doesn´t exist or is in state "CANCELED", then the http response body will be empty and its state will be 404
 
 
-
-
   #todo: ggf. scenario outline draus machen einmal für einen moderator und einmal für einen user
   Scenario: Get information about specified tweet
   Requesting information about a specified tweet

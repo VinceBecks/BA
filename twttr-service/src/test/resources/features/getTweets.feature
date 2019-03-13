@@ -12,12 +12,8 @@ Feature: Get all Tweets
   - If the request doesn´t contain a valid token, then there will be no tweets responded and the http response state will be 401
 
 
-  Scenario: Get information about tweets in state ACTIVE from users the requesting user is following
-  Requesting tweets with a valid token of an user
-  Just tweets from users the requesting user is following and which are in state "ACTIVE" will be responded
-  Responded list will be sorted by their publish date
-
-    #BAinfo: andersrum würde bei liker nicht gehen, da sonst beim persistieren der tweets die liker wieder überschrieben worden wären
+  #BAinfo: andersrum würde bei liker nicht gehen, da sonst beim persistieren der tweets die liker wieder überschrieben worden wären
+  Background: Persist tweets and let max follow john and jane
     Given the user "max" is authenticated
     And following tweets got persisted in presented order
       | tweetId | content  | state    | author |
@@ -32,6 +28,13 @@ Feature: Get all Tweets
       | 7       | 7. tweet | PUBLISH  | jane   |
       | 7       | 7. tweet | PUBLISH  | jane   |
     And user max follows the users john and jane
+
+
+  Scenario: Get information about tweets in state ACTIVE from users the requesting user is following
+  Requesting tweets with a valid token of an user
+  Just tweets from users the requesting user is following and which are in state "ACTIVE" will be responded
+  Responded list will be sorted by their publish date
+
     When a client sends a "GET" "/tweets" request for "max" to get a list of tweets from users he follows
     Then the HTTP response status-code will be 200
     #todo: Step zum überprüfen der json fehlt noch

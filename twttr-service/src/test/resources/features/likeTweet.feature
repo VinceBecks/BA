@@ -8,7 +8,53 @@ Feature: Like a tweet
   - If the specified tweet doesn´t exist or is in state "CANCELED", then the http response body will be empty and its state will be 404
 
 
-  Given the user "max" is authenticated
-  And a stored tweet with id 1
-  When a client sends a "POST" "/tweets/1/liker" request for user "max" to like the tweet with id 1
-  Then the HTTP response state will be 204
+  Scenario Outline: Like a tweet
+  Request to like a specified tweet
+
+    Given the user "max" is authenticated
+    And a stored tweet with id 1
+    And the user max <is or is not> a liker of tweet with id 1
+    When a client sends a "POST" "/tweets/1/liker" request for user "max" to like the tweet with id 1
+    Then the HTTP response status-code will be <status code>
+
+
+    Examples:
+     | is or is not | status code |
+     | is           | 400         |
+     | is not       | 204         |
+
+
+
+
+  Scenario: Unauthorised request to like a tweet
+  The request must contain a valid token of a user
+
+    When a client sends a request without a valid token to like a specified tweet
+    Then the HTTP response status-code will be 401
+
+
+
+  Scenario: Token from request to like a tweet belongs to a moderator
+  Account must be from an user
+
+    Given the moderator "werner" is authenticated
+    When a client sends a request for moderator "werner" to like a specified tweet
+    Then the HTTP response status-code will be 403
+
+
+
+  Scenario: Specified tweet to like doesn´t exist
+  The user must exist
+
+    Given there is no tweet with id 9999
+    When a client sends a request to like the tweet with id 9999
+    Then the HTTP response status-code will be 404
+
+
+  Scenario: Specified tweet to like is in status CANCELED
+  The tweet must not be in status CANCELED
+
+    Given a stored tweet with id 1 in status CANCELED from user "max"
+    When a client sends a request to like the tweet with id 1
+    Then the HTTP response status-code will be 404
+

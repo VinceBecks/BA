@@ -79,6 +79,16 @@ public class TweetSteps {
         dbExecutor.createDataSet(new DataSetConfig("like/maxAndJohnLikeTweetWithId1.json"));
     }
 
+    @Given("the user max is a liker of tweet with id 1")
+    public void the_user_max_is_a_liker_of_tweet_with_id() {
+        dbExecutor.createDataSet(new DataSetConfig("like/max-is-liker-of-tweet-with-id-1.json"));
+    }
+
+    @Given("the user max is not a liker of tweet with id {int}")
+    public void the_user_max_is_not_a_liker_of_tweet_with_id(Integer int1) {
+        dbExecutor.createDataSet(new DataSetConfig("like/empty-liker-list.json"));
+    }
+
     @Given("the tweet with id {int} got retweeted by users max and john")
     public void the_tweet_with_id_got_retweeted_by_users_max_and_john(Integer int1) {
         dbExecutor.createDataSet(new DataSetConfig("retweets/max-and-john-retweeted-tweet-with-id-1.json"));

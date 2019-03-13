@@ -37,4 +37,44 @@ Feature: Get all Tweets
 
     When a client sends a "GET" "/tweets" request for "max" to get a list of tweets from users he follows
     Then the HTTP response status-code will be 200
-    #todo: Step zum überprüfen der json fehlt noch
+    And the HTTP response body will contain following JSON with tweets from users max is following
+    """
+    [
+    {
+        "tweetId": 10,
+        "content": "10. tweet",
+        "pubDate": 1549016291000,
+        "author": {
+            "userId": 3,
+            "firstName": "Jane",
+            "lastName": "Doe",
+            "role": "USER"
+        },
+        "rootTweet": null
+    },
+    {
+        "tweetId": 9,
+        "content": "9. tweet",
+        "pubDate": 1549016231000,
+        "author": {
+            "userId": 3,
+            "firstName": "Jane",
+            "lastName": "Doe",
+            "role": "USER"
+        },
+        "rootTweet": null
+    },
+    {
+        "tweetId": 7,
+        "content": "7. tweet",
+        "pubDate": 1549016111000,
+        "author": {
+            "userId": 3,
+            "firstName": "Jane",
+            "lastName": "Doe",
+            "role": "USER"
+        },
+        "rootTweet": null
+    }
+    ]
+    """

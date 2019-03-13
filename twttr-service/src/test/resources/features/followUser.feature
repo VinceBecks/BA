@@ -13,7 +13,50 @@ Feature: Follow a Member
 
     #todo: bei dem Step mit dem request immer schreiben "with a valid token"?
     Given the user "max" is authenticated
-    And the user "max" isn´t a follower of user "john" with id 2
+    And the user max isn´t a follower of user john with id 2
     When a client sends a "POST" "/users/2/follower" request for user "max" to follow user "john"
-    Then the user "max" will be a follower of user "john"
-    And the HTTP response state will be 204
+    Then the user max will be a follower of user john
+    And the HTTP response status-code will be 204
+
+
+  Scenario: Requesting user is already a follower of the specified user
+  Each user can just one times be a follower of a specified user
+
+    Given the user "max" is authenticated
+    And the user max is already a follower of user john
+    When a client sends a request for user "max" to follow user "john"
+    Then the HTTP response status-code will be 400
+
+
+
+  Scenario: Request is not authorized
+  The request must contain a valid token of a user
+
+    When a client sends a request to follow a user without a valid token
+    Then the HTTP response status-code will be 401
+
+
+
+  Scenario: Account to follow belongs to a moderator
+  The account to follow must be from a user
+  #todo: im Given Part noch angeben, dass es einen Moderator werner gibt? --> wäre leere Methode
+    When a client sends a request to follow the account of a moderator
+    Then the HTTP response status-code will be 404
+
+
+
+  Scenario: Token belongs to a moderator
+  Account must be from an user
+
+    Given the moderator "werner" is authenticated
+    When a client sends a request for the moderator "werner" to follow a user
+    Then the HTTP response status-code will be 403
+
+
+
+  Scenario: User to follow doesn´t exist
+  The user must exist
+
+    Given there is no user with id 9999
+    When a client sends a request to follow the user with id 9999
+    Then the HTTP response status-code will be 404

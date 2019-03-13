@@ -9,6 +9,9 @@ import de.openknowledge.playground.api.rest.security.domain.tweet.NewTweet;
 import de.openknowledge.playground.api.rest.security.domain.tweet.TweetDTO;
 import de.openknowledge.playground.api.rest.security.supportCode.SharedDomain;
 import de.openknowledge.playground.api.rest.security.supportCode.converter.convertedClasses.ErrorMessage;
+import de.openknowledge.playground.api.rest.security.supportCode.converter.convertedClasses.GetTweetsQueryParams;
+import de.openknowledge.playground.api.rest.security.supportCode.converter.convertedClasses.IntegerList;
+import io.cucumber.cucumberexpressions.ParameterType;
 import io.cucumber.datatable.DataTableType;
 
 import java.util.Date;
@@ -44,5 +47,20 @@ public class Converter implements TypeRegistryConfigurer{
 
         typeRegistry.defineDataTableType(new DataTableType (ErrorMessage.class,
                 (String s)-> new ObjectMapper().readValue(s, ErrorMessage.class)));
+
+
+        typeRegistry.defineDataTableType(new DataTableType (GetTweetsQueryParams.class,
+                (Map<String, String> row)-> {
+                    String numTweets = row.get("numTweets").equals("not setted") ? null : row.get("numTweets");
+                    String index = row.get("index").equals("not setted") ? null : row.get("index");
+                    return new GetTweetsQueryParams(index, numTweets);
+                }));
+
+        typeRegistry.defineParameterType(new ParameterType<IntegerList>(
+                "Ids",
+                "([0-9]{0,2}(,[0-9])*)",
+                IntegerList.class,
+                IntegerList::new
+        ));
     }
 }

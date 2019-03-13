@@ -9,6 +9,7 @@ import de.openknowledge.playground.api.rest.security.domain.tweet.TweetDTO;
 import de.openknowledge.playground.api.rest.security.supportCode.SharedDomain;
 import de.openknowledge.playground.api.rest.security.supportCode.converter.convertedClasses.ErrorMessage;
 import de.openknowledge.playground.api.rest.security.domain.accounts.UserDTO;
+import de.openknowledge.playground.api.rest.security.supportCode.converter.convertedClasses.IntegerList;
 import io.restassured.response.Response;
 import org.hamcrest.Matchers;
 
@@ -134,6 +135,20 @@ public class ResponseSteps {
                     .body("["+i+"].author.firstName", Matchers.equalTo(expectedTweets.get(i).getAuthor().getFirstName()))
                     .body("["+i+"].author.lastName", Matchers.equalTo(expectedTweets.get(i).getAuthor().getLastName()))
                     .body("["+i+"].rootTweet", Matchers.equalTo(expectedTweets.get(i).getRootTweet()));
+        }
+    }
+
+    @Then("the HTTP response body contains the tweets with the ids {Ids}")
+    public void the_HTTP_response_body_contains_the_tweets_with_the_ids(IntegerList ids) {
+        List<Integer> expectedTweetIds  = ids.getIntegerList();
+
+        domain.getResponse().then()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body("size()", Matchers.equalTo(expectedTweetIds.size()));
+
+        for (int i=0; i<expectedTweetIds.size(); i++) {
+            domain.getResponse().then()
+                    .body("["+i+"].tweetId", Matchers.equalTo(expectedTweetIds.get(i)));
         }
     }
 }

@@ -30,6 +30,10 @@ Feature: Get all Tweets
     And user max follows the users john and jane
 
 
+
+
+
+
   Scenario: Get information about tweets in state ACTIVE from users the requesting user is following
   Requesting tweets with a valid token of an user
   Just tweets from users the requesting user is following and which are in state "ACTIVE" will be responded
@@ -78,3 +82,34 @@ Feature: Get all Tweets
     }
     ]
     """
+
+
+
+  Scenario Outline: Change QueryParams
+    When a client sends a "GET" "/tweets" request user "max" to get a list of tweets from users he follows with following Query Params
+      | queryParam: | numTweets   | index   |
+      | value:      | <numTweets> | <index> |
+    Then the HTTP response status-code will be 200
+    And the HTTP response body contains the tweets with the ids <testIds>
+
+    Examples:
+      | numTweets  | index      | testIds      |
+      | not setted | not setted | 10,9,7       |
+      | not setted | 2          | 7,5,2        |
+      | not setted | 0          | 10,9,7       |
+      | not setted | 5          | 1            |
+      | not setted | 6          |              |
+      | 3          | not setted | 10,9,7       |
+      | 6          | not setted | 10,9,7,5,2,1 |
+      | 7          | not setted | 10,9,7,5,2,1 |
+      | 3          | 1          | 9,7,5        |
+
+
+
+
+    #todo: zählt das noch als konkretes Beispiel? ... ohne beschreiben, dass es einen user gibt, der aber nicht angemeldet ist?
+  Scenario: Unauthorised request to get tweets from users the requesting user is following
+  The request must contain a valid token of a user
+
+    When a client sends a request without a valid token to get tweets
+    Then the HTTP response status-code will be 401

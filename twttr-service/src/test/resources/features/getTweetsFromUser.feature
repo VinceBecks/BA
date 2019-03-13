@@ -28,6 +28,77 @@ Feature: Get all tweets of a member
 
     #todo: noch irgendwie auf die Reihenfolge der Tweets eingehen?
   Scenario: Get tweets of a user
-    When a client sends a "GET" "/tweets/2" request for "max" to get a list of tweets from user john
+    When a client sends a "GET" "/users/2/tweets" request for "max" to get a list of tweets from user john
     Then the HTTP response status-code will be 200
     And the HTTP response body will contain following JSON with tweets from user john
+    """
+    [
+    {
+        "tweetId": 10,
+        "content": "10. tweet",
+        "pubDate": 1549016291000,
+        "author": {
+            "userId": 2,
+            "firstName": "John",
+            "lastName": "Doe",
+            "role": "USER"
+        },
+        "rootTweet": null
+    },
+    {
+        "tweetId": 9,
+        "content": "9. tweet",
+        "pubDate": 1549016231000,
+        "author": {
+            "userId": 2,
+            "firstName": "John",
+            "lastName": "Doe",
+            "role": "USER"
+        },
+        "rootTweet": null
+    },
+    {
+        "tweetId": 8,
+        "content": "8. tweet",
+        "pubDate": 1549016171000,
+        "author": {
+            "userId": 2,
+            "firstName": "John",
+            "lastName": "Doe",
+            "role": "USER"
+        },
+        "rootTweet": null
+    }
+    ]
+    """
+
+
+
+  Scenario Outline: Change QueryParams
+    When a client sends a request for user "max" to get a list of tweets from user "john" with following Query Params
+      | queryParam: | numTweets   | index   |
+      | value:      | <numTweets> | <index> |
+    Then the HTTP response status-code will be 200
+    And the HTTP response body contains the tweets with the ids <testIds>
+
+    Examples:
+      | numTweets  | index      | testIds          |
+      | not setted | not setted | 10,9,8           |
+      | not setted | 2          | 8,7,5            |
+      | not setted | 0          | 10,9,8           |
+      | not setted | 7          | 1                |
+      | not setted | 8          |                  |
+      | 3          | not setted | 10,9,8           |
+      | 6          | not setted | 10,9,8,7,5,4     |
+      | 8          | not setted | 10,9,8,7,5,4,2,1 |
+      | 9          | not setted | 10,9,8,7,5,4,2,1 |
+      | 9          | 1          | 9,8,7,5,4,2,1    |
+
+
+
+
+  Scenario: Unauthorised request to get tweets from a user
+  The request must contain a valid token of a user
+
+    When a client sends a request without a valid token to get tweets from a specified user
+    Then the HTTP response status-code will be 401

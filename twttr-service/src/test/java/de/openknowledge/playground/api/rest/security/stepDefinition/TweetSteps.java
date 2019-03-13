@@ -56,6 +56,12 @@ public class TweetSteps {
         dbExecutor.createDataSet(new DataSetConfig("tweet/list-of-tweets.json"));
     }
 
+    @Given("following tweets got persisted from user john with id 2 in presented order")
+    public void following_tweets_got_persisted_from_user_john_with_id_in_presented_order(DataTable dataTable) {
+        //todo: Was mit übergebenen Parameter machen? ... wird nicht benötigt
+        dbExecutor.createDataSet(new DataSetConfig("tweet/list-of-tweets-from-john.json"));
+    }
+
     @Given("there is no tweet with id {int}")
     public void there_is_no_tweet_with_id(Integer tweetId) {
         String [] stmts = new String [1];

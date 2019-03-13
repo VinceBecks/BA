@@ -151,4 +151,27 @@ public class ResponseSteps {
                     .body("["+i+"].tweetId", Matchers.equalTo(expectedTweetIds.get(i)));
         }
     }
+
+    @Then("the HTTP response body will contain following JSON with tweets from user john")
+    public void the_HTTP_response_body_will_contain_following_JSON_with_tweets_from_user_john(String expectedJson) {
+        List<TweetDTO> expectedTweets = null;
+        try {
+            expectedTweets = new ObjectMapper().readValue(expectedJson, new TypeReference<List<TweetDTO>>(){});
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        domain.getResponse().then()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body("size()", Matchers.equalTo(expectedTweets.size()));
+
+        for (int i=0; i<expectedTweets.size(); i++) {
+            domain.getResponse().then()
+                    .body("["+i+"].tweetId", Matchers.equalTo(expectedTweets.get(i).getTweetId()))
+                    .body("["+i+"].content", Matchers.equalTo(expectedTweets.get(i).getContent()))
+                    .body("["+i+"].author.userId", Matchers.equalTo(expectedTweets.get(i).getAuthor().getUserId()))
+                    .body("["+i+"].author.firstName", Matchers.equalTo(expectedTweets.get(i).getAuthor().getFirstName()))
+                    .body("["+i+"].author.lastName", Matchers.equalTo(expectedTweets.get(i).getAuthor().getLastName()))
+                    .body("["+i+"].rootTweet", Matchers.equalTo(expectedTweets.get(i).getRootTweet()));
+        }
+    }
 }

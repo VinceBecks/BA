@@ -80,6 +80,4 @@ public class GetLikerSteps {
                 .get(domain.basePath() + "/tweets/"+tweetId+"/retweets/authors");
         domain.setResponse(response);
     }
-
-
 }

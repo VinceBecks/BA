@@ -11,22 +11,21 @@ Feature: Show details of a Tweet
   Scenario: Get information about specified tweet
   Requesting information about a specified tweet
 
-    Given a stored tweet
-    And an authenticated user with credentials
-      | accountId | userName | password |
-      | 1         | phillipp | password |
-    When a client sends a "GET" "/tweets/{tweetId}" request with valid token from user with id 1 to get the details of the stored tweet
-    Then the HTTP response state will be 200
-    And the HTTP response body contains a JSON of the tweet details with following structure
+    Given the user "john" is authenticated
+    And a stored tweet with id 1 from user max with content "Example Content"
+    And the tweet with id 1 got liked by 1 user and retweeted by 2 users
+    When a client sends a "GET" "/tweets/1" request for user "john" to get detailed information about the tweet with id 1
+    Then the HTTP response status-code will be 200
+    And the HTTP response body will contain following JSON with detailed information about the tweet with id 1
         """
         {
             "tweetId": 1,
-            "content": "More Content",
+            "content": "Example content",
             "pubDate": 679658765,
             "author": {
-                "userId": 3,
-                "firstName": "Lukas",
-                "lastName": "Schröder"
+                "userId": 0,
+                "firstName": "Max",
+                "lastName": "Mustermann"
             },
             "numLiker": 1,
             "numRetweets": 2

@@ -29,7 +29,7 @@ public class TweetSteps {
 
     @Given("a stored tweet with id 1")
     public void a_stored_tweet_with_id() {
-        dbExecutor.createDataSet(new DataSetConfig("tweet/aStoredTweetWithId1.json"));
+        dbExecutor.createDataSet(new DataSetConfig("tweet/a-stored-tweet-with-id-1-from-max.json"));
     }
 
     @Given("a stored tweet with id {int} from user {string}")
@@ -38,6 +38,11 @@ public class TweetSteps {
         stmts[0] = "DELETE FROM TAB_TWEET WHERE TWEET_ID = " + tweetId + ";";
         stmts[1] = "INSERT INTO TAB_TWEET(TWEET_ID, CONTENT, PUBLISH_DATE, STATE, AUTHOR, ROOT_TWEET) VALUES (" + tweetId + ", 'Example Bla content',CURRENT_TIMESTAMP,  0,  " + domain.getAccount(userName).getAccountId() + ", NULL );" ;
         dbExecutor.executeStatements(stmts);
+    }
+
+    @Given("a stored tweet with id 1 from user max with content \"Example Content\"")
+    public void a_stored_tweet_with_id_from_user_with_content_Example_Content() {
+        dbExecutor.createDataSet(new DataSetConfig("tweet/a-stored-tweet-with-id-1-from-max.json"));
     }
 
     @Given("there is no tweet with id {int}")
@@ -61,6 +66,12 @@ public class TweetSteps {
     public void the_tweet_with_id_got_retweeted_by_users_max_and_john(Integer int1) {
         dbExecutor.createDataSet(new DataSetConfig("retweets/max-and-john-retweeted-tweet-with-id-1.json"));
     }
+
+    @Given("the tweet with id {int} got liked by {int} user and retweeted by {int} users")
+    public void the_tweet_with_id_got_liked_by_user_and_retweeted_by_users(Integer int1, Integer int2, Integer int3) {
+        dbExecutor.createDataSet(new DataSetConfig("tweet/tweet-with-id-1-got-liked-1-times-and-retweeted-2-times.json"));
+    }
+
 
 
 }

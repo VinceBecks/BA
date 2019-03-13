@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cucumber.api.PendingException;
 import cucumber.api.java.en.Then;
+import de.openknowledge.playground.api.rest.security.domain.tweet.DetailedTweet;
 import de.openknowledge.playground.api.rest.security.domain.tweet.TweetDTO;
 import de.openknowledge.playground.api.rest.security.supportCode.SharedDomain;
 import de.openknowledge.playground.api.rest.security.supportCode.converter.convertedClasses.ErrorMessage;
@@ -89,5 +90,26 @@ public class ResponseSteps {
         } catch (IOException e) {
             throw new PendingException();
         }
+    }
+
+
+    @Then("the HTTP response body will contain following JSON with detailed information about the tweet with id 1")
+    public void the_HTTP_response_body_will_contain_following_JSON_with_detailed_information_about_the_tweet_with_id(String expectedJson) {
+        DetailedTweet expectedTweet = null;
+        try {
+            expectedTweet = new ObjectMapper().readValue(expectedJson, DetailedTweet.class);
+        } catch (IOException e) {
+            throw new PendingException();
+        }
+
+        domain.getResponse().then()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body("tweetId", Matchers.equalTo(expectedTweet.getTweetId()))
+                .body("content", Matchers.equalTo(expectedTweet.getContent()))
+                .body("author.userId", Matchers.equalTo(expectedTweet.getAuthor().getUserId()))
+                .body("author.firstName", Matchers.equalTo(expectedTweet.getAuthor().getFirstName()))
+                .body("author.lastName", Matchers.equalTo(expectedTweet.getAuthor().getLastName()))
+                .body("numLiker", Matchers.equalTo(expectedTweet.getNumLiker()))
+                .body("numRetweets", Matchers.equalTo(expectedTweet.getNumRetweets()));
     }
 }

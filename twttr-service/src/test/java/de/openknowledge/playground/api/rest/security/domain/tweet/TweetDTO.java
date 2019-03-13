@@ -16,6 +16,14 @@ public class TweetDTO implements Serializable {
         //for REST
     }
 
+    public TweetDTO(Integer tweetId, String content, Date pubDate, UserDTO author, TweetDTO rootTweet) {
+        this.tweetId = tweetId;
+        this.content = content;
+        this.pubDate = pubDate;
+        this.author = author;
+        this.rootTweet = rootTweet;
+    }
+
     public Integer getTweetId() {
         return tweetId;
     }

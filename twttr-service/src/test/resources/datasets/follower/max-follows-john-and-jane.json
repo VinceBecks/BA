@@ -1,0 +1,12 @@
+{
+  "TAB_FOLLOWER": [
+    {
+      "FOLLOWER_ID": 0,
+      "FOLLOWING_ID": 2
+    },
+    {
+      "FOLLOWER_ID": 0,
+      "FOLLOWING_ID": 3
+    }
+  ]
+}

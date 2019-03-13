@@ -24,13 +24,13 @@ public class SharedDomain {
         accounts = new HashMap<>();
 
         //todo: wie auslesen aus accounts.json?
-        accounts.put("max", new Account(0, "max", "password"));
-        accounts.put("marta", new Account(1, "marta", "password"));
-        accounts.put("john", new Account(2, "john", "password"));
-        accounts.put("jane", new Account(3, "jane", "password"));
-        accounts.put("werner", new Account(4, "werner", "password"));
-        accounts.put("karl", new Account(5, "karl", "password"));
-        accounts.put("lena", new Account(6, "lena", "password"));
+        accounts.put("max", new Account(0, "max", "password", "Max", "Mustermann"));
+        accounts.put("marta", new Account(1, "marta", "password", "Marta", "Musterfrau"));
+        accounts.put("john", new Account(2, "john", "password", "John", "Doe"));
+        accounts.put("jane", new Account(3, "jane", "password", "Jane", "Doe"));
+        accounts.put("werner", new Account(4, "werner", "password", "Werner", "Pflanzen"));
+        accounts.put("karl", new Account(5, "karl", "password", "Karl", "Ranseier"));
+        accounts.put("lena", new Account(6, "lena", "password", "Lena", "Löchte"));
     }
 
 

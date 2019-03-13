@@ -5,10 +5,15 @@ import com.github.database.rider.core.configuration.DataSetConfig;
 import com.github.database.rider.core.connection.ConnectionHolderImpl;
 import com.github.database.rider.core.dataset.DataSetExecutorImpl;
 import com.github.database.rider.core.util.EntityManagerProvider;
+import cucumber.api.PendingException;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
+import de.openknowledge.playground.api.rest.security.domain.tweet.TweetDTO;
 import de.openknowledge.playground.api.rest.security.supportCode.SharedDomain;
+import io.cucumber.datatable.DataTable;
 import org.junit.Rule;
+
+import java.util.List;
 
 public class TweetSteps {
     private SharedDomain domain;
@@ -43,6 +48,12 @@ public class TweetSteps {
     @Given("a stored tweet with id 1 from user max with content \"Example Content\"")
     public void a_stored_tweet_with_id_from_user_with_content_Example_Content() {
         dbExecutor.createDataSet(new DataSetConfig("tweet/a-stored-tweet-with-id-1-from-max.json"));
+    }
+
+    @Given("following tweets got persisted in presented order")
+    public void following_tweets_got_persisted_in_presented_order(DataTable dataTable) {
+        //todo: was mit übergebenen Parameter machen? Wird nicht gebraucht...
+        dbExecutor.createDataSet(new DataSetConfig("tweet/list-of-tweets.json"));
     }
 
     @Given("there is no tweet with id {int}")

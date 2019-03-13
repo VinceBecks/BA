@@ -62,6 +62,11 @@ public class AccountSteps {
         dbExecutor.createDataSet(new DataSetConfig("follower/maxFollowsJohn.json"));
     }
 
+    @Given("user max follows the users john and jane")
+    public void user_max_follows_the_users_john_and_jane() {
+        dbExecutor.createDataSet(new DataSetConfig("follower/max-follows-john-and-jane.json"));
+    }
+
 
 
 

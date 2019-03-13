@@ -14,6 +14,13 @@ public class UserDTO implements Serializable {
         //for JPA
     }
 
+    public UserDTO(Integer userId, String firstName, String lastName, AccountType role) {
+        this.userId = userId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.role = role;
+    }
+
     public UserDTO(User user) {
         this.userId = user.getAccountId();
         this.firstName = user.getFirstName();

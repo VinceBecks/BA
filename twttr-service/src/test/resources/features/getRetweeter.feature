@@ -8,31 +8,28 @@ Feature: Get list of retweeter
 
 
 
-  Scenario: Get a list of liker of a specific tweet
+  Scenario: Get a list of retweeter of a specific tweet
   Requesting a list of liker of a specified tweet
 
-    Given an authenticated user with credentials
-      | accountId | userName | password |
-      | 1         | phillipp | password |
-    And a stored tweet
-    And the stored tweet got retweeted by following users with credentials:
-      | accountId | userName  | password |
-      | 2         | Simon     | password |
-      | 3         | Lukas     | password |
-    When a client sends a "GET" "/tweets/{tweetId}/retweets/authors" request to get a list of retweeter of the stored tweet with a valid token of the user with id 1
-    Then the HTTP response state will be 200
-    And the HTTP response body will contain following JSON with a list of users who retweeted the stored tweet:
+    Given the user "max" is authenticated
+    And a stored tweet with id 1
+    And the tweet with id 1 got retweeted by users max and john
+    When a client sends a "GET" "/tweets/1/retweets/authors" request for user "max" to get a list of retweeter of the tweet with id 1
+    Then the HTTP response status-code will be 200
+    And the HTTP response body will contain following JSON with a list of users who liked the stored tweet:
         """
-        [
-            {
-                "userId": 2,
-                "firstName": "Simon",
-                "lastName": "Lochny"
-            },
-            {
-                "userId": 3,
-                "firstName": "Lukas",
-                "lastName": "Schröder"
-            }
-        ]
+          [
+              {
+                  "userId": 0,
+                  "firstName": "Max",
+                  "lastName": "Mustermann",
+                  "role": "USER"
+              },
+              {
+                  "userId": 2,
+                  "firstName": "John",
+                  "lastName": "Doe",
+                  "role": "USER"
+              }
+          ]
         """

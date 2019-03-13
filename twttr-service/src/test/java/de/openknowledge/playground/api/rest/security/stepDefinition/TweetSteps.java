@@ -98,4 +98,9 @@ public class TweetSteps {
     public void the_tweet_with_id_got_liked_by_user_and_retweeted_by_users() {
         dbExecutor.createDataSet(new DataSetConfig("tweet/tweet-with-id-1-got-liked-1-times-and-retweeted-2-times.json"));
     }
+
+    @Given("a stored retweet with id 2 from tweet with id 1")
+    public void a_stored_retweet_with_id_from_tweet_with_id() {
+        dbExecutor.createDataSet(new DataSetConfig("retweets/retweet-with-id-2-from-tweet-with-id-1.json"));
+    }
 }

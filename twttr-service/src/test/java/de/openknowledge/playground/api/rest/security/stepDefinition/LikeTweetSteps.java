@@ -18,8 +18,8 @@ public class LikeTweetSteps {
     }
 
 
-    @When("a client sends a {string} {string} request for user {string} to like the tweet with id 1")
-    public void a_client_sends_a_request_for_user_to_like_the_tweet_with_id(String httpMethod, String additionalPath, String userName) {
+    @When("a client sends a POST {string} request for user {string} to like the tweet with id 1")
+    public void a_client_sends_a_POST_request_for_user_to_like_the_tweet_with_id(String additionalPath, String userName) {
         Response response = RestAssured
                 .given()
                 .accept(MediaType.APPLICATION_JSON)
@@ -31,8 +31,8 @@ public class LikeTweetSteps {
     }
 
 
-    @When("a client sends a request without a valid token to like a specified tweet")
-    public void a_client_sends_a_request_without_a_valid_token_to_like_a_specified_tweet() {
+    @When("a client sends a request without a valid token of an user to like a specified tweet")
+    public void a_client_sends_a_request_without_a_valid_token_of_an_user_to_like_a_specified_tweet() {
         String randomToken = "XXX";
 
         Response response = RestAssured

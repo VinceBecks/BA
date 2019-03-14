@@ -83,6 +83,9 @@ Feature: Get all tweets of a member
 
 
 
+
+
+
   Scenario Outline: Change QueryParams
   The QueryParam numTweets represents the number of requested tweets
   The default value for numTweets will be 3
@@ -108,6 +111,8 @@ Feature: Get all tweets of a member
       | 8          | not setted | 10,9,8,7,5,4,2,1 |
       | 9          | not setted | 10,9,8,7,5,4,2,1 |
       | 9          | 1          | 9,8,7,5,4,2,1    |
+
+
 
 
 

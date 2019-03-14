@@ -1,17 +1,18 @@
 Feature: Get all tweets of a member
   This feature file describes the behaviour of the system for GET requests at the endpoint on /api/{userId}/tweets for receiving a sorted list of the last tweets the specified tweet.
-  - If the request contains the header "Authorization" with a valid token, then the http response body contains a list of the last n tweets in state "ACTIVE" from the specified user, sorted by the publish date of the tweets and the http response state will be 400
-  - If the QueryParam "index" of the request is higher than 0, then its value describes how many of the last tweets in state "ACTIVE" will be skipped for the response
-  - If the QueryParam "numTweets" is higher than 0, then the response contains as many tweets in state "ACTIVE" as its value, if there are enough
+  - If the request contains the header "Authorization" with a valid token, then the http response body contains a list of the last 3 tweets in state "PUBLISH" from the specified user, sorted by theIR publish date and the http response status-code will be 200
+  - If the QueryParam "index" of the request is higher than 0, then its value describes how many of the last tweets in status "PUBLISH" will be skipped for the response
+  - If the QueryParam "numTweets" is higher than 0, then the response contains as many tweets in status "PUBLISH" as its value, if there are enough
   - If the QueryParam "index" isn´t setted, then its default value will be 0
-  - If the QueryParam "numTweets" isn´t setted, then its default value will be 5
-  - If the number of requested tweets is higher than the list of tweets, or the difference of the list of tweets and the index to start from, then all remaining tweets will be responded and the http response state will be 200
-  - If the QueryParam "index" or the QueryParam "numTweets" isn´t a positive integer, then there will be no tweets responded and the http response will contain an appropriate information and the state will be 400
-  - If the request doesn´t contain a valid token, then there will be no tweets responded and the http response state will be 401
+  - If the QueryParam "numTweets" isn´t setted, then its default value will be 3
+  - If the number of requested tweets is higher than the list of tweets, or the difference of the list of tweets and the index to start from, then all remaining tweets will be responded and the http response status-code will be 200
+  - If the QueryParam "index" or the QueryParam "numTweets" isn´t a positive integer, then there will be no tweets responded and the http response will contain an appropriate information about the mistake and the status-code will be 400
+  - If the request doesn´t contain a valid token, then the http response status-code will be 401
 
 
-  Background: Authenticate max and persist tweets from john
+  Background: Authenticate user max and persist tweets from john
     Given the user "max" is authenticated
+    And the moderator "werner" is authenticated
     And following tweets got persisted from user john with id 2 in presented order
       | tweetId | content   | state    |
       | 1       | 1. tweet  | PUBLISH  |
@@ -26,9 +27,12 @@ Feature: Get all tweets of a member
       | 10      | 10. tweet | PUBLISH  |
 
 
+
+
+
     #todo: noch irgendwie auf die Reihenfolge der Tweets eingehen?
-  Scenario: Get tweets of a user
-    When a client sends a "GET" "/users/2/tweets" request for "max" to get a list of tweets from user john
+  Scenario Outline: Get tweets of a user
+    When a client sends a GET "/users/2/tweets" request for <accountType> "<userName>" to get a list of tweets from user john
     Then the HTTP response status-code will be 200
     And the HTTP response body will contain following JSON with tweets from user john
     """
@@ -72,14 +76,25 @@ Feature: Get all tweets of a member
     ]
     """
 
+    Examples:
+    | accountType | userName |
+    | moderator   | werner   |
+    | user        | max      |
+
 
 
   Scenario Outline: Change QueryParams
-    When a client sends a request for user "max" to get a list of tweets from user "john" with following Query Params
+  The QueryParam numTweets represents the number of requested tweets
+  The default value for numTweets will be 3
+  The QueryParam index represents the number of tweets to be skipped for the response from a list of all PUBLISH tweets from the specified user sorted by their publish date
+  The default value for index will be 0
+
+    When a client sends a request to get a list of tweets from user "john" with following Query Params
       | queryParam: | numTweets   | index   |
       | value:      | <numTweets> | <index> |
     Then the HTTP response status-code will be 200
     And the HTTP response body contains the tweets with the ids <testIds>
+    #todo: And the tweets will be responded as presented, ordered by their publish date
 
     Examples:
       | numTweets  | index      | testIds          |

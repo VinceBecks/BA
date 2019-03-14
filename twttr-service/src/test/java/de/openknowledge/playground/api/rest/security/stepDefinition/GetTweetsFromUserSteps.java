@@ -17,8 +17,8 @@ public class GetTweetsFromUserSteps {
         this.domain = domain;
     }
 
-    @When("a client sends a {string} {string} request for {string} to get a list of tweets from user john")
-    public void a_client_sends_a_request_for_to_get_a_list_of_tweets_from_user_john(String string, String additionalPath, String userName) {
+    @When("a client sends a GET {string} request for (user|moderator) {string} to get a list of tweets from user john")
+    public void a_client_sends_a_GET_request_for_to_get_a_list_of_tweets_from_user_john(String additionalPath, String userName) {
         String validToken = AuthzClient.create().authorization("max", "password").authorize().getToken();
         Response response = RestAssured
                 .given()
@@ -31,13 +31,14 @@ public class GetTweetsFromUserSteps {
     }
 
 
-    @When("a client sends a request for user {string} to get a list of tweets from user {string} with following Query Params")
-    public void a_client_sends_a_request_for_user_to_get_a_list_of_tweets_from_user_with_following_Query_Params(String requestingUser, String userToGetTweetsFrom, GetTweetsQueryParams params) {
+    @When("a client sends a request to get a list of tweets from user {string} with following Query Params")
+    public void a_client_sends_a_request_for_user_to_get_a_list_of_tweets_from_user_with_following_Query_Params(String userToGetTweetsFrom, GetTweetsQueryParams params) {
+        String validToken = AuthzClient.create().authorization("max", "password").authorize().getToken();
         Response response = RestAssured
                 .given()
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + domain.tokenFromAccount(requestingUser))
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + validToken)
                 .when()
                 .get(domain.basePath() + "/users/" + domain.getAccount(userToGetTweetsFrom).getAccountId() + "/tweets" + params.getQueryString());
         domain.setResponse(response);

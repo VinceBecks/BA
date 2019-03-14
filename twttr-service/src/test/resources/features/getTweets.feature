@@ -13,7 +13,7 @@ Feature: Get all Tweets
 
 
   #BAinfo: andersrum würde bei liker nicht gehen, da sonst beim persistieren der tweets die liker wieder überschrieben worden wären
-  Background: Authenticate user max, persist tweets and let user max follow users john and jane
+  Background: Authenticate user max and moderator werner, persist tweets and let user max follow users john and jane
     Given the user "max" is authenticated
     And the moderator "werner" is authenticated
     And following tweets got persisted in presented order
@@ -164,8 +164,10 @@ Feature: Get all Tweets
 
 
   Scenario Outline: Change QueryParams numTweets and index by request to get tweets from all users
-  The QueryParam numTweets represents the number of requested tweets and will overwrite its default value 3
-  The QueryParam index represents the number of tweets to be skipped for the response from a list of all PUBLISH tweets sorted by their publish date and will overwrite its default value 0
+  The QueryParam numTweets represents the number of requested tweets
+  The default value for numTweets will be 3
+  The QueryParam index represents the number of tweets to be skipped for the response from a list of all PUBLISH tweets from users the requesting user is following sorted by their publish date
+  The default value for index will be 0
   #todo: And the returning tweets will be sorted by their publish date
 
     When a client sends a GET "/tweets" request for moderator "werner" to get a list of tweets with following Query Params

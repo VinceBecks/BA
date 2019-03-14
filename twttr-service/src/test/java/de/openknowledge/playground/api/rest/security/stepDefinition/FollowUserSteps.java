@@ -41,8 +41,8 @@ public class FollowUserSteps {
         this.domain = domain;
     }
 
-    @When("a client sends a {string} {string} request for user {string} to follow user {string}")
-    public void a_client_sends_a_request_for_user_to_follow_user(String httpMethod, String additionalPath, String followingUser, String followedUser) {
+    @When("a client sends a POST {string} request for user {string} to follow user john")
+    public void a_client_sends_a_POST_request_for_user_to_follow_user_john(String additionalPath, String followingUser) {
         Response response = RestAssured
                 .given()
                 .accept(MediaType.APPLICATION_JSON)
@@ -65,8 +65,8 @@ public class FollowUserSteps {
         domain.setResponse(response);
     }
 
-    @When("a client sends a request to follow a user without a valid token")
-    public void a_client_sends_a_request_to_follow_a_user_without_a_valid_token() {
+    @When("a client sends a request to follow an user without a valid token")
+    public void a_client_sends_a_request_to_follow_an_user_without_a_valid_token() {
         String randomToken = "XXX";
         Response response = RestAssured
                 .given()
@@ -117,15 +117,5 @@ public class FollowUserSteps {
                 .when()
                 .post(domain.basePath() + "/users/" + userId + "/follower");
         domain.setResponse(response);
-    }
-
-    @Then("the user max will be a follower of user john")
-    public void the_user_max_will_be_a_follower_of_user_john() {
-        try {
-            dbExecutor.compareCurrentDataSetWith(new DataSetConfig("follower/max-follows-john.json"), new String [0]);
-        } catch (DatabaseUnitException e) {
-            //todo: Gibt bestimmt eine bessere Exception zu werfen
-            throw new PendingException( );
-        }
     }
 }

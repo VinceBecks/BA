@@ -17,8 +17,8 @@ public class CreateTweetSteps {
         this.domain = domain;
     }
 
-    @When("a client sends a {string} {string} request for the user {string} to create a new tweet and the body contains following JSON structure")
-    public void a_client_sends_a_request_for_the_user_to_create_a_new_tweet_and_the_body_contains_following_JSON_structure(String httpMethod, String additionalPath, String userName, NewTweet newTweet) {
+    @When("a client sends a POST {string} request for the user {string} to create a new tweet and the body contains following JSON")
+    public void a_client_sends_a_POST_request_for_the_user_to_create_a_new_tweet_and_the_body_contains_following_JSON(String additionalPath, String userName, NewTweet newTweet) {
         Response response = RestAssured
                 .given()
                     .accept(MediaType.APPLICATION_JSON)
@@ -49,8 +49,8 @@ public class CreateTweetSteps {
         domain.setResponse(response);
     }
 
-    @When("a client sends a request to create a new tweet without a valid token")
-    public void a_client_sends_a_request_to_create_a_new_tweet_without_a_valid_token() {
+    @When("a client sends a request to create a new tweet without a valid token of an user")
+    public void a_client_sends_a_request_to_create_a_new_tweet_without_a_valid_token_of_an_user() {
         NewTweet newTweet = new NewTweet("An example content");
         String randomToken = "xxx";
 

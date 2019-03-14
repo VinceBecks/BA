@@ -10,6 +10,7 @@ import de.openknowledge.playground.api.rest.security.domain.tweet.TweetDTO;
 import de.openknowledge.playground.api.rest.security.supportCode.SharedDomain;
 import de.openknowledge.playground.api.rest.security.supportCode.converter.convertedClasses.ErrorMessage;
 import de.openknowledge.playground.api.rest.security.supportCode.converter.convertedClasses.GetTweetsQueryParams;
+import de.openknowledge.playground.api.rest.security.supportCode.converter.convertedClasses.GetUsersQueryParams;
 import de.openknowledge.playground.api.rest.security.supportCode.converter.convertedClasses.IntegerList;
 import io.cucumber.cucumberexpressions.ParameterType;
 import io.cucumber.datatable.DataTableType;
@@ -54,6 +55,18 @@ public class Converter implements TypeRegistryConfigurer{
                     String numTweets = row.get("numTweets").equals("not setted") ? null : row.get("numTweets");
                     String index = row.get("index").equals("not setted") ? null : row.get("index");
                     return new GetTweetsQueryParams(index, numTweets);
+                }));
+
+
+        typeRegistry.defineDataTableType(new DataTableType (GetUsersQueryParams.class,
+                (Map<String, String> row)-> {
+                    String s = row.get("searchString");
+                    String serachString = null;
+                    if (s != null) { serachString = row.get("searchString").equals("not setted")  ? null : row.get("searchString"); }
+
+                    String numTweets = row.get("numTweets").equals("not setted") ? null : row.get("numTweets");
+                    String index = row.get("index").equals("not setted") ? null : row.get("index");
+                    return new GetUsersQueryParams(serachString, numTweets, index);
                 }));
 
         typeRegistry.defineParameterType(new ParameterType<IntegerList>(

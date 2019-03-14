@@ -187,4 +187,44 @@ public class ResponseSteps {
                 .body("rootTweet.tweetId", Matchers.equalTo(expectedTweet.getRootTweet().getTweetId()));
         //todo: reicht das auch als überprüfung, ob es sich beim Root Tweet um den richtigen handelt?
     }
+
+
+    @Then("the HTTP response body contains following JSON with a list of users")
+    public void the_HTTP_response_body_contains_following_JSON_with_a_list_of_users(String expectedJson) {
+        List<UserDTO> expectedUsers;
+        try {
+            expectedUsers = new ObjectMapper().readValue(expectedJson, new TypeReference<List<UserDTO>>(){});
+        } catch (IOException e) {
+            throw new PendingException();
+        }
+
+        domain.getResponse().then()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body("size()", Matchers.equalTo(expectedUsers.size()));
+
+        for (int i=0; i<expectedUsers.size(); i++) {
+            domain.getResponse().then()
+                    .body("["+i+"].userId", Matchers.equalTo(expectedUsers.get(i).getUserId()))
+                    .body("["+i+"].firstName", Matchers.equalTo(expectedUsers.get(i).getFirstName()))
+                    .body("["+i+"].lastName", Matchers.equalTo(expectedUsers.get(i).getLastName()))
+                    .body("["+i+"].role", Matchers.equalTo(expectedUsers.get(i).getRole().toString()));
+        }
+    }
+
+    @Then("the returned users will be the users with ids {Ids} in presented order")
+    public void the_returned_users_will_be_the_users_with_ids_in_presented_order(IntegerList ids) {
+        List<Integer> expectedIds = ids.getIntegerList();
+
+        domain.getResponse().then()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body("size()", Matchers.equalTo(expectedIds.size()));
+
+        for (int i=0; i<expectedIds.size(); i++) {
+            domain.getResponse().then()
+                    .body("["+i+"].userId", Matchers.equalTo(expectedIds.get(i)));
+        }
+    }
+
+
+
 }

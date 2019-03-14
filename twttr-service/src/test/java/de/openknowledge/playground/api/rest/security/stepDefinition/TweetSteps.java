@@ -37,12 +37,9 @@ public class TweetSteps {
         dbExecutor.createDataSet(new DataSetConfig("tweet/a-stored-tweet-with-id-1-from-max.json"));
     }
 
-    @Given("a stored tweet with id {int} from user {string}")
-    public void a_stored_tweet_with_id_from_user(Integer tweetId, String userName) {
-        String [] stmts = new String [2];
-        stmts[0] = "DELETE FROM TAB_TWEET WHERE TWEET_ID = " + tweetId + ";";
-        stmts[1] = "INSERT INTO TAB_TWEET(TWEET_ID, CONTENT, PUBLISH_DATE, STATE, AUTHOR, ROOT_TWEET) VALUES (" + tweetId + ", 'Example Bla content',CURRENT_TIMESTAMP,  0,  " + domain.getAccount(userName).getAccountId() + ", NULL );" ;
-        dbExecutor.executeStatements(stmts);
+    @Given("a stored tweet with id 1 from user max")
+    public void a_stored_tweet_with_id_from_user() {
+        dbExecutor.createDataSet(new DataSetConfig("tweet/a-stored-tweet-with-id-1-from-max.json"));
     }
 
     @Given("a stored tweet with id 1 from user max with content \"Example Content\"")
@@ -71,7 +68,7 @@ public class TweetSteps {
 
     @Given("a stored tweet with id {int} in status CANCELED from user {string}")
     public void a_stored_tweet_with_id_in_status_CANCELED_from_user(Integer tweetId, String userName) {
-        dbExecutor.createDataSet(new DataSetConfig("tweet/a-stored-tweet-from-max-in-status-canceled.json"));
+        dbExecutor.createDataSet(new DataSetConfig("tweet/a-stored-tweet-with-id-1-from-max-in-status-canceled.json"));
     }
 
     @Given("the tweet with id 1 got liked by users max and john")

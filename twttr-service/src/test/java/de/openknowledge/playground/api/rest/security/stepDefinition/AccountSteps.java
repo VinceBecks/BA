@@ -11,6 +11,7 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import de.openknowledge.playground.api.rest.security.supportCode.SharedDomain;
+import io.cucumber.datatable.DataTable;
 import org.junit.Rule;
 import org.keycloak.authorization.client.AuthzClient;
 import org.keycloak.representations.idm.authorization.AuthorizationResponse;
@@ -36,6 +37,11 @@ public class AccountSteps {
     public void the_user_is_authenticated(String userName) {
         AuthorizationResponse response = AuthzClient.create().authorization(userName, domain.getAccount(userName).getPassword()).authorize();
         domain.addValidToken(userName, response.getToken());
+    }
+
+    @Given("the system has persisted users")
+    public void the_system_has_persisted_users(DataTable dataTable) {
+        dbExecutor.createDataSet(new DataSetConfig("users.json"));
     }
 
     @Given("there is no user with id {int}")

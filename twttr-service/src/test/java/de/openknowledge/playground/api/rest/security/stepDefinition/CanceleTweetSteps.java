@@ -35,8 +35,8 @@ public class CanceleTweetSteps {
 
 
 
-    @When("a client sends a {string} {string} request for user {string}")
-    public void a_client_sends_a_request_for_user(String httpMethod, String additionalPath, String userName) {
+    @When("a client sends a DELETE {string} request for user {string}")
+    public void a_client_sends_a_DELETE_request_for_user(String additionalPath, String userName) {
         Response response = RestAssured
                 .given()
                 .accept(MediaType.APPLICATION_JSON)
@@ -48,8 +48,8 @@ public class CanceleTweetSteps {
     }
 
 
-    @When("a client sends a request for user {string} to delete the tweet with id {int}")
-    public void a_client_sends_a_request_for_user_to_delete_the_tweet_with_id(String userName, Integer tweetId) {
+    @When("a client sends a request for user {string} to cancel the tweet with id {int}")
+    public void a_client_sends_a_request_for_user_to_cancel_the_tweet_with_id(String userName, Integer tweetId) {
         Response response = RestAssured
                 .given()
                 .accept(MediaType.APPLICATION_JSON)
@@ -61,8 +61,8 @@ public class CanceleTweetSteps {
     }
 
 
-    @When("a client sends a request for moderator {string} to delete the tweet with id {int}")
-    public void a_client_sends_a_request_for_moderator_to_delete_the_tweet_with_id(String moderatorName, Integer tweetId) {
+    @When("a client sends a request for moderator {string} to cancel the tweet with id {int}")
+    public void a_client_sends_a_request_for_moderator_to_cancel_the_tweet_with_id(String moderatorName, Integer tweetId) {
         Response response = RestAssured
                 .given()
                 .accept(MediaType.APPLICATION_JSON)
@@ -74,8 +74,8 @@ public class CanceleTweetSteps {
     }
 
 
-    @When("a client sends a request without a valid token to delete the tweet with id {int}")
-    public void a_client_sends_a_request_without_a_valid_token_to_delete_the_tweet_with_id(Integer tweetId) {
+    @When("a client sends a request without a valid token to cancel the tweet with id {int}")
+    public void a_client_sends_a_request_without_a_valid_token_to_cancel_the_tweet_with_id(Integer tweetId) {
         String randomToken = "xxx";
         Response response = RestAssured
                 .given()

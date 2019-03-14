@@ -1,13 +1,13 @@
 Feature: Get users
   This feature file describes the behaviour of the system for GET requests at the endpoint on /api/users to get a list of users
   There should be follwoing behaviour at the system:
-  - If the request contains the header "Authorization" with a valid token, then the http response code will be 200 and the body will contain a list of n users, sorted in first grade by their userName, in second grade by their firstName and in third grade by their lastName
-  - If the QueryParam "numUsers" is specified, then the number of returned users will be the value of the param "numUsers" if  there are enough matching users stored
+  - If the request contains the header "Authorization" with a valid token, then the http response body will contain a list of 3 users, sorted in first grade by their userName, in second grade by their firstName and in third grade by their lastName and the http response status-code will be 200
+  - If the QueryParam "numUsers" is specified, then the number of returned users will be the value of the param "numUsers", if there are enough users
   - If the QueryParam "searchString" is specified, then the returned list of users contains just users whos userName, firstName or lastName contains the value of the searchString
   - If the QueryParam "index" is specified, then its value will be the starting index to get the n users from the sorted list of matching users for the response if there are enough matching users persisted
   - If the QueryParam "numUsers" isn´t specified, then its default value will be 5
   - If the QueryParam "searchString" isn´t specified, then its default value will be ''
-  - If the request doesn´t contain a valid token, then, if the http response body will be empty and the http response state will be 401
+  - If the request doesn´t contain a valid token, then the http response status-code will be 401
 
 
   Background: Persist users
@@ -22,8 +22,11 @@ Feature: Get users
       | 6         | lena     | Lena      | Löchte     | USER      |
 
 
-  Scenario Outline: Get users
-  Requesting n users
+
+
+
+  Scenario Outline: Request users
+  Requesting users sorted in first grad by their userName, in second grade by their firstName and in third grade by their lastName
 
     And the <accountType> "<userName>" is authenticated
     When a client sends a "GET" "/users" request for <accountType> "<userName>" to get a list of users
@@ -31,36 +34,24 @@ Feature: Get users
     And the HTTP response body contains following JSON with a list of users
       """
       [
-      {
-          "userId": 0,
-          "firstName": "Max",
-          "lastName": "Mustermann",
-          "role": "USER"
-      },
-      {
-          "userId": 1,
-          "firstName": "Marta",
-          "lastName": "Musterfrau",
-          "role": "USER"
-      },
-      {
-          "userId": 2,
-          "firstName": "John",
-          "lastName": "Doe",
-          "role": "USER"
-      },
-      {
-          "userId": 3,
-          "firstName": "Jane",
-          "lastName": "Doe",
-          "role": "USER"
-      },
-      {
-          "userId": 5,
-          "firstName": "Karl",
-          "lastName": "Ranseier",
-          "role": "USER"
-      }
+          {
+              "userId": 3,
+              "firstName": "Jane",
+              "lastName": "Doe",
+              "role": "USER"
+          },
+          {
+              "userId": 2,
+              "firstName": "John",
+              "lastName": "Doe",
+              "role": "USER"
+          },
+          {
+              "userId": 5,
+              "firstName": "Karl",
+              "lastName": "Ranseier",
+              "role": "USER"
+          }
       ]
       """
 
@@ -72,7 +63,12 @@ Feature: Get users
 
 
 
-  Scenario Outline: Returning users
+  Scenario Outline: Change query params for request to get users
+  The QueryParam numUsers represents the number of requested users
+  The default value for numUsers will be 3
+  The QueryParam index represents the number of users to be skipped for the response from a list of users sorted by their username, firstName and lastName in presented order
+  The default value for index will be 0
+  The QueryParam searchString represents a string which must be containing in the userName, firstName or lastName
 
     When a client sends a request to get a list of users with following QueryParams
       | queryParam: | searchString   | numTweets   | index   |
@@ -81,27 +77,30 @@ Feature: Get users
 
     Examples:
       | searchString | index      | numTweets  | returnedUsers |
-      | not setted   | not setted | not setted | 0,1,2,3,5     |
-      | not setted   | not setted | 4          | 0,1,2,3       |
-      | not setted   | not setted | 6          | 0,1,2,3,5,6   |
-      | not setted   | not setted | 7          | 0,1,2,3,5,6   |
-      | not setted   | 0          | not setted | 0,1,2,3,5     |
-      | not setted   | 1          | not setted | 1,2,3,5,6     |
-      | not setted   | 5          | not setted | 6             |
+      | not setted   | not setted | not setted | 3,2,5         |
+      | not setted   | not setted | 4          | 3,2,5,6       |
+      | not setted   | not setted | 6          | 3,2,5,6,1,0   |
+      | not setted   | not setted | 7          | 3,2,5,6,1,0   |
+      | not setted   | 0          | not setted | 3,2,5         |
+      | not setted   | 1          | not setted | 2,5,6         |
+      | not setted   | 5          | not setted | 0             |
       | not setted   | 6          | not setted |               |
-      | not setted   | 2          | 2          | 2,3           |
-      | not setted   | 3          | 2          | 3,5           |
-      | not setted   | 3          | 3          | 3,5,6         |
+      | not setted   | 2          | 2          | 5,6           |
+      | not setted   | 3          | 2          | 6,1           |
+      | not setted   | 3          | 3          | 6,1,0         |
+      | not setted   | 3          | 4          | 6,1,0         |
       | Mustermann   | not setted | not setted | 0             |
       | mustermann   | not setted | not setted |               |
-      | ma           | not setted | not setted | 0,1           |
-      | ma           | 1          | not setted | 1             |
-      | ma           | not setted | 1          | 0             |
+      | ma           | not setted | not setted | 1,0           |
+      | ma           | 1          | not setted | 0             |
+      | ma           | not setted | 1          | 1             |
+
+
 
 
 
   Scenario: Unauthorised request to get a list of users
-  The request must contain a valid token of a user
+  The request must contain a valid token from an account to get a list of users
 
     When a client sends a request without a valid token to get a list of users
     Then the HTTP response status-code will be 401

@@ -41,8 +41,8 @@ public class GetFollowerSteps {
     }
 
 
-    @When("a client sends a {string} {string} request for user {string} to get a list of follower from user john")
-    public void a_client_sends_a_request_for_user_to_get_a_list_of_follower_from_user_john(String httpMethod, String additionalPath, String userName) {
+    @When("a client sends a GET {string} request for user {string} to get a list of follower from user john")
+    public void a_client_sends_a_GET_request_for_user_to_get_a_list_of_follower_from_user_john(String additionalPath, String userName) {
         Response response = RestAssured
                 .given()
                 .accept(MediaType.APPLICATION_JSON)
@@ -67,8 +67,8 @@ public class GetFollowerSteps {
     }
 
 
-    @When("a client sends a request without a valid token to get a list of follower from a user")
-    public void a_client_sends_a_request_without_a_valid_token_to_get_a_list_of_follower_from_a_user() {
+    @When("a client sends a request without a valid token of an user to get a list of follower from a specified user")
+    public void a_client_sends_a_request_without_a_valid_token_of_an_user_to_get_a_list_of_follower_from_a_specified_user() {
         String randomToken = "XXX";
 
         Response response = RestAssured

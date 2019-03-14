@@ -8,15 +8,15 @@ Feature: Get list of retweeter
 
 
 
-  Scenario: Get a list of retweeter of a specific tweet
-  Requesting a list of liker of a specified tweet
+  Scenario: Get a list of retweeter of a specified tweet
+  Requesting a list of retweeter of a specified tweet
 
     Given the user "max" is authenticated
     And a stored tweet with id 1
     And the tweet with id 1 got retweeted by users max and john
-    When a client sends a "GET" "/tweets/1/retweets/authors" request for user "max" to get a list of retweeter of the tweet with id 1
+    When a client sends a GET "/tweets/1/retweets/authors" request for user "max" to get a list of retweeter of the tweet with id 1
     Then the HTTP response status-code will be 200
-    And the HTTP response body will contain following JSON with a list of users who liked the stored tweet:
+    And the HTTP response body will contain following JSON with a list of users who retweeted the stored tweet
         """
           [
               {
@@ -36,24 +36,22 @@ Feature: Get list of retweeter
 
 
 
-  Scenario: Request is not authorized
-  The request must contain a valid token of a user
+  Scenario: Unauthorised request to get a list of retweeter from a specified tweet
+  The request must contain a valid token of an user
 
-    When a client sends a request without a valid token to get a list of retweeter of a tweet
+    When a client sends a request without a valid token of an user to get a list of retweeter of a tweet
     Then the HTTP response status-code will be 401
 
 
-
-  Scenario: Token belongs to a moderator
-  Account must be from an user
+  Scenario: Transmitted token from the request to get a list of retweeter from a specified tweet belongs to a moderator
+  Just users can request a list of retweeter from a specified tweet
 
     Given the moderator "werner" is authenticated
     When a client sends a request for moderator "werner" to get a list of retweeter of a tweet
     Then the HTTP response status-code will be 403
 
 
-
-  Scenario: User to get the list of follower from doesn´t exist
+  Scenario: Tweet to get the list of retweeter from doesn´t exist
   The user must exist
 
     Given there is no tweet with id 9999
@@ -62,8 +60,8 @@ Feature: Get list of retweeter
 
 
   Scenario: Tweet to get the list of retweeter from is in status CANCELED
-  The tweet must not be in status CANCELED
+  The tweet to get the list of retweeter from must be existing
 
-    Given a stored tweet with id 1 in status CANCELED from user "max"
-    When a client sends a request to get a list of retweeter from  the tweet with id 1
+    Given a stored tweet with id 1 in status CANCELED from user max
+    When a client sends a request to get a list of retweeter from the tweet with id 1
     Then the HTTP response status-code will be 404

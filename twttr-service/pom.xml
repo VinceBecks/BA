@@ -209,6 +209,16 @@
             <groupId>io.thorntail</groupId>
             <artifactId>keycloak-server</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+            <version>3.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>jwks-rsa</artifactId>
+            <version>0.5.0</version>
+        </dependency>
 
         <!-- Logging -->
         <dependency>

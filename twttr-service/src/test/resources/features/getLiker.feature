@@ -15,7 +15,7 @@ Feature: Get liker of a specified tweet
     And the tweet with id 1 got liked by users max and john
     When a client sends a GET "/tweets/1/liker" request for user "max" to get a list of likers of the tweet with id 1
     Then the HTTP response status-code will be 200
-    And the HTTP response body will contain following JSON with a list of users who liked the stored tweet:
+    And the HTTP response body will contain following JSON with a list of users who liked the stored tweet
         """
           [
               {

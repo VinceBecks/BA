@@ -18,8 +18,8 @@ public class GetRetweeterSteps {
     }
 
 
-    @When("a client sends a {string} {string} request for user {string} to get a list of retweeter of the tweet with id 1")
-    public void a_client_sends_a_request_for_user_to_get_a_list_of_retweeter_of_the_tweet_with_id(String httpMethod, String additionalPath, String userName) {
+    @When("a client sends a GET {string} request for user {string} to get a list of retweeter of the tweet with id 1")
+    public void a_client_sends_a_GET_request_for_user_to_get_a_list_of_retweeter_of_the_tweet_with_id(String additionalPath, String userName) {
         Response response = RestAssured
                 .given()
                 .accept(MediaType.APPLICATION_JSON)
@@ -31,8 +31,8 @@ public class GetRetweeterSteps {
     }
 
 
-    @When("a client sends a request without a valid token to get a list of retweeter of a tweet")
-    public void a_client_sends_a_request_without_a_valid_token_to_get_a_list_of_retweeter_of_a_tweet() {
+    @When("a client sends a request without a valid token of an user to get a list of retweeter of a tweet")
+    public void a_client_sends_a_request_without_a_valid_token_of_an_user_to_get_a_list_of_retweeter_of_a_tweet() {
         String randomToken = "XXX";
 
         Response response = RestAssured
@@ -72,7 +72,7 @@ public class GetRetweeterSteps {
     }
 
 
-    @When("a client sends a request to get a list of retweeter from  the tweet with id {int}")
+    @When("a client sends a request to get a list of retweeter from the tweet with id {int}")
     public void a_client_sends_a_request_to_get_a_list_of_retweeter_from_the_tweet_with_id(Integer tweetId) {
         String validToken = AuthzClient.create().authorization("max", "password").authorize().getToken();
 

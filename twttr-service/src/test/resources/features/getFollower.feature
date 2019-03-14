@@ -14,7 +14,7 @@ Feature: Show follower
     And the user john with id 2 has two followers jane and lena
     When a client sends a GET "/users/2/follower" request for user "max" to get a list of follower from user john
     Then the HTTP response status-code will be 200
-    And the HTTP response body contains following JSON of the follower from user john
+    And the HTTP response body will contain following JSON with a list of users who follows the user john
         """
           [
               {

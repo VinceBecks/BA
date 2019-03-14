@@ -60,6 +60,6 @@ Feature: Delete a tweet
   The tweet to cancel must be in status PUBLISH
 
     Given the user "max" is authenticated
-    And a stored tweet with id 1 in status CANCELED from user "max"
+    And a stored tweet with id 1 in status CANCELED from user max
     When a client sends a request for user "max" to cancel the tweet with id 1
     Then the HTTP response status-code will be 404

@@ -66,14 +66,14 @@ public class TweetSteps {
         dbExecutor.executeStatements(stmts);
     }
 
-    @Given("a stored tweet with id {int} in status CANCELED from user {string}")
-    public void a_stored_tweet_with_id_in_status_CANCELED_from_user(Integer tweetId, String userName) {
+    @Given("a stored tweet with id 1 in status CANCELED from user max")
+    public void a_stored_tweet_with_id_in_status_CANCELED_from_user() {
         dbExecutor.createDataSet(new DataSetConfig("tweet/a-stored-tweet-with-id-1-from-max-in-status-canceled.json"));
     }
 
     @Given("the tweet with id 1 got liked by users max and john")
     public void the_tweet_with_id_got_liked_by_users_max_and_john() {
-        dbExecutor.createDataSet(new DataSetConfig("like/maxAndJohnLikeTweetWithId1.json"));
+        dbExecutor.createDataSet(new DataSetConfig("like/max-and-john-like-tweet-with-id-1.json"));
     }
 
     @Given("the user max is a liker of tweet with id 1")

@@ -17,8 +17,8 @@ public class GetLikerSteps {
     }
 
 
-    @When("a client sends a {string} {string} request for user {string} to get a list of likers of the tweet with id {int}")
-    public void a_client_sends_a_request_for_user_to_get_a_list_of_likers_of_the_tweet_with_id(String httpMethod, String additionalPath, String userName, Integer tweetId) {
+    @When("a client sends a GET {string} request for user {string} to get a list of likers of the tweet with id {int}")
+    public void a_client_sends_a_GET_request_for_user_to_get_a_list_of_likers_of_the_tweet_with_id(String additionalPath, String userName, Integer tweetId) {
         Response response = RestAssured
                 .given()
                 .accept(MediaType.APPLICATION_JSON)
@@ -29,8 +29,8 @@ public class GetLikerSteps {
         domain.setResponse(response);
     }
 
-    @When("a client sends a request without a valid token to get a list of liker of a tweet")
-    public void a_client_sends_a_request_without_a_valid_token_to_get_a_list_of_liker_of_a_tweet() {
+    @When("a client sends a request without a valid token of an user to get a list of liker of a specified tweet")
+    public void a_client_sends_a_request_without_a_valid_token_of_an_user_to_get_a_list_of_liker_of_a_specified_tweet() {
         String randomToken = "XXX";
 
         Response response = RestAssured
@@ -40,7 +40,8 @@ public class GetLikerSteps {
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + randomToken)
                 .when()
                 .get(domain.basePath() + "/tweets/1/liker");
-        domain.setResponse(response);    }
+        domain.setResponse(response);
+    }
 
     @When("a client sends a request for moderator {string} to get a list of liker of a tweet")
     public void a_client_sends_a_request_for_moderator_to_get_a_list_of_liker_of_a_tweet(String moderatorName) {
@@ -67,7 +68,7 @@ public class GetLikerSteps {
         domain.setResponse(response);
     }
 
-    @When("a client sends a request to get a list of liker from  the tweet with id {int}")
+    @When("a client sends a request to get a list of liker from the tweet with id {int}")
     public void a_client_sends_a_request_to_get_a_list_of_liker_from_the_tweet_with_id(Integer tweetId) {
         String validToken = AuthzClient.create().authorization("max", "password").authorize().getToken();
 

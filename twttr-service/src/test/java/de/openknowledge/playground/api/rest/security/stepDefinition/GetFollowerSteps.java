@@ -37,7 +37,7 @@ public class GetFollowerSteps {
 
     @Given("the user john with id 2 has two followers jane and lena")
     public void the_user_john_with_id_has_two_followers_jane_and_lena() {
-        dbExecutor.createDataSet(new DataSetConfig("follower/janeAndLenaFollowsJohn.json"));
+        dbExecutor.createDataSet(new DataSetConfig("follower/jane-and-lena-follows-john.json"));
     }
 
 

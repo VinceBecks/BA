@@ -48,8 +48,8 @@ Feature: Follow a Member
 
 
 
-  Scenario: Token belongs to a moderator
-  Users can follow just users
+  Scenario: Transmitted token from the request to follow a specified user belongs to a moderator
+  Just users can follow users
 
     Given the moderator "werner" is authenticated
     When a client sends a request for the moderator "werner" to follow a user

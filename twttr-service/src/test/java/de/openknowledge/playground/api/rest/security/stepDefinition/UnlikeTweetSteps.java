@@ -16,8 +16,8 @@ public class UnlikeTweetSteps {
         this.domain = domain;
     }
 
-    @When("a client sends a {string} {string} request for user {string} to unlike the tweet with id 1")
-    public void a_client_sends_a_request_for_user_to_unlike_the_tweet_with_id(String string, String additionalPath, String userName) {
+    @When("a client sends a DELETE {string} request for user {string} to unlike the tweet with id 1")
+    public void a_client_sends_a_DELETE_request_for_user_to_unlike_the_tweet_with_id(String additionalPath, String userName) {
         Response response = RestAssured
                 .given()
                 .accept(MediaType.APPLICATION_JSON)
@@ -28,8 +28,8 @@ public class UnlikeTweetSteps {
         domain.setResponse(response);
     }
 
-    @When("a client sends a request without a valid token to unlike a specified tweet")
-    public void a_client_sends_a_request_without_a_valid_token_to_unlike_a_specified_tweet() {
+    @When("a client sends a request without a valid token of an user to unlike a specified tweet")
+    public void a_client_sends_a_request_without_a_valid_token_of_an_user_to_unlike_a_specified_tweet() {
         String randomToken = "XXX";
 
         Response response = RestAssured

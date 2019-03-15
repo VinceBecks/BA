@@ -45,24 +45,9 @@ public class GetTweetDetailsSteps {
         domain.setResponse(response);
     }
 
-    @When("a client sends a request to get detailed information about a tweet of the tweet with id {int}")
-    public void a_client_sends_a_request_to_get_detailed_information_about_a_tweet_of_the_tweet_with_id(Integer tweetId) {
-        String validToken = AuthzClient.create().authorization("max", "password").authorize().getToken();
 
-        Response response = RestAssured
-                .given()
-                .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON)
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + validToken)
-                .when()
-                .get(domain.basePath() + "/tweets/" + tweetId);
-        domain.setResponse(response);
-    }
-
-
-    //todo: ist exact die gleich ausführung wie obere methode ... Pattern kann bearbeitet werden, sodass methode für beide Steps matched
-    @When("a client sends a request to get detailed information about a tweet from the tweet with id {int}")
-    public void a_client_sends_a_request_to_get_detailed_information_about_a_tweet_from_the_tweet_with_id(Integer tweetId) {
+    @When("a client sends a request to get detailed information about the tweet with id {int}")
+    public void a_client_sends_a_request_to_get_detailed_information_about_the_tweet_with_id(Integer tweetId) {
         String validToken = AuthzClient.create().authorization("max", "password").authorize().getToken();
 
         Response response = RestAssured

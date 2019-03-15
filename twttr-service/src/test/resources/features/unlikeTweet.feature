@@ -7,19 +7,30 @@ Feature: Unlike a specified tweet
   - If the specified tweet doesn´t exist or is in state "CANCELED", then the http response status-code will be 404
 
 
-  Scenario Outline: Unlike a tweet
+  Scenario: Unlike a tweet
   Request to unlike a tweet
 
     Given the user "max" is authenticated
     And a stored tweet with id 1
-    And the user max <is or is not> a liker of tweet with id 1
+    And the user max is a liker of tweet with id 1
     When a client sends a DELETE "/tweets/1/liker" request for user "max" to unlike the tweet with id 1
-    Then the HTTP response status-code will be <status code>
+    Then the HTTP response status-code will be 204
 
-    Examples:
-      | is or is not | status code |
-      | is           | 204         |
-      | is not       | 400         |
+
+    Scenario: Requesting user isn´t a liker of the specified tweet
+    The requesting user must be a liker of the specified tweet to unlike it
+
+      Given the user "max" is authenticated
+      And a stored tweet with id 1
+      And the user max is not a liker of the tweet with id 1
+      When a client sends a DELETE "/tweets/1/liker" request for user "max" to unlike the tweet with id 1
+      Then the HTTP response status-code will be 400
+      And the HTTP response body contains following JSON of an error message:
+      """
+      {
+        "errorMessage": "Requesting user isn´t a liker of the specified tweet"
+      }
+      """
 
 
   Scenario: Unauthorised request to unlike a tweet

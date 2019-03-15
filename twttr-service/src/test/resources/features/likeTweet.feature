@@ -13,7 +13,7 @@ Feature: Like a specified tweet
 
     Given the user "max" is authenticated
     And a stored tweet with id 1
-    And the user max is not a liker of tweet with id 1
+    And the user max is not a liker of the tweet with id 1
     When a client sends a POST "/tweets/1/liker" request for user "max" to like the tweet with id 1
     Then the HTTP response status-code will be 204
 

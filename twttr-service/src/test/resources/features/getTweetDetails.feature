@@ -6,7 +6,7 @@ Feature: Get detailed information about a specified tweet
   - If the specified tweet doesn´t exist or is in state "CANCELED", then the http response status-code will be 404
 
 
-  #todo: ggf. scenario outline draus machen einmal für einen moderator und einmal für einen user
+  #todo: Szenario für moderator schreiben
   Scenario: Get information about specified tweet
   Requesting information about a specified tweet
 
@@ -45,7 +45,7 @@ Feature: Get detailed information about a specified tweet
   The tweet to get detailed information about must exist
 
     Given there is no tweet with id 9999
-    When a client sends a request to get detailed information about a tweet of the tweet with id 9999
+    When a client sends a request to get detailed information about the tweet with id 9999
     Then the HTTP response status-code will be 404
 
 
@@ -54,5 +54,5 @@ Feature: Get detailed information about a specified tweet
   The tweet to get detailed information about must be in status PUBLISH
 
     Given a stored tweet with id 1 in status CANCELED from user max
-    When a client sends a request to get detailed information about a tweet from the tweet with id 1
+    When a client sends a request to get detailed information about the tweet with id 1
     Then the HTTP response status-code will be 404

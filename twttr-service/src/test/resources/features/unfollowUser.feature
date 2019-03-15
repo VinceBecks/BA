@@ -16,7 +16,7 @@ Feature: Unfollow a user
     And the user max <is or is not> a follower of user john with id 2
     When a client sends a DELETE "/users/2/follower" request for user "max" to unfollow user john
     Then the HTTP response status-code will be <status code>
-    #todo response objekt error
+    #todo 2 Szenarien draus machen
 
 
     Examples:

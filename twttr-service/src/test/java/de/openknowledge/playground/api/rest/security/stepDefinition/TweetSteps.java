@@ -81,8 +81,8 @@ public class TweetSteps {
         dbExecutor.createDataSet(new DataSetConfig("like/max-is-liker-of-tweet-with-id-1.json"));
     }
 
-    @Given("the user max is not a liker of tweet with id {int}")
-    public void the_user_max_is_not_a_liker_of_tweet_with_id(Integer int1) {
+    @Given("the user max is not a liker of the tweet with id 1")
+    public void the_user_max_is_not_a_liker_of_tweet_with_id() {
         dbExecutor.createDataSet(new DataSetConfig("like/empty-liker-list.json"));
     }
 
@@ -109,6 +109,5 @@ public class TweetSteps {
     @Given("the user max is not a follower of user john with id {int}")
     public void the_user_max_is_not_a_follower_of_user_john_with_id(Integer int1) {
         dbExecutor.createDataSet(new DataSetConfig("follower/empty-follower-list.json"));
-
     }
 }

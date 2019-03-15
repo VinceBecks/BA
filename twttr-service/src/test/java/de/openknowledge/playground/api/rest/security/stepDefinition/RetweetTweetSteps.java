@@ -30,7 +30,7 @@ public class RetweetTweetSteps {
     }
 
 
-    //todo: wäre wieder eine gutes Beispiel, um die Methoden zu verbinden... nur Pattern anpassen, dass es auf beide matched
+    //fürBA: Gutes Bsp. wie man Step Formulierungen verbessern könnte für Entwickler... Einfach aus tweet 1 den Retweet machen, dann kann die gleiche Methode wie die drüber verwendet werden
     @When("a client sends a POST {string} request for user {string} to retweet the tweet with id 2")
     public void a_client_sends_a_POST_request_for_user_to_retweet_the_tweet_with_id_2(String additionalPath, String userName) {
         Response response = RestAssured

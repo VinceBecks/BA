@@ -1,6 +1,6 @@
-Feature: Delete a tweet
-  This feature file describes the behaviour of the system for DELETE requests at the endpoint on /api/tweets/{tweetId} for deleting a specified tweets.
-  There should be follwoing behaviour at the system:
+Feature: Cancel a tweet
+  This feature file describes the behaviour of the REST-API for DELETE requests at the endpoint /api/tweets/{tweetId} to cancel a specified tweets.
+  There should be follwoing behaviour at the REST-API:
   - If the request contains the header "Authorization" with a valid token of the user who is the author of the specified tweet, then the http response status-code will be 204
   - If the request contains a token from another user than the author, then the http response status-code will be 403
   - If the request contains a valid token which belongs to a moderator, then the http response status-code will be 204
@@ -18,7 +18,7 @@ Feature: Delete a tweet
 
 
   Scenario: Another user than the author wants to cancel a tweet
-  The requesting user must be the author of the tweet to cancel it
+  To cancel a tweet the requesting user must be the author of it
 
     Given the user "john" is authenticated
     And a stored tweet with id 1 from user max
@@ -26,7 +26,7 @@ Feature: Delete a tweet
     Then the HTTP response status-code will be 403
 
 
-
+  #fürBA: in jedem Szeanrio wird wieder ein stored tweet with id 1 from user max angelegt... damit die Szenarien unabhängig voneinander sind
   Scenario: Moderator cancel tweet
   Moderators can cancel the tweets from every user
 

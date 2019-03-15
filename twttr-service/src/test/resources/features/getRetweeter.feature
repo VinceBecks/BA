@@ -1,5 +1,5 @@
-Feature: Get list of retweeter
-  This feature file describes the behaviour of the system for GET requests at the endpoint on /api/tweets/{tweetId}/retweets/authors for getting a list of retweeter of the specified tweet.
+Feature: Get retweeter of a specified tweet
+  This feature file describes the behaviour of the REST-API for GET requests at the endpoint /api/tweets/{tweetId}/retweets/authors to get a list of retweeter of the specified tweet.
   There should be follwoing behaviour at the system:
   - If the request contains the header "Authorization" with a valid token of an user, then the http response will contain a list of users who retweeted the specified tweet and the http status-code will be 200
   - If the request doesn´t contain a valid token of an user, then the http response status-code will be 401

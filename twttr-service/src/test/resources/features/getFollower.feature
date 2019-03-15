@@ -1,9 +1,9 @@
 Feature: Show follower
-  This feature file describes the behaviour of the system for GET requests at the endpoint on /api/users/{userId}/follower for getting a list of follower of the specified user.
-  There should be follwoing behaviour at the system:
+  This feature file describes the behaviour of the REST-API for GET requests at the endpoint /api/users/{userId}/follower to get a list of follower of the specified user.
+  There should be follwoing behaviour at the REST-API:
   - If the request contains the header "Authorization" with a valid token of an user, then the http response will contain a list of users who follows the specified user and the http status-code will be 200
-  - If the specified account to get a list of follower from belongs to a moderator, then the http response body contains an appropriate information and the http response status-code is 400
   - If the request doesn´t contain a valid token of an user, then the http response status-code will be 401
+  - If the specified account to get a list of follower from belongs to a moderator, then the http response body contains an appropriate information about the mistake and the http response status-code is 400
   - If the request contains a valid token which belongs to a moderator, then the http status-code will be 403
   - If the specified user doesn´t exist, then the http response status-code will be 404
 
@@ -42,6 +42,7 @@ Feature: Show follower
 
 
 
+    #todo: 404 lassen? --> Kriterien ändern
   Scenario: Account to get the list of follower from belongs to a moderator
   The account to get the list of follower from must be from an user
 

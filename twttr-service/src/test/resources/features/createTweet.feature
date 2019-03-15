@@ -1,7 +1,7 @@
 Feature: Create tweet
-  This feature file describes the behaviour of the system for POST requests at the endpoint on /api/tweets for creating new tweets.
-  There should be follwoing behaviour at the system:
-  - If a tweet with a content length between 1 and 140 is transmitted and the request contains the header "Authorization" with a valid token of an user, then the requesting user and the http response status-code will be 201
+  This feature file describes the behaviour of the REST-API for POST requests at the endpoint /api/tweets to create a new tweet.
+  There should be follwoing behaviour at the REST-API:
+  - If a tweet with a content length between 1 and 140 is transmitted and the request contains the header "Authorization" with a valid token of an user, then the http response body will contain a JSON of the new created tweet and the status-code will be 201
   - If the transmitted content for the new tweet has a size which is lower than 1 or higher than 140, then the http response will contain an appropriate information about the mistake and the status-code will be 400
   - If the request doesn´t contain a valid token of an user, then the http response status-code will be 401
   - If the transmitted token belongs to a moderator, then the http response status-code will be 403

@@ -1,6 +1,6 @@
-Feature: Unlike a Tweet
-  This feature file describes the behaviour of the system for DELETE requests at the endpoint on /api/tweets/{tweetId}/liker to unlike a specified tweet.
-  There should be follwoing behaviour at the system:
+Feature: Unlike a specified tweet
+  This feature file describes the behaviour of the REST-API for DELETE requests at the endpoint /api/tweets/{tweetId}/liker to unlike a specified tweet.
+  There should be follwoing behaviour at the REST-API:
   - If the request contains the header "Authorization" with a valid token of an user, then the http response status-code will be 204
   - If the request doesn´t contain a valid token, then the http response status-code will be 401
   - If the request contains a valid token which belongs to a moderator, then the http response status-code will be 403

@@ -16,8 +16,8 @@ public class UnfollowUserSteps {
     }
 
 
-    @When("a client sends a {string} {string} request for user {string} to unfollow user john")
-    public void a_client_sends_a_request_for_user_to_unfollow_user_john(String string, String additionalPath, String userName) {
+    @When("a client sends a DELETE {string} request for user {string} to unfollow user john")
+    public void a_client_sends_a_DELETE_request_for_user_to_unfollow_user_john(String additionalPath, String userName) {
         Response response = RestAssured
                 .given()
                 .accept(MediaType.APPLICATION_JSON)
@@ -29,8 +29,8 @@ public class UnfollowUserSteps {
     }
 
 
-    @When("a client sends a request without a valid token to unfollow a specified user")
-    public void a_client_sends_a_request_without_a_valid_token_to_unfollow_a_specified_user() {
+    @When("a client sends a request to unfollow a specified user without a valid token of an user")
+    public void a_client_sends_a_request_to_unfollow_a_specified_user_without_a_valid_token_of_an_user() {
         String randomToken = "XXX";
 
         Response response = RestAssured

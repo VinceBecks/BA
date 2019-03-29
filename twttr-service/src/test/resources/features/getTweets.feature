@@ -2,16 +2,16 @@ Feature: Get all Tweets
   This feature file describes the behaviour of the system for GET requests at the endpoint on /api/tweets for receiving a sorted list of the last tweets of users the requesint user is following
   There should be follwoing behaviour at the system:
   - If the request contains the header "Authorization" with a valid token of an user, then the http response body contains a list of the last 3 tweets in status "PUBLISH" from users the requesting user is following, sorted by their publish date and the http response status-code will be 200
-  - If the valid token belongs to a moderator, then the last three tweets from a list of all users tweets will be responded, sorted by their publish date
-  - If the QueryParam "index" of the request is higher than 0, then its value describes how many of the last tweets in state "PUBLISH" will be skipped for the response from the list of tweets
-  - If the QueryParam "numTweets" is higher than 0, then the response contains as many tweets in state "PUBLISH" as its value, if there are enough
+  - If the request contains the header "Authorization" with a valid token of a moderator, then the http response body contains a list of the last 3 tweets in status "PUBLISH" from all users, sorted by their publish date and the http response status-code will be 200
+  - If the QueryParam "index" of the request is higher than 0, then its value describes how many of the last tweets in state "PUBLISH" will be skipped for the response from the list of the last tweet in state PUBLISH
+  - If the QueryParam "numTweets" is higher than 0, then the response contains as many tweets in state "PUBLISH" as its value, if there are enough matching PUBLISH tweets persisted
   - If the QueryParam "index" isn´t setted, then its default value will be 0
   - If the QueryParam "numTweets" isn´t setted, then its default value will be 3
   - If the number of requested tweets is higher than the list of tweets, or the difference of the list of tweets and the index to start from, then all remaining tweets will be responded and the http response status-code will be 200
-  - If the QueryParam "index" or the QueryParam "numTweets" isn´t a positive integer, then http response will contain an appropriate information about the mistake and the status-code will be 400
+  - If the QueryParam "index" or the QueryParam "numTweets" isn´t a positive integer, then the http response body will contain an appropriate information about the mistake and the status-code will be 400
   - If the request doesn´t contain a valid token, then the http response status-code will be 401
 
-
+  #todo: 3. letztes Kriterium überarbeiten, oder streichen?
   #BAinfo: andersrum würde bei liker nicht gehen, da sonst beim persistieren der tweets die liker wieder überschrieben worden wären
   Background: Authenticate user max and moderator werner, persist tweets and let user max follow users john and jane
     Given the user "max" is authenticated
@@ -35,6 +35,7 @@ Feature: Get all Tweets
 
   #fürBA: hier gibt es Beispiel, dass es mehrere Kriterien für ein Scenario Outline gibt
   #fürBA: Kriterium hatte offengelassen, in welcher Reihenfolge sie sortiert werden... wird erst durch beispiel klar, dass neueste zuerst gesendet werden
+  @execute
   Scenario: User requests last tweets from users he is following
   Requesting last three tweets in status PUBLISH from users the requesting user is following
 
@@ -83,7 +84,7 @@ Feature: Get all Tweets
     """
 
 
-
+  @execute
   Scenario Outline: Change QueryParams numTweets and index by request to get tweets from users the requesting user is following
   The QueryParam numTweets represents the number of requested tweets and will overwrite its default value 3
   The QueryParam index represents the number of tweets to be skipped for the response from a list of all PUBLISH tweets from users the requesting user is following sorted by their publish date and will overwrite its default value 0
@@ -112,7 +113,7 @@ Feature: Get all Tweets
 
 
 
-
+  @execute
   Scenario: Moderator requests last tweets from all users
   Requesting last three tweets in status PUBLISH from all users
   A moderator will receive the last three tweets from all users
@@ -162,7 +163,7 @@ Feature: Get all Tweets
     """
 
 
-
+  @execute
   Scenario Outline: Change QueryParams numTweets and index by request to get tweets from all users
   The QueryParam numTweets represents the number of requested tweets
   The default value for numTweets will be 3
@@ -192,7 +193,7 @@ Feature: Get all Tweets
 
 
 
-
+  @execute
   Scenario: Unauthorised request to get tweets from users the requesting user is following
   The request must contain a valid token
 

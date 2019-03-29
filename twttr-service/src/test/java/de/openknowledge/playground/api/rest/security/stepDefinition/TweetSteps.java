@@ -8,6 +8,8 @@ import com.github.database.rider.core.util.EntityManagerProvider;
 import cucumber.api.PendingException;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
 import de.openknowledge.playground.api.rest.security.domain.tweet.TweetDTO;
 import de.openknowledge.playground.api.rest.security.supportCode.SharedDomain;
 import io.cucumber.datatable.DataTable;
@@ -96,18 +98,31 @@ public class TweetSteps {
         dbExecutor.createDataSet(new DataSetConfig("tweet/tweet-with-id-1-got-liked-1-times-and-retweeted-2-times.json"));
     }
 
+    @Given("a stored tweet with id 1 from user john and content \"Example Content\" has a retweet with id 2 from user jane")
+    public void a_stored_tweet_with_id_from_user_john_and_content_has_a_retweet_with_id_from_user_jane() {
+        dbExecutor.createDataSet(new DataSetConfig("retweets/retweet-with-id-2-from-tweet-with-id-1.json"));
+    }
+
+    @Given("the retweet hasn´t got liked")
+    public void the_retweet_hasn_t_got_liked() {
+        dbExecutor.createDataSet(new DataSetConfig("like/empty-liker-list.json"));
+    }
+
     @Given("a stored retweet with id 2 from tweet with id 1")
     public void a_stored_retweet_with_id_from_tweet_with_id() {
         dbExecutor.createDataSet(new DataSetConfig("retweets/retweet-with-id-2-from-tweet-with-id-1.json"));
     }
 
-    @Given("the user max is a follower of user john with id {int}")
-    public void the_user_max_is_a_follower_of_user_john_with_id(Integer int1) {
+    @Given("the user max is a follower of user john with id 2")
+    public void the_user_max_is_a_follower_of_user_john_with_id() {
         dbExecutor.createDataSet(new DataSetConfig("follower/max-follows-john.json"));
     }
 
-    @Given("the user max is not a follower of user john with id {int}")
-    public void the_user_max_is_not_a_follower_of_user_john_with_id(Integer int1) {
+    @Given("the user max is not a follower of user john with id 2")
+    public void the_user_max_is_not_a_follower_of_user_john_with_id() {
+        System.out.println("Servus");
         dbExecutor.createDataSet(new DataSetConfig("follower/empty-follower-list.json"));
     }
+
+    
 }

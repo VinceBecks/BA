@@ -1,6 +1,7 @@
 package de.openknowledge.playground.api.rest.security.stepDefinition;
 
 import cucumber.api.java.en.When;
+import de.openknowledge.playground.api.rest.security.supportCode.IntegrationTestUtil;
 import de.openknowledge.playground.api.rest.security.supportCode.SharedDomain;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
@@ -25,7 +26,7 @@ public class GetLikerSteps {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + domain.tokenFromAccount(userName))
                 .when()
-                .get(domain.basePath() + additionalPath);
+                .get(IntegrationTestUtil.getBaseURI() + additionalPath);
         domain.setResponse(response);
     }
 
@@ -39,7 +40,7 @@ public class GetLikerSteps {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + randomToken)
                 .when()
-                .get(domain.basePath() + "/tweets/1/liker");
+                .get(IntegrationTestUtil.getBaseURI() + "/tweets/1/liker");
         domain.setResponse(response);
     }
 
@@ -51,7 +52,7 @@ public class GetLikerSteps {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + domain.tokenFromAccount(moderatorName))
                 .when()
-                .get(domain.basePath() + "/tweets/0/liker");
+                .get(IntegrationTestUtil.getBaseURI() + "/tweets/0/liker");
         domain.setResponse(response);
     }
 
@@ -64,7 +65,7 @@ public class GetLikerSteps {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + validToken)
                 .when()
-                .get(domain.basePath() + "/tweets/" + tweetId + "/liker");
+                .get(IntegrationTestUtil.getBaseURI() + "/tweets/" + tweetId + "/liker");
         domain.setResponse(response);
     }
 
@@ -78,7 +79,7 @@ public class GetLikerSteps {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + validToken)
                 .when()
-                .get(domain.basePath() + "/tweets/"+tweetId+"/retweets/authors");
+                .get(IntegrationTestUtil.getBaseURI() + "/tweets/"+tweetId+"/retweets/authors");
         domain.setResponse(response);
     }
 }

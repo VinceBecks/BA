@@ -7,7 +7,7 @@ Feature: Cancel a tweet
   - If the request doesn´t contain a valid token, then the http response status-code will be 401
   - If the specified tweet doesn´t exist or is already in status "CANCELED", then the http response status-code will be 404
 
-
+  @execute
   Scenario: Cancele a tweet
   Request to set a tweet in status CANCELED a specified tweet
 
@@ -16,7 +16,7 @@ Feature: Cancel a tweet
     When a client sends a DELETE "/tweets/1" request for user "max"
     Then the HTTP response status-code will be 204
 
-
+  @execute
   Scenario: Another user than the author wants to cancel a tweet
   To cancel a tweet the requesting user must be the author of it
 
@@ -27,6 +27,7 @@ Feature: Cancel a tweet
 
 
   #fürBA: in jedem Szeanrio wird wieder ein stored tweet with id 1 from user max angelegt... damit die Szenarien unabhängig voneinander sind
+  @execute
   Scenario: Moderator cancel tweet
   Moderators can cancel the tweets from every user
 
@@ -36,7 +37,7 @@ Feature: Cancel a tweet
     Then the HTTP response status-code will be 204
 
 
-
+  @execute
   Scenario: Unauthorised request to cancel a tweet
   The request to cancel a tweet must contain a valid token
 
@@ -46,6 +47,7 @@ Feature: Cancel a tweet
 
 
     #fürBA: Letzten beiden Szenarien testen ein Kriterium --> mehrere Szenarien können ein Kriterium erklären
+  @execute
   Scenario: Tweet to cancel doesn´t exist
   The tweet to cancel must exist
 
@@ -55,7 +57,7 @@ Feature: Cancel a tweet
     Then the HTTP response status-code will be 404
 
 
-
+  @execute
   Scenario: Tweet to delete is in status CANCELED
   The tweet to cancel must be in status PUBLISH
 

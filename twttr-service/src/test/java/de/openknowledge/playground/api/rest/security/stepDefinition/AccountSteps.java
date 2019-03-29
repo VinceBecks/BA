@@ -1,24 +1,31 @@
 package de.openknowledge.playground.api.rest.security.stepDefinition;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.database.rider.core.api.dataset.DataSetExecutor;
 import com.github.database.rider.core.configuration.DataSetConfig;
 import com.github.database.rider.core.connection.ConnectionHolderImpl;
 import com.github.database.rider.core.dataset.DataSetExecutorImpl;
 import com.github.database.rider.core.util.EntityManagerProvider;
-import cucumber.api.PendingException;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
 import de.openknowledge.playground.api.rest.security.supportCode.SharedDomain;
-import io.cucumber.datatable.DataTable;
+import de.openknowledge.playground.api.rest.security.supportCode.UserList;
+import de.openknowledge.playground.api.rest.security.supportCode.converter.convertedClasses.Account;
+import org.dbunit.database.AmbiguousTableNameException;
+import org.dbunit.dataset.DefaultDataSet;
+import org.dbunit.dataset.ITable;
 import org.junit.Rule;
 import org.keycloak.authorization.client.AuthzClient;
 import org.keycloak.representations.idm.authorization.AuthorizationResponse;
 
+import java.io.*;
+import java.util.List;
+
 public class AccountSteps {
 
     private SharedDomain domain;
+    static boolean first = true;
 
     @Rule
     EntityManagerProvider entityManagerProvider = EntityManagerProvider.instance("test-local");
@@ -33,30 +40,27 @@ public class AccountSteps {
         this.domain = domain;
     }
 
-    @Given("the user {string} is authenticated")
+    @Given("the (user|moderator) {string} is authenticated")
     public void the_user_is_authenticated(String userName) {
         AuthorizationResponse response = AuthzClient.create().authorization(userName, domain.getAccount(userName).getPassword()).authorize();
         domain.addValidToken(userName, response.getToken());
     }
 
     @Given("the system has persisted users")
-    public void the_system_has_persisted_users(DataTable dataTable) {
+    public void the_system_has_persisted_users(List<Account> accounts) {
+        try {
+            UserList userList = new UserList(accounts);
+            String json = new ObjectMapper().writeValueAsString(userList);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
         dbExecutor.createDataSet(new DataSetConfig("users.json"));
     }
 
-    @Given("there is no user with id {int}")
-    public void there_is_no_user_with_id(Integer userId) {
-        String [] stmts = {"DELETE FROM TAB_ACCOUNTS WHERE ACCOUNT_ID = " + userId + ";"};
-        dbExecutor.executeStatements(stmts);
+    @Given("there is no user with id 9999")
+    public void there_is_no_user_with_id() {
+        dbExecutor.createDataSet(new DataSetConfig("users.json"));
     }
-
-    @Given("the moderator {string} is authenticated")
-    public void the_moderator_is_authenticated(String moderatorName) {
-        AuthorizationResponse response = AuthzClient.create().authorization(moderatorName, domain.getAccount(moderatorName).getPassword()).authorize();
-        domain.addValidToken(moderatorName, response.getToken());
-    }
-
-
 
     @Given("the user max isn´t a follower of user john with id 2")
     public void the_user_isn_t_a_follower_of_user_with_id() {
@@ -72,12 +76,4 @@ public class AccountSteps {
     public void user_max_follows_the_users_john_and_jane() {
         dbExecutor.createDataSet(new DataSetConfig("follower/max-follows-john-and-jane.json"));
     }
-
-
-
-
-
-
-
-
 }

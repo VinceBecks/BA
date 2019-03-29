@@ -6,7 +6,7 @@ Feature: Get liker of a specified tweet
   - If the request contains a valid token which belongs to a moderator, then the http response status-code will be 403
   - If the specified tweet doesn´t exist or is in state "CANCELED", then the http response status-code will be 404
 
-
+  @execute
   Scenario: Get a list of liker of a specified tweet
   Requesting a list of liker of a specified tweet
 
@@ -33,7 +33,7 @@ Feature: Get liker of a specified tweet
           ]
         """
 
-
+  @execute
   Scenario: Unauthorised request to get a list of liker from a specified tweet
   The request to get a list of liker from a specified tweet must contain a valid token of an user
 
@@ -41,7 +41,7 @@ Feature: Get liker of a specified tweet
     Then the HTTP response status-code will be 401
 
 
-
+  @execute
   Scenario: Transmitted token from the request to get a list of liker from a specified tweet belongs to a moderator
   Just users can request a list of liker from a specified tweet
 
@@ -50,7 +50,7 @@ Feature: Get liker of a specified tweet
     Then the HTTP response status-code will be 403
 
 
-
+  @execute
   Scenario: Tweet to get the list of liker from doesn´t exist
   The tweet to get the list of liker from must be existing
 
@@ -58,7 +58,7 @@ Feature: Get liker of a specified tweet
     When a client sends a request to get a list of liker of the tweet with id 9999
     Then the HTTP response status-code will be 404
 
-
+  @execute
   Scenario: Tweet to get a list of liker from is in status CANCELED
   The tweet to get a list of liker from must be in status PUBLISH
 

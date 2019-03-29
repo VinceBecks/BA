@@ -1,6 +1,6 @@
 Feature: Get users
   This feature file describes the behaviour of the system for GET requests at the endpoint on /api/users to get a list of users
-  There should be follwoing behaviour at the system:
+  There should be following behaviour at the system:
   - If the request contains the header "Authorization" with a valid token, then the http response body will contain a list of 3 users, sorted in first grade by their userName, in second grade by their firstName and in third grade by their lastName and the http response status-code will be 200
   - If the QueryParam "numUsers" is specified, then the number of returned users will be the value of the param "numUsers", if there are enough users
   - If the QueryParam "searchString" is specified, then the returned list of users contains just users whos userName, firstName or lastName contains the value of the searchString
@@ -24,7 +24,7 @@ Feature: Get users
 
 
 
-
+  @execute
   Scenario Outline: Request users
   Requesting users sorted in first grad by their userName, in second grade by their firstName and in third grade by their lastName
 
@@ -62,7 +62,7 @@ Feature: Get users
 
 
 
-
+  @execute
   Scenario Outline: Change query params for request to get users
   The QueryParam numUsers represents the number of requested users
   The default value for numUsers will be 3
@@ -98,7 +98,7 @@ Feature: Get users
 
 
 
-
+  @execute
   Scenario: Unauthorised request to get a list of users
   The request must contain a valid token from an account to get a list of users
 

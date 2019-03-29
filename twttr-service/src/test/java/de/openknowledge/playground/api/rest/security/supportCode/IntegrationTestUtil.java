@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions
  * and limitations under the License.
  */
-package de.openknowledge.playground.api.rest.security.application;
+package de.openknowledge.playground.api.rest.security.supportCode;
 
 import javax.ws.rs.core.UriBuilder;
 
@@ -27,7 +27,7 @@ public final class IntegrationTestUtil {
   }
 
   public static String getBaseURI() {
-    String uri = "http://{host}:{port}/{context-root}";
+    String uri = "http://{host}:{port}/{context-root}/api";
     return UriBuilder.fromUri(uri)
         .resolveTemplate("host", getHost())
         .resolveTemplate("port", getPort())

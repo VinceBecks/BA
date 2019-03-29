@@ -1,6 +1,7 @@
 package de.openknowledge.playground.api.rest.security.stepDefinition;
 
 import cucumber.api.java.en.When;
+import de.openknowledge.playground.api.rest.security.supportCode.IntegrationTestUtil;
 import de.openknowledge.playground.api.rest.security.supportCode.SharedDomain;
 import de.openknowledge.playground.api.rest.security.supportCode.converter.convertedClasses.GetTweetsQueryParams;
 import io.restassured.RestAssured;
@@ -26,7 +27,7 @@ public class GetTweetsFromUserSteps {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + validToken)
                 .when()
-                .get(domain.basePath() + additionalPath);
+                .get(IntegrationTestUtil.getBaseURI() + additionalPath);
         domain.setResponse(response);
     }
 
@@ -40,7 +41,7 @@ public class GetTweetsFromUserSteps {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + validToken)
                 .when()
-                .get(domain.basePath() + "/users/" + domain.getAccount(userToGetTweetsFrom).getAccountId() + "/tweets" + params.getQueryString());
+                .get(IntegrationTestUtil.getBaseURI() + "/users/" + domain.getAccount(userToGetTweetsFrom).getAccountId() + "/tweets" + params.getQueryString());
         domain.setResponse(response);
     }
 
@@ -55,7 +56,7 @@ public class GetTweetsFromUserSteps {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + randomToken)
                 .when()
-                .get(domain.basePath() + "/users/2/tweets");
+                .get(IntegrationTestUtil.getBaseURI() + "/users/2/tweets");
         domain.setResponse(response);
     }
 }

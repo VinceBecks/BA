@@ -31,6 +31,7 @@ Feature: Get all tweets of a member
 
 
     #todo: noch irgendwie auf die Reihenfolge der Tweets eingehen?
+  @execute
   Scenario Outline: Get tweets of a user
     When a client sends a GET "/users/2/tweets" request for <accountType> "<userName>" to get a list of tweets from user john
     Then the HTTP response status-code will be 200
@@ -85,7 +86,7 @@ Feature: Get all tweets of a member
 
 
 
-
+  @execute
   Scenario Outline: Change QueryParams
   The QueryParam numTweets represents the number of requested tweets
   The default value for numTweets will be 3
@@ -116,7 +117,7 @@ Feature: Get all tweets of a member
 
 
 
-
+  @execute
   Scenario: Unauthorised request to get tweets from a user
   The request must contain a valid token of a user
 

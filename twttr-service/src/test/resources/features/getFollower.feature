@@ -1,4 +1,4 @@
-Feature: Show follower
+Feature: Get follower
   This feature file describes the behaviour of the REST-API for GET requests at the endpoint /api/users/{userId}/follower to get a list of follower of the specified user.
   There should be follwoing behaviour at the REST-API:
   - If the request contains the header "Authorization" with a valid token of an user, then the http response will contain a list of users who follows the specified user and the http status-code will be 200
@@ -7,6 +7,8 @@ Feature: Show follower
   - If the request contains a valid token which belongs to a moderator, then the http status-code will be 403
   - If the specified user doesn´t exist, then the http response status-code will be 404
 
+
+  @execute
   Scenario: Get follower of an specified user
   Requesting a list of follower of a specified user
 
@@ -33,7 +35,7 @@ Feature: Show follower
         """
 
 
-
+  @execute
   Scenario: Unauthorised request to get a list of follower from a specified user
   The request must contain a valid token of an user
 
@@ -42,15 +44,21 @@ Feature: Show follower
 
 
 
-    #todo: 404 lassen? --> Kriterien ändern
+    #todo: status-code war zuvor bei 404 .. so lassen?
+  @execute
   Scenario: Account to get the list of follower from belongs to a moderator
   The account to get the list of follower from must be from an user
 
     When a client sends a request to to get a list of follower from a moderator
-    Then the HTTP response status-code will be 404
+    Then the HTTP response status-code will be 400
+    And the HTTP response body contains following JSON of an error message:
+      """
+      {
+        "errorMessage": "Account to get the list of follower from belongs to a moderator"
+      }
+      """
 
-
-
+  @execute
   Scenario: Transmitted token from the request to get a list of follower from a specified user belongs to a moderator
   Just users can request a list of follower from a specified user
 
@@ -59,7 +67,7 @@ Feature: Show follower
     Then the HTTP response status-code will be 403
 
 
-
+  @execute
   Scenario: User to get the list of follower from doesn´t exist
   The user to get the list of follower from must be existing
 

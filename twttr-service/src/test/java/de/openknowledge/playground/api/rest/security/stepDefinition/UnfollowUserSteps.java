@@ -1,6 +1,7 @@
 package de.openknowledge.playground.api.rest.security.stepDefinition;
 
 import cucumber.api.java.en.When;
+import de.openknowledge.playground.api.rest.security.supportCode.IntegrationTestUtil;
 import de.openknowledge.playground.api.rest.security.supportCode.SharedDomain;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
@@ -24,7 +25,7 @@ public class UnfollowUserSteps {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + domain.tokenFromAccount(userName))
                 .when()
-                .post(domain.basePath() + additionalPath);
+                .delete(IntegrationTestUtil.getBaseURI() + additionalPath);
         domain.setResponse(response);
     }
 
@@ -39,7 +40,7 @@ public class UnfollowUserSteps {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + randomToken)
                 .when()
-                .delete(domain.basePath() + "/users/1/follower");
+                .delete(IntegrationTestUtil.getBaseURI() + "/users/1/follower");
         domain.setResponse(response);
     }
 
@@ -51,7 +52,20 @@ public class UnfollowUserSteps {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + domain.tokenFromAccount(moderatorName))
                 .when()
-                .delete(domain.basePath() + "/users/1/follower");
+                .delete(IntegrationTestUtil.getBaseURI() + "/users/1/follower");
+        domain.setResponse(response);
+    }
+
+    @When("a client sends a request to unfollow the account of a moderator")
+    public void a_client_sends_a_request_to_unfollow_the_account_of_a_moderator() {
+        String validToken = AuthzClient.create().authorization("max", "password").authorize().getToken();
+        Response response = RestAssured
+                .given()
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + validToken)
+                .when()
+                .delete(IntegrationTestUtil.getBaseURI() + "/users/4/follower");
         domain.setResponse(response);
     }
 
@@ -64,7 +78,7 @@ public class UnfollowUserSteps {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + validToken)
                 .when()
-                .delete(domain.basePath() + "/users/"+userId+"/follower");
+                .delete(IntegrationTestUtil.getBaseURI() + "/users/"+userId+"/follower");
         domain.setResponse(response);
     }
 }

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cucumber.api.PendingException;
 import cucumber.api.java.en.Then;
-import de.openknowledge.playground.api.rest.security.domain.tweet.DetailedTweet;
+import de.openknowledge.playground.api.rest.security.application.tweet.DetailedTweet;
 import de.openknowledge.playground.api.rest.security.domain.tweet.TweetDTO;
 import de.openknowledge.playground.api.rest.security.supportCode.SharedDomain;
 import de.openknowledge.playground.api.rest.security.supportCode.converter.convertedClasses.ErrorMessage;
@@ -30,6 +30,19 @@ public class ResponseSteps {
         domain.getResponse().then()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body("errorMessage", Matchers.equalTo(expectedErrorMessage.getErrorMessage()));
+    }
+
+    @Then("the HTTP response body contains following JSON of a list of error messages:")
+    public void the_HTTP_response_body_contains_following_JSON_of_a_list_of_error_messages(String expectedJson) {
+        try {
+            List<ErrorMessage> errors = new ObjectMapper().readValue(expectedJson, new TypeReference<List<ErrorMessage>>() {});
+            domain.getResponse().then()
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body("size()",Matchers.equalTo(1))
+                    .body("[0].errorMessage", Matchers.equalTo(errors.get(0).getErrorMessage()));
+        } catch (IOException e) {
+            throw new PendingException();
+        }
     }
 
     @Then("the HTTP response status-code will be {int}")
@@ -70,17 +83,11 @@ public class ResponseSteps {
         } catch (IOException e) {
             throw new PendingException();
         }
+
     }
 
     @Then("the HTTP response body will contain following JSON with detailed information about the tweet with id 1")
-    public void the_HTTP_response_body_will_contain_following_JSON_with_detailed_information_about_the_tweet_with_id(String expectedJson) {
-        DetailedTweet expectedTweet = null;
-        try {
-            expectedTweet = new ObjectMapper().readValue(expectedJson, DetailedTweet.class);
-        } catch (IOException e) {
-            throw new PendingException();
-        }
-
+    public void the_HTTP_response_body_will_contain_following_JSON_with_detailed_information_about_the_tweet_with_id(DetailedTweet expectedTweet) {
         domain.getResponse().then()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body("tweetId", Matchers.equalTo(expectedTweet.getTweetId()))
@@ -89,7 +96,22 @@ public class ResponseSteps {
                 .body("author.firstName", Matchers.equalTo(expectedTweet.getAuthor().getFirstName()))
                 .body("author.lastName", Matchers.equalTo(expectedTweet.getAuthor().getLastName()))
                 .body("numLiker", Matchers.equalTo(expectedTweet.getNumLiker()))
-                .body("numRetweets", Matchers.equalTo(expectedTweet.getNumRetweets()));
+                .body("numRetweets", Matchers.equalTo(expectedTweet.getNumRetweets()))
+                .body("rootTweet", Matchers.isEmptyOrNullString());
+    }
+
+    @Then("the HTTP response body will contain following JSON with detailed information about the retweet with id 2")
+    public void the_HTTP_response_body_will_contain_following_JSON_with_detailed_information_about_the_retweet_with_id(DetailedTweet expectedTweet) {
+        domain.getResponse().then()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body("tweetId", Matchers.equalTo(expectedTweet.getTweetId()))
+                .body("content", Matchers.equalTo(expectedTweet.getContent()))
+                .body("author.userId", Matchers.equalTo(expectedTweet.getAuthor().getUserId()))
+                .body("author.firstName", Matchers.equalTo(expectedTweet.getAuthor().getFirstName()))
+                .body("author.lastName", Matchers.equalTo(expectedTweet.getAuthor().getLastName()))
+                .body("numLiker", Matchers.equalTo(expectedTweet.getNumLiker()))
+                .body("numRetweets", Matchers.equalTo(expectedTweet.getNumRetweets()))
+                .body("rootTweet.tweetId", Matchers.equalTo(expectedTweet.getRootTweet().getTweetId()));
     }
 
     @Then("the HTTP response body will contain following JSON with tweets from users max is following")

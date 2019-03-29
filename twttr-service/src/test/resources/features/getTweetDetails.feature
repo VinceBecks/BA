@@ -5,9 +5,8 @@ Feature: Get detailed information about a specified tweet
   - If the request doesn´t contain a valid token, then the http response status-code will be 401
   - If the specified tweet doesn´t exist or is in state "CANCELED", then the http response status-code will be 404
 
-
-  #todo: Szenario für moderator schreiben
-  Scenario: Get information about specified tweet
+  @execute
+  Scenario: Request for user to get detailed information about a specified tweet
   Requesting information about a specified tweet
 
     Given the user "john" is authenticated
@@ -27,12 +26,76 @@ Feature: Get detailed information about a specified tweet
                 "lastName": "Mustermann"
             },
             "numLiker": 1,
+            "numRetweets": 2,
+            "rootTweet": null
+        }
+        """
+
+
+    #fürBA: Immer noch nicht ausreichend.. Immer noch offen, was mit den Likern des Root-Tweets passiert.. werden die mit übernommen? Hier hat Entwickler Spielraum und kann es so implementieren, wie er meint
+  @execute
+  Scenario: Tweet to get detailed information about is a retweet
+  Requesting information about a specified retweet
+
+    Given the user "max" is authenticated
+    And a stored tweet with id 1 from user john and content "Example Content" has a retweet with id 2 from user jane
+    And the retweet hasn´t got liked
+    When a client sends a GET "/tweets/2" request for user "max" to get detailed information about the retweet with id 2
+    Then the HTTP response status-code will be 200
+    And the HTTP response body will contain following JSON with detailed information about the retweet with id 2
+        """
+        {
+            "tweetId": 2,
+            "content": "Example content",
+            "pubDate": 679658765,
+            "author": {
+                "userId": 3,
+                "firstName": "Jane",
+                "lastName": "Doe"
+            },
+            "numLiker": 0,
+            "numRetweets": 0,
+            "rootTweet": {
+                "tweetId": 1,
+                "content": "Example content",
+                "pubDate": 679658765,
+                "author": {
+                    "userId": 2,
+                    "firstName": "John",
+                    "lastName": "Doe"
+                },
+                "rootTweet": null
+            }
+        }
+        """
+
+  @execute
+  Scenario: Request for moderator to get detailed information about a specified tweet
+  Requesting information about a specified tweet
+
+    Given the moderator "werner" is authenticated
+    And a stored tweet with id 1 from user max with content "Example Content"
+    And the tweet with id 1 got liked by 1 user and retweeted by 2 users
+    When a client sends a GET "/tweets/1" request for moderator "werner" to get detailed information about the tweet with id 1
+    Then the HTTP response status-code will be 200
+    And the HTTP response body will contain following JSON with detailed information about the tweet with id 1
+        """
+        {
+            "tweetId": 1,
+            "content": "Example content",
+            "pubDate": 679658765,
+            "author": {
+                "userId": 0,
+                "firstName": "Max",
+                "lastName": "Mustermann"
+            },
+            "numLiker": 1,
             "numRetweets": 2
         }
         """
 
 
-
+  @execute
   Scenario: Unauthorised request to get a detailed information about a specified tweet
   The request must contain a valid token
 
@@ -40,7 +103,7 @@ Feature: Get detailed information about a specified tweet
     Then the HTTP response status-code will be 401
 
 
-
+  @execute
   Scenario: Tweet to get detailed information about doesn´t exist
   The tweet to get detailed information about must exist
 
@@ -49,7 +112,7 @@ Feature: Get detailed information about a specified tweet
     Then the HTTP response status-code will be 404
 
 
-
+  @execute
   Scenario: Tweet to get detailed information about is in status CANCELED
   The tweet to get detailed information about must be in status PUBLISH
 

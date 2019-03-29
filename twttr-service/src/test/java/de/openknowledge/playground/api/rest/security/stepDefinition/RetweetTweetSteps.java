@@ -1,6 +1,7 @@
 package de.openknowledge.playground.api.rest.security.stepDefinition;
 
 import cucumber.api.java.en.When;
+import de.openknowledge.playground.api.rest.security.supportCode.IntegrationTestUtil;
 import de.openknowledge.playground.api.rest.security.supportCode.SharedDomain;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
@@ -25,7 +26,7 @@ public class RetweetTweetSteps {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + domain.tokenFromAccount(userName))
                 .when()
-                .post(domain.basePath() + additionalPath);
+                .post(IntegrationTestUtil.getBaseURI() + additionalPath);
         domain.setResponse(response);
     }
 
@@ -39,7 +40,7 @@ public class RetweetTweetSteps {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + domain.tokenFromAccount(userName))
                 .when()
-                .post(domain.basePath() + additionalPath);
+                .post(IntegrationTestUtil.getBaseURI() + additionalPath);
         domain.setResponse(response);
     }
 
@@ -54,7 +55,7 @@ public class RetweetTweetSteps {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + randomToken)
                 .when()
-                .post(domain.basePath() + "/tweets/1/retweets");
+                .post(IntegrationTestUtil.getBaseURI() + "/tweets/1/retweets");
         domain.setResponse(response);
     }
 
@@ -66,7 +67,7 @@ public class RetweetTweetSteps {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + domain.tokenFromAccount(moderatorName))
                 .when()
-                .post(domain.basePath() + "/tweets/1/retweets");
+                .post(IntegrationTestUtil.getBaseURI() + "/tweets/1/retweets");
         domain.setResponse(response);
     }
 
@@ -79,7 +80,7 @@ public class RetweetTweetSteps {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + validToken)
                 .when()
-                .post(domain.basePath() + "/tweets/"+tweetId+"/retweets");
+                .post(IntegrationTestUtil.getBaseURI() + "/tweets/"+tweetId+"/retweets");
         domain.setResponse(response);
     }
 

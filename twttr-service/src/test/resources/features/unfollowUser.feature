@@ -7,25 +7,32 @@ Feature: Unfollow a user
   - If the specified account belongs to a moderator, then the http response body contains an appropriate information about the mistake and the http response status- will be 400
   - If the specified user doesn´t exist, then the http response status-code will be 404
 
-
-  Scenario Outline: Unfollow a user
+  @execute
+  Scenario: Unfollow a user
   Request to unfollow a specified user
-#fürBA: gutes Scenario Outline mit <is or is not>
 
     Given the user "max" is authenticated
-    And the user max <is or is not> a follower of user john with id 2
+    And the user max is a follower of user john with id 2
     When a client sends a DELETE "/users/2/follower" request for user "max" to unfollow user john
-    Then the HTTP response status-code will be <status code>
-    #todo 2 Szenarien draus machen
+    Then the HTTP response status-code will be 204
+
+  @execute
+  Scenario: The requesting user isn´t a follower of the specified user
+  The requesting user must be a follower of the specified user to unfollow him
+
+    Given the user "max" is authenticated
+    And the user max is not a follower of user john with id 2
+    When a client sends a DELETE "/users/2/follower" request for user "max" to unfollow user john
+    Then the HTTP response status-code will be 400
+    And the HTTP response body contains following JSON of an error message:
+      """
+      {
+        "errorMessage": "Requesting user isn´t a follower of the specified user"
+      }
+      """
 
 
-    Examples:
-      | is or is not | status code |
-      | is           | 400         |
-      | is not       | 204         |
-
-
-
+  @execute
   Scenario: Unauthorised request to unfollow a user
   The request must contain a valid token of an user
 
@@ -33,7 +40,7 @@ Feature: Unfollow a user
     Then the HTTP response status-code will be 401
 
 
-
+  @execute
   Scenario: Token from request to unfollow a user belongs to a moderator
   Account must be from an user
 
@@ -42,10 +49,21 @@ Feature: Unfollow a user
     Then the HTTP response status-code will be 403
 
 
-    #todo:Scenario: Account to unfollow belongs to a moderator  Welcher Status-Code? 400 oder 404 ... ggf. in Kriterien anpassen
+#todo: 400 lassen?
+  @execute
+  Scenario: Account to unfollow belongs to a moderator
+  The account to unfollow must be from an user
 
+    When a client sends a request to unfollow the account of a moderator
+    Then the HTTP response status-code will be 400
+    And the HTTP response body contains following JSON of an error message:
+      """
+      {
+        "errorMessage": "Specified account to unfollow belongs to a moderator"
+      }
+      """
 
-
+  @execute
   Scenario: Specified user to unfollow doesn´t exist
   The user to unfollow must exist
 

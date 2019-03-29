@@ -2,6 +2,7 @@ package de.openknowledge.playground.api.rest.security.stepDefinition;
 
 import cucumber.api.java.en.When;
 import de.openknowledge.playground.api.rest.security.domain.tweet.NewTweet;
+import de.openknowledge.playground.api.rest.security.supportCode.IntegrationTestUtil;
 import de.openknowledge.playground.api.rest.security.supportCode.SharedDomain;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
@@ -26,7 +27,7 @@ public class CreateTweetSteps {
                     .header(HttpHeaders.AUTHORIZATION, "Bearer " + domain.tokenFromAccount(userName))
                     .body(newTweet)
                     .when()
-                    .post(domain.basePath() + additionalPath);
+                    .post(IntegrationTestUtil.getBaseURI() + additionalPath);
         domain.setResponse(response);
     }
 
@@ -45,7 +46,7 @@ public class CreateTweetSteps {
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + domain.tokenFromAccount(userName))
                 .body(newTweet)
                 .when()
-                .post(domain.basePath() + "/tweets");
+                .post(IntegrationTestUtil.getBaseURI() + "/tweets");
         domain.setResponse(response);
     }
 
@@ -61,7 +62,7 @@ public class CreateTweetSteps {
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + randomToken)
                 .body(newTweet)
                 .when()
-                .post(domain.basePath() + "/tweets");
+                .post(IntegrationTestUtil.getBaseURI() + "/tweets");
         domain.setResponse(response);
     }
 
@@ -75,7 +76,7 @@ public class CreateTweetSteps {
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + domain.tokenFromAccount(moderatorName))
                 .body(newTweet)
                 .when()
-                .post(domain.basePath() + "/tweets");
+                .post(IntegrationTestUtil.getBaseURI() + "/tweets");
         domain.setResponse(response);
     }
 }

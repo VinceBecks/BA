@@ -7,7 +7,7 @@ Feature: Like a specified tweet
   - If the request contains a valid token which belongs to a moderator, then http response status-code will be 403
   - If the specified tweet doesn´t exist or is in status "CANCELED", then the http response status-code will be 404
 
-
+  @execute
   Scenario: Like a tweet
   Request to like a specified tweet
 
@@ -17,7 +17,7 @@ Feature: Like a specified tweet
     When a client sends a POST "/tweets/1/liker" request for user "max" to like the tweet with id 1
     Then the HTTP response status-code will be 204
 
-
+  @execute
   Scenario: Requesting user is already a liker of the specified tweet
   Each user can be just once a liker of a specified tweet
 
@@ -34,7 +34,7 @@ Feature: Like a specified tweet
       """
 
 
-
+  @execute
   Scenario: Unauthorised request to like a specified tweet
   The request must contain a valid token of an user
 
@@ -42,7 +42,7 @@ Feature: Like a specified tweet
     Then the HTTP response status-code will be 401
 
 
-
+  @execute
   Scenario: Transmitted token from the request to like a specified tweet belongs to a moderator
   Just users can like tweets
 
@@ -51,7 +51,7 @@ Feature: Like a specified tweet
     Then the HTTP response status-code will be 403
 
 
-
+  @execute
   Scenario: The tweet to like doesn´t exist
   The tweet to like must be existing
 
@@ -59,11 +59,12 @@ Feature: Like a specified tweet
     When a client sends a request to like the tweet with id 9999
     Then the HTTP response status-code will be 404
 
-
+  @execute
   Scenario: Tweet to like is in status CANCELED
   The tweet to like must be in status PUBLISH
 
     Given a stored tweet with id 1 in status CANCELED from user max
     When a client sends a request to like the tweet with id 1
     Then the HTTP response status-code will be 404
+
 

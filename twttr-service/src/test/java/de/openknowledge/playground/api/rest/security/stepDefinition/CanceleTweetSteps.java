@@ -8,6 +8,7 @@ import cucumber.api.PendingException;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
+import de.openknowledge.playground.api.rest.security.supportCode.IntegrationTestUtil;
 import de.openknowledge.playground.api.rest.security.supportCode.SharedDomain;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
@@ -43,7 +44,7 @@ public class CanceleTweetSteps {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + domain.tokenFromAccount(userName))
                 .when()
-                .delete(domain.basePath() + additionalPath);
+                .delete(IntegrationTestUtil.getBaseURI() + additionalPath);
         domain.setResponse(response);
     }
 
@@ -56,7 +57,7 @@ public class CanceleTweetSteps {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + domain.tokenFromAccount(userName))
                 .when()
-                .delete(domain.basePath() + "/tweets/" + tweetId);
+                .delete(IntegrationTestUtil.getBaseURI() + "/tweets/" + tweetId);
         domain.setResponse(response);
     }
 
@@ -69,7 +70,7 @@ public class CanceleTweetSteps {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + domain.tokenFromAccount(moderatorName))
                 .when()
-                .delete(domain.basePath() + "/tweets/" + tweetId);
+                .delete(IntegrationTestUtil.getBaseURI() + "/tweets/" + tweetId);
         domain.setResponse(response);
     }
 
@@ -83,7 +84,7 @@ public class CanceleTweetSteps {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + randomToken)
                 .when()
-                .delete(domain.basePath() + "/tweets/" + tweetId);
+                .delete(IntegrationTestUtil.getBaseURI() + "/tweets/" + tweetId);
         domain.setResponse(response);
     }
 

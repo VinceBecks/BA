@@ -3,19 +3,14 @@ package de.openknowledge.playground.api.rest.security.supportCode.converter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cucumber.api.TypeRegistry;
 import cucumber.api.TypeRegistryConfigurer;
-import de.openknowledge.playground.api.rest.security.domain.account.AccountType;
-import de.openknowledge.playground.api.rest.security.domain.accounts.UserDTO;
+import de.openknowledge.playground.api.rest.security.application.tweet.DetailedTweet;
 import de.openknowledge.playground.api.rest.security.domain.tweet.NewTweet;
 import de.openknowledge.playground.api.rest.security.domain.tweet.TweetDTO;
 import de.openknowledge.playground.api.rest.security.supportCode.SharedDomain;
-import de.openknowledge.playground.api.rest.security.supportCode.converter.convertedClasses.ErrorMessage;
-import de.openknowledge.playground.api.rest.security.supportCode.converter.convertedClasses.GetTweetsQueryParams;
-import de.openknowledge.playground.api.rest.security.supportCode.converter.convertedClasses.GetUsersQueryParams;
-import de.openknowledge.playground.api.rest.security.supportCode.converter.convertedClasses.IntegerList;
+import de.openknowledge.playground.api.rest.security.supportCode.converter.convertedClasses.*;
 import io.cucumber.cucumberexpressions.ParameterType;
 import io.cucumber.datatable.DataTableType;
 
-import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 
@@ -32,22 +27,27 @@ public class Converter implements TypeRegistryConfigurer{
     @Override
     public void configureTypeRegistry(TypeRegistry typeRegistry) {
         typeRegistry.defineDataTableType(new DataTableType(NewTweet.class,
-                (Map<String, String> row)-> {
-                    //todo: ist der if/else Teil noch relevant?
-                    if (row.keySet().contains("value")) {
-                        return new NewTweet(row.get("value"));
-                    }else {
-                        return new NewTweet(row.get("content"));
-                    }
-                }));
-
-
+                (Map<String, String> row)-> new NewTweet(row.get("value"))));
 
         typeRegistry.defineDataTableType(new DataTableType (TweetDTO.class,
                 (String s)-> new ObjectMapper().readValue(s, TweetDTO.class)));
 
+        typeRegistry.defineDataTableType(new DataTableType (DetailedTweet.class,
+                (String s)-> new ObjectMapper().readValue(s, DetailedTweet.class)));
+
         typeRegistry.defineDataTableType(new DataTableType (ErrorMessage.class,
                 (String s)-> new ObjectMapper().readValue(s, ErrorMessage.class)));
+
+        typeRegistry.defineDataTableType(new DataTableType (Account.class,
+                (Map<String, String> row)-> {
+                    Integer id = Integer.parseInt(row.get("accountId"));
+                    String userName = row.get("userName");
+                    String firstName = row.get("firstName");
+                    String lastName = row.get("lastName");
+                    Integer role = row.get("role").equals("USER") ? 0 : row.get("role").equals("MODERATOR") ? 1 : null;
+                    String accountType = role.equals(0) ? "USER" : role.equals(1) ? "MODERATOR" : null;
+                    return new Account(accountType, id, userName, firstName, lastName, role);
+                }));
 
 
         typeRegistry.defineDataTableType(new DataTableType (GetTweetsQueryParams.class,
@@ -75,5 +75,7 @@ public class Converter implements TypeRegistryConfigurer{
                 IntegerList.class,
                 IntegerList::new
         ));
+
+
     }
 }

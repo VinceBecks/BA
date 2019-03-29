@@ -9,6 +9,7 @@ import cucumber.api.PendingException;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
+import de.openknowledge.playground.api.rest.security.supportCode.IntegrationTestUtil;
 import de.openknowledge.playground.api.rest.security.supportCode.SharedDomain;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
@@ -49,7 +50,7 @@ public class GetFollowerSteps {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + domain.tokenFromAccount(userName))
                 .when()
-                .get(domain.basePath() + additionalPath);
+                .get(IntegrationTestUtil.getBaseURI() + additionalPath);
         domain.setResponse(response);
     }
 
@@ -62,7 +63,7 @@ public class GetFollowerSteps {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + validToken)
                 .when()
-                .get(domain.basePath() + "/users/4/follower");
+                .get(IntegrationTestUtil.getBaseURI() + "/users/4/follower");
         domain.setResponse(response);
     }
 
@@ -77,7 +78,7 @@ public class GetFollowerSteps {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + randomToken)
                 .when()
-                .get(domain.basePath() + "/users/0/follower");
+                .get(IntegrationTestUtil.getBaseURI() + "/users/0/follower");
         domain.setResponse(response);
     }
 
@@ -90,7 +91,7 @@ public class GetFollowerSteps {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + domain.tokenFromAccount(moderatorName))
                 .when()
-                .get(domain.basePath() + "/users/0/follower");
+                .get(IntegrationTestUtil.getBaseURI() + "/users/0/follower");
         domain.setResponse(response);
     }
 
@@ -103,7 +104,7 @@ public class GetFollowerSteps {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + validToken)
                 .when()
-                .get(domain.basePath() + "/users/" + userId + "/follower");
+                .get(IntegrationTestUtil.getBaseURI() + "/users/" + userId + "/follower");
         domain.setResponse(response);
     }
 }

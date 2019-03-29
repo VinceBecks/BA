@@ -1,6 +1,7 @@
 package de.openknowledge.playground.api.rest.security.stepDefinition;
 
 import cucumber.api.java.en.When;
+import de.openknowledge.playground.api.rest.security.supportCode.IntegrationTestUtil;
 import de.openknowledge.playground.api.rest.security.supportCode.SharedDomain;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
@@ -17,7 +18,7 @@ public class GetTweetDetailsSteps {
     }
 
 
-    @When("a client sends a GET {string} request for user {string} to get detailed information about the tweet with id {int}")
+    @When("a client sends a GET {string} request for (user|moderator) {string} to get detailed information about the tweet with id {int}")
     public void a_client_sends_a_GET_request_for_user_to_get_detailed_information_about_the_tweet_with_id(String additionalPath, String userName, Integer tweetId) {
         Response response = RestAssured
                 .given()
@@ -25,9 +26,21 @@ public class GetTweetDetailsSteps {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + domain.tokenFromAccount(userName))
                 .when()
-                .get(domain.basePath() + additionalPath);
+                .get(IntegrationTestUtil.getBaseURI() + additionalPath);
         domain.setResponse(response);
 
+    }
+
+    @When("a client sends a GET {string} request for user {string} to get detailed information about the retweet with id 2")
+    public void a_client_sends_a_GET_request_for_user_to_get_detailed_information_about_the_retweet_with_id(String additionalPath, String userName) {
+        Response response = RestAssured
+                .given()
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + domain.tokenFromAccount(userName))
+                .when()
+                .get(IntegrationTestUtil.getBaseURI() + additionalPath);
+        domain.setResponse(response);
     }
 
 
@@ -41,7 +54,7 @@ public class GetTweetDetailsSteps {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + randomToken)
                 .when()
-                .get(domain.basePath() + "/tweets/1");
+                .get(IntegrationTestUtil.getBaseURI() + "/tweets/1");
         domain.setResponse(response);
     }
 
@@ -56,7 +69,7 @@ public class GetTweetDetailsSteps {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + validToken)
                 .when()
-                .get(domain.basePath() + "/tweets/" + tweetId);
+                .get(IntegrationTestUtil.getBaseURI() + "/tweets/" + tweetId);
         domain.setResponse(response);
     }
 }

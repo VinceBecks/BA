@@ -9,6 +9,7 @@ import cucumber.api.PendingException;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import de.openknowledge.playground.api.rest.security.supportCode.IntegrationTestUtil;
 import de.openknowledge.playground.api.rest.security.supportCode.SharedDomain;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
@@ -49,7 +50,7 @@ public class FollowUserSteps {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + domain.tokenFromAccount(followingUser))
                 .when()
-                .post(domain.basePath() + additionalPath);
+                .post(IntegrationTestUtil.getBaseURI() + additionalPath);
         domain.setResponse(response);
     }
 
@@ -61,7 +62,7 @@ public class FollowUserSteps {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + domain.tokenFromAccount(followerUser))
                 .when()
-                .post(domain.basePath() + "/users/" + domain.getAccount(followedUser).getAccountId() + "/follower");
+                .post(IntegrationTestUtil.getBaseURI() + "/users/" + domain.getAccount(followedUser).getAccountId() + "/follower");
         domain.setResponse(response);
     }
 
@@ -74,7 +75,7 @@ public class FollowUserSteps {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + randomToken)
                 .when()
-                .post(domain.basePath() + "/users/1/follower");
+                .post(IntegrationTestUtil.getBaseURI() + "/users/1/follower");
         domain.setResponse(response);
     }
 
@@ -88,7 +89,7 @@ public class FollowUserSteps {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + validToken)
                 .when()
-                .post(domain.basePath() + "/users/4/follower");
+                .post(IntegrationTestUtil.getBaseURI() + "/users/4/follower");
         domain.setResponse(response);
     }
 
@@ -101,7 +102,7 @@ public class FollowUserSteps {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + domain.tokenFromAccount(moderatorName))
                 .when()
-                .post(domain.basePath() + "/users/0/follower");
+                .post(IntegrationTestUtil.getBaseURI() + "/users/0/follower");
         domain.setResponse(response);
     }
 
@@ -115,7 +116,7 @@ public class FollowUserSteps {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + validToken)
                 .when()
-                .post(domain.basePath() + "/users/" + userId + "/follower");
+                .post(IntegrationTestUtil.getBaseURI() + "/users/" + userId + "/follower");
         domain.setResponse(response);
     }
 }

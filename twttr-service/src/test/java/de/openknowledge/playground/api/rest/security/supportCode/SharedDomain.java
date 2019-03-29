@@ -1,21 +1,14 @@
 package de.openknowledge.playground.api.rest.security.supportCode;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.response.Response;
-import io.restassured.specification.RequestSpecification;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class SharedDomain {
 
-    private final String BASE_PATH = "http://localhost:8080/twttr-service/api";
     private Map<String, Account> accounts;
-    private Map<String, String> accountCredentials = new HashMap<>();
+    private Map<String, String> passwordForUser = new HashMap<>();
     private Map<String, String> tokenMap = new HashMap<>();
 
     private Response response;
@@ -42,16 +35,12 @@ public class SharedDomain {
         return tokenMap.get(userName);
     }
 
-    public void addAccountCredentials (String userName, String password) {
-        this.accountCredentials.put(userName, password);
+    public void setPasswordForUser(String userName, String password) {
+        this.passwordForUser.put(userName, password);
     }
 
-    public Map<String, String> getAccountCredentials() {
-        return accountCredentials;
-    }
-
-    public String basePath () {
-        return BASE_PATH;
+    public String getPasswordFromUser(String userName) {
+        return passwordForUser.get(userName);
     }
 
     public Response getResponse() {

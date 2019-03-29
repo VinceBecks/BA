@@ -1,6 +1,7 @@
 package de.openknowledge.playground.api.rest.security.stepDefinition;
 
 import cucumber.api.java.en.When;
+import de.openknowledge.playground.api.rest.security.supportCode.IntegrationTestUtil;
 import de.openknowledge.playground.api.rest.security.supportCode.SharedDomain;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
@@ -24,7 +25,7 @@ public class UnlikeTweetSteps {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + domain.tokenFromAccount(userName))
                 .when()
-                .delete(domain.basePath() + additionalPath);
+                .delete(IntegrationTestUtil.getBaseURI() + additionalPath);
         domain.setResponse(response);
     }
 
@@ -38,7 +39,7 @@ public class UnlikeTweetSteps {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + randomToken)
                 .when()
-                .delete(domain.basePath() + "/tweets/1/liker");
+                .delete(IntegrationTestUtil.getBaseURI() + "/tweets/1/liker");
         domain.setResponse(response);
     }
 
@@ -50,7 +51,7 @@ public class UnlikeTweetSteps {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + domain.tokenFromAccount(moderatorName))
                 .when()
-                .delete(domain.basePath() + "/tweets/1/liker");
+                .delete(IntegrationTestUtil.getBaseURI() + "/tweets/1/liker");
         domain.setResponse(response);
     }
 
@@ -63,7 +64,7 @@ public class UnlikeTweetSteps {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + validToken)
                 .when()
-                .delete(domain.basePath() + "/tweets/"+tweetId+"/liker");
+                .delete(IntegrationTestUtil.getBaseURI() + "/tweets/"+tweetId+"/liker");
         domain.setResponse(response);
     }
 }

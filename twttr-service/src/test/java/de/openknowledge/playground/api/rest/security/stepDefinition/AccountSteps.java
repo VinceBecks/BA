@@ -10,16 +10,15 @@ import com.github.database.rider.core.util.EntityManagerProvider;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import de.openknowledge.playground.api.rest.security.supportCode.SharedDomain;
-import de.openknowledge.playground.api.rest.security.supportCode.UserList;
+import de.openknowledge.playground.api.rest.security.supportCode.AccountDataSet;
 import de.openknowledge.playground.api.rest.security.supportCode.converter.convertedClasses.Account;
-import org.dbunit.database.AmbiguousTableNameException;
-import org.dbunit.dataset.DefaultDataSet;
-import org.dbunit.dataset.ITable;
 import org.junit.Rule;
 import org.keycloak.authorization.client.AuthzClient;
 import org.keycloak.representations.idm.authorization.AuthorizationResponse;
 
-import java.io.*;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.List;
 
 public class AccountSteps {
@@ -49,12 +48,19 @@ public class AccountSteps {
     @Given("the system has persisted users")
     public void the_system_has_persisted_users(List<Account> accounts) {
         try {
-            UserList userList = new UserList(accounts);
-            String json = new ObjectMapper().writeValueAsString(userList);
+            AccountDataSet accountDataSet = new AccountDataSet(accounts);
+            String json = new ObjectMapper().writeValueAsString(accountDataSet);
+            Writer writer = new FileWriter ("src/test/resources/datasets/users.json");
+            writer.write(json);
+            writer.close();
         } catch (JsonProcessingException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        dbExecutor.createDataSet(new DataSetConfig("users.json"));
+        dbExecutor.createDataSet(new DataSetConfig("datasets/users.json"));
+
+
     }
 
     @Given("there is no user with id 9999")
@@ -75,5 +81,10 @@ public class AccountSteps {
     @Given("user max follows the users john and jane")
     public void user_max_follows_the_users_john_and_jane() {
         dbExecutor.createDataSet(new DataSetConfig("follower/max-follows-john-and-jane.json"));
+    }
+
+    @Given("test")
+    public void test() {
+        // Write code here that turns the phrase above into concrete actions
     }
 }

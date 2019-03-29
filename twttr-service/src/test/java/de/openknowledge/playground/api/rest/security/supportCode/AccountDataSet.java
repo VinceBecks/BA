@@ -6,13 +6,13 @@ package de.openknowledge.playground.api.rest.security.supportCode;
         import java.util.LinkedList;
         import java.util.List;
 
-public class UserList {
+public class AccountDataSet {
     List<Object> tabFollower;
     List<Object> tabLiker;
     List<Object> tabTweet;
     List<Account> accounts;
 
-    public UserList(List<Account> accounts) {
+    public AccountDataSet(List<Account> accounts) {
         this.accounts = accounts;
         this.tabFollower = new LinkedList<>();
         this.tabLiker= new LinkedList<>();

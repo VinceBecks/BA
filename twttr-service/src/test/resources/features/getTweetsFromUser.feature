@@ -97,19 +97,27 @@ Feature: Get all tweets of a member
     And the HTTP response body contains the tweets with the ids <testIds>
     #todo: And the tweets will be responded as presented, ordered by their publish date
 
-    Examples:
+    Examples: No params are setted
       | numTweets  | index      | testIds          |
       | not setted | not setted | 10,9,8           |
+
+    Examples: Just index param is setted
+      | numTweets  | index      | testIds          |
       | not setted | 2          | 8,7,5            |
       | not setted | 0          | 10,9,8           |
       | not setted | 7          | 1                |
       | not setted | 8          |                  |
+
+    Examples: Just numTweets param is setted
+      | numTweets  | index      | testIds          |
       | 3          | not setted | 10,9,8           |
       | 6          | not setted | 10,9,8,7,5,4     |
       | 8          | not setted | 10,9,8,7,5,4,2,1 |
       | 9          | not setted | 10,9,8,7,5,4,2,1 |
-      | 9          | 1          | 9,8,7,5,4,2,1    |
 
+    Examples: Both params are setted
+      | numTweets  | index      | testIds          |
+      | 9          | 1          | 9,8,7,5,4,2,1    |
 
 
 

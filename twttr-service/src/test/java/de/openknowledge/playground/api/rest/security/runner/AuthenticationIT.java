@@ -2,6 +2,7 @@ package de.openknowledge.playground.api.rest.security.runner;
 
 import cucumber.api.CucumberOptions;
 import cucumber.api.junit.Cucumber;
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)

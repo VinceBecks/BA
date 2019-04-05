@@ -10,7 +10,7 @@ Feature: Get detailed information about a specified tweet
   Requesting information about a specified tweet
 
     Given the user "john" is authenticated
-    And a stored tweet with id 1 from user max with content "Example Content"
+    And a stored tweet with id 1 from user max with content "Example content"
     And the tweet with id 1 got liked by 1 user and retweeted by 2 users
     When a client sends a GET "/tweets/1" request for user "john" to get detailed information about the tweet with id 1
     Then the HTTP response status-code will be 200
@@ -38,7 +38,7 @@ Feature: Get detailed information about a specified tweet
   Requesting information about a specified retweet
 
     Given the user "max" is authenticated
-    And a stored tweet with id 1 from user john and content "Example Content" has a retweet with id 2 from user jane
+    And a stored tweet with id 1 from user john and content "Example content" has a retweet with id 2 from user jane
     And the retweet hasn´t got liked
     When a client sends a GET "/tweets/2" request for user "max" to get detailed information about the retweet with id 2
     Then the HTTP response status-code will be 200
@@ -49,9 +49,9 @@ Feature: Get detailed information about a specified tweet
             "content": "Example content",
             "pubDate": 679658765,
             "author": {
-                "userId": 3,
-                "firstName": "Jane",
-                "lastName": "Doe"
+                "userId": 0,
+                "firstName": "Max",
+                "lastName": "Mustermann"
             },
             "numLiker": 0,
             "numRetweets": 0,
@@ -74,7 +74,7 @@ Feature: Get detailed information about a specified tweet
   Requesting information about a specified tweet
 
     Given the moderator "werner" is authenticated
-    And a stored tweet with id 1 from user max with content "Example Content"
+    And a stored tweet with id 1 from user max with content "Example content"
     And the tweet with id 1 got liked by 1 user and retweeted by 2 users
     When a client sends a GET "/tweets/1" request for moderator "werner" to get detailed information about the tweet with id 1
     Then the HTTP response status-code will be 200

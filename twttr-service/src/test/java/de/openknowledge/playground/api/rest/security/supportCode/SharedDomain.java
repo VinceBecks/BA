@@ -54,4 +54,8 @@ public class SharedDomain {
     public Account getAccount (String userName) {
         return accounts.get(userName);
     }
+
+    public Map<String, Account> getAccounts() {
+        return accounts;
+    }
 }

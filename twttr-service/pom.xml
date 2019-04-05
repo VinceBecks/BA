@@ -330,6 +330,11 @@
             <version>${version.eclipselink}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>de.ppi.dbunit.datasetbuilder</groupId>
+            <artifactId>dbunit-datasetbuilder</artifactId>
+            <version>1.4</version>
+        </dependency>
 
         <!-- integration testing -->
         <dependency>

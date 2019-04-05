@@ -59,6 +59,7 @@ Feature: Like a specified tweet
     When a client sends a request to like the tweet with id 9999
     Then the HTTP response status-code will be 404
 
+
   @execute
   Scenario: Tweet to like is in status CANCELED
   The tweet to like must be in status PUBLISH

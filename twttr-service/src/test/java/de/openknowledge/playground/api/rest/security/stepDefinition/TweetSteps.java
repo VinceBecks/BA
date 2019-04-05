@@ -1,21 +1,31 @@
 package de.openknowledge.playground.api.rest.security.stepDefinition;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.database.rider.core.api.dataset.DataSetExecutor;
 import com.github.database.rider.core.configuration.DataSetConfig;
 import com.github.database.rider.core.connection.ConnectionHolderImpl;
 import com.github.database.rider.core.dataset.DataSetExecutorImpl;
 import com.github.database.rider.core.util.EntityManagerProvider;
-import cucumber.api.PendingException;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
-import de.openknowledge.playground.api.rest.security.domain.tweet.TweetDTO;
+import de.openknowledge.playground.api.rest.security.supportCode.DBSetCreator;
 import de.openknowledge.playground.api.rest.security.supportCode.SharedDomain;
+import de.openknowledge.playground.api.rest.security.supportCode.converter.convertedClasses.FollowerEntity;
+import de.openknowledge.playground.api.rest.security.supportCode.converter.convertedClasses.LikeEntity;
+import de.openknowledge.playground.api.rest.security.supportCode.converter.convertedClasses.TweetEntity;
+import de.openknowledge.playground.api.rest.security.supportCode.datasets.TweetDataSet;
 import io.cucumber.datatable.DataTable;
 import org.junit.Rule;
 
+import javax.persistence.EntityManager;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class TweetSteps {
     private SharedDomain domain;
@@ -36,93 +46,200 @@ public class TweetSteps {
 
     @Given("a stored tweet with id 1")
     public void a_stored_tweet_with_id() {
-        dbExecutor.createDataSet(new DataSetConfig("tweet/a-stored-tweet-with-id-1-from-max.json"));
+        TweetEntity entity = new TweetEntity(1, "Example content", new Date(System.currentTimeMillis()),0, "max");
+        entity.setAuthorId(0);
+        List<TweetEntity> tweets = new LinkedList<>();
+        tweets.add(entity);
+
+        DBSetCreator creator = new DBSetCreator(dbExecutor);
+        creator.createTweetDataSet(new DataSetConfig(""), tweets);
     }
 
     @Given("a stored tweet with id 1 from user max")
     public void a_stored_tweet_with_id_from_user() {
-        dbExecutor.createDataSet(new DataSetConfig("tweet/a-stored-tweet-with-id-1-from-max.json"));
+        TweetEntity entity = new TweetEntity(1, "Example content", new Date(System.currentTimeMillis()),0, "max");
+        entity.setAuthorId(0);
+        List<TweetEntity> tweets = new LinkedList<>();
+        tweets.add(entity);
+
+        DBSetCreator creator = new DBSetCreator(dbExecutor);
+        creator.createTweetDataSet(new DataSetConfig(""), tweets);
     }
 
-    @Given("a stored tweet with id 1 from user max with content \"Example Content\"")
+    @Given("a stored tweet with id 1 from user max with content \"Example content\"")
     public void a_stored_tweet_with_id_from_user_with_content_Example_Content() {
-        dbExecutor.createDataSet(new DataSetConfig("tweet/a-stored-tweet-with-id-1-from-max.json"));
+        TweetEntity entity = new TweetEntity(1, "Example content", new Date(System.currentTimeMillis()),0, "max");
+        entity.setAuthorId(0);
+        List<TweetEntity> tweets = new LinkedList<>();
+        tweets.add(entity);
+
+        DBSetCreator creator = new DBSetCreator(dbExecutor);
+        creator.createTweetDataSet(new DataSetConfig(""), tweets);
     }
 
     @Given("following tweets got persisted in presented order")
-    public void following_tweets_got_persisted_in_presented_order(DataTable dataTable) {
-        //todo: was mit übergebenen Parameter machen? Wird nicht gebraucht...
-        dbExecutor.createDataSet(new DataSetConfig("tweet/list-of-tweets.json"));
+    public void following_tweets_got_persisted_in_presented_order(List<TweetEntity> tweets) {
+        DBSetCreator creator = new DBSetCreator(dbExecutor);
+        AtomicLong time = new AtomicLong(System.currentTimeMillis()-10000000);
+        tweets.forEach(tweetEntity -> {
+            tweetEntity.setPubDate(new Date(time.addAndGet(1000)));
+            tweetEntity.setAuthorId(domain.getAccounts().get(tweetEntity.getAuthorName()).getAccountId());
+        });
+        creator.createTweetDataSet(new DataSetConfig(""), tweets);
     }
 
     @Given("following tweets got persisted from user john with id 2 in presented order")
-    public void following_tweets_got_persisted_from_user_john_with_id_in_presented_order(DataTable dataTable) {
-        //todo: Was mit übergebenen Parameter machen? ... wird nicht benötigt
-        dbExecutor.createDataSet(new DataSetConfig("tweet/list-of-tweets-from-john.json"));
+    public void following_tweets_got_persisted_from_user_john_with_id_in_presented_order(List<TweetEntity> tweets) {
+        DBSetCreator creator = new DBSetCreator(dbExecutor);
+        AtomicLong time = new AtomicLong(System.currentTimeMillis()-10000000);
+        tweets.forEach(tweetEntity -> {
+            tweetEntity.setPubDate(new Date(time.addAndGet(1000)));
+            tweetEntity.setAuthorId(2);
+        });
+        creator.createTweetDataSet(new DataSetConfig(""), tweets);
     }
 
-    @Given("there is no tweet with id {int}")
-    public void there_is_no_tweet_with_id(Integer tweetId) {
-        String [] stmts = new String [1];
-        stmts[0] = "DELETE FROM TAB_TWEET WHERE TWEET_ID = " + tweetId + ";";
-        dbExecutor.executeStatements(stmts);
+    @Given("there is no tweet with id 9999")
+    public void there_is_no_tweet_with_id() {
+        List<TweetEntity> tweets = new LinkedList<>();
+        DBSetCreator creator = new DBSetCreator(dbExecutor);
+        creator.createTweetDataSet(new DataSetConfig(""), tweets);
     }
 
     @Given("a stored tweet with id 1 in status CANCELED from user max")
     public void a_stored_tweet_with_id_in_status_CANCELED_from_user() {
-        dbExecutor.createDataSet(new DataSetConfig("tweet/a-stored-tweet-with-id-1-from-max-in-status-canceled.json"));
+        TweetEntity entity = new TweetEntity(1, "Example content", new Date(System.currentTimeMillis()),1, "max");
+        entity.setAuthorId(0);
+        List<TweetEntity> tweets = new LinkedList<>();
+        tweets.add(entity);
+
+        DBSetCreator creator = new DBSetCreator(dbExecutor);
+        creator.createTweetDataSet(new DataSetConfig(""), tweets);
     }
 
     @Given("the tweet with id 1 got liked by users max and john")
     public void the_tweet_with_id_got_liked_by_users_max_and_john() {
-        dbExecutor.createDataSet(new DataSetConfig("like/max-and-john-like-tweet-with-id-1.json"));
+        List<LikeEntity> likes = new LinkedList<>();
+        likes.add(new LikeEntity(1,0));
+        likes.add(new LikeEntity(1,2));
+        DBSetCreator creator = new DBSetCreator(dbExecutor);
+        creator.createLikesDataSet(new DataSetConfig(""), likes);
     }
 
     @Given("the user max is a liker of tweet with id 1")
     public void the_user_max_is_a_liker_of_tweet_with_id() {
-        dbExecutor.createDataSet(new DataSetConfig("like/max-is-liker-of-tweet-with-id-1.json"));
+        List<LikeEntity> likes = new LinkedList<>();
+        likes.add(new LikeEntity(1,0));
+        DBSetCreator creator = new DBSetCreator(dbExecutor);
+        creator.createLikesDataSet(new DataSetConfig(""), likes);
     }
 
     @Given("the user max is not a liker of the tweet with id 1")
     public void the_user_max_is_not_a_liker_of_tweet_with_id() {
-        dbExecutor.createDataSet(new DataSetConfig("like/empty-liker-list.json"));
+        List<LikeEntity> likes = new LinkedList<>();
+        DBSetCreator creator = new DBSetCreator(dbExecutor);
+        creator.createLikesDataSet(new DataSetConfig(""), likes);
     }
 
     @Given("the tweet with id {int} got retweeted by users max and john")
     public void the_tweet_with_id_got_retweeted_by_users_max_and_john(Integer int1) {
-        dbExecutor.createDataSet(new DataSetConfig("retweets/max-and-john-retweeted-tweet-with-id-1.json"));
+        List<TweetEntity> tweets = new LinkedList<>();
+
+        TweetEntity entity = new TweetEntity(1, "Example content", new Date(System.currentTimeMillis()),0, "martha");
+        entity.setAuthorId(1);
+        tweets.add(entity);
+
+        entity = new TweetEntity(2, "Example content", new Date(System.currentTimeMillis()),0, "max");
+        entity.setAuthorId(0);
+        entity.setRootTweetId(1);
+        tweets.add(entity);
+
+        entity = new TweetEntity(3, "Example content", new Date(System.currentTimeMillis()),0, "john");
+        entity.setAuthorId(2);
+        entity.setRootTweetId(1);
+        tweets.add(entity);
+
+        DBSetCreator creator = new DBSetCreator(dbExecutor);
+        creator.createTweetDataSet(new DataSetConfig(""), tweets);
     }
 
     @Given("the tweet with id 1 got liked by 1 user and retweeted by 2 users")
     public void the_tweet_with_id_got_liked_by_user_and_retweeted_by_users() {
-        dbExecutor.createDataSet(new DataSetConfig("tweet/tweet-with-id-1-got-liked-1-times-and-retweeted-2-times.json"));
+        List<TweetEntity> tweets = new LinkedList<>();
+
+        TweetEntity entity = new TweetEntity(1, "Example content", new Date(System.currentTimeMillis()),0, "max");
+        entity.setAuthorId(0);
+        tweets.add(entity);
+
+        entity = new TweetEntity(2, "Example content", new Date(System.currentTimeMillis()),0, "max");
+        entity.setAuthorId(0);
+        entity.setRootTweetId(1);
+        tweets.add(entity);
+
+        entity = new TweetEntity(3, "Example content", new Date(System.currentTimeMillis()),0, "john");
+        entity.setAuthorId(2);
+        entity.setRootTweetId(1);
+        tweets.add(entity);
+
+        DBSetCreator creator = new DBSetCreator(dbExecutor);
+        creator.createTweetDataSet(new DataSetConfig(""), tweets);
+
+        List<LikeEntity> likes = new LinkedList<>();
+        likes.add(new LikeEntity(1, 0));
+        creator.createLikesDataSet(new DataSetConfig(""), likes);
+
     }
 
-    @Given("a stored tweet with id 1 from user john and content \"Example Content\" has a retweet with id 2 from user jane")
+    @Given("a stored tweet with id 1 from user john and content \"Example content\" has a retweet with id 2 from user jane")
     public void a_stored_tweet_with_id_from_user_john_and_content_has_a_retweet_with_id_from_user_jane() {
-        dbExecutor.createDataSet(new DataSetConfig("retweets/retweet-with-id-2-from-tweet-with-id-1.json"));
+        List<TweetEntity> tweets = new LinkedList<>();
+
+        TweetEntity entity = new TweetEntity(1, "Example content", new Date(System.currentTimeMillis()),0, "john");
+        entity.setAuthorId(2);
+        tweets.add(entity);
+
+        entity = new TweetEntity(2, "Example content", new Date(System.currentTimeMillis()),0, "jane");
+        entity.setAuthorId(3);
+        entity.setRootTweetId(1);
+        tweets.add(entity);
     }
 
     @Given("the retweet hasn´t got liked")
     public void the_retweet_hasn_t_got_liked() {
-        dbExecutor.createDataSet(new DataSetConfig("like/empty-liker-list.json"));
+        List<LikeEntity> likes = new LinkedList<>();
+        DBSetCreator creator = new DBSetCreator(dbExecutor);
+        creator.createLikesDataSet(new DataSetConfig(""), likes);
     }
 
     @Given("a stored retweet with id 2 from tweet with id 1")
     public void a_stored_retweet_with_id_from_tweet_with_id() {
-        dbExecutor.createDataSet(new DataSetConfig("retweets/retweet-with-id-2-from-tweet-with-id-1.json"));
+        List<TweetEntity> tweets = new LinkedList<>();
+
+        TweetEntity entity = new TweetEntity(1, "Example content", new Date(System.currentTimeMillis()),0, "max");
+        entity.setAuthorId(0);
+        tweets.add(entity);
+
+        entity = new TweetEntity(2, "Example content", new Date(System.currentTimeMillis()),0, "max");
+        entity.setAuthorId(0);
+        entity.setRootTweetId(1);
+        tweets.add(entity);
+
+        DBSetCreator creator = new DBSetCreator(dbExecutor);
+        creator.createTweetDataSet(new DataSetConfig(""), tweets);
     }
 
     @Given("the user max is a follower of user john with id 2")
     public void the_user_max_is_a_follower_of_user_john_with_id() {
-        dbExecutor.createDataSet(new DataSetConfig("follower/max-follows-john.json"));
+        List<FollowerEntity> follower = new LinkedList<>();
+        follower.add(new FollowerEntity(0,2));
+        DBSetCreator creator = new DBSetCreator(dbExecutor);
+        creator.createFollowerDataSet(new DataSetConfig(""), follower);
     }
 
     @Given("the user max is not a follower of user john with id 2")
     public void the_user_max_is_not_a_follower_of_user_john_with_id() {
-        System.out.println("Servus");
-        dbExecutor.createDataSet(new DataSetConfig("follower/empty-follower-list.json"));
+        List<FollowerEntity> follower = new LinkedList<>();
+        DBSetCreator creator = new DBSetCreator(dbExecutor);
+        creator.createFollowerDataSet(new DataSetConfig(""), follower);
     }
-
-    
 }

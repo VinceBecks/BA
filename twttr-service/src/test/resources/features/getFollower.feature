@@ -8,7 +8,6 @@ Feature: Get follower
   - If the specified user doesn´t exist, then the http response status-code will be 404
 
 
-  @execute
   Scenario: Get follower of an specified user
   Requesting a list of follower of a specified user
 
@@ -35,7 +34,6 @@ Feature: Get follower
         """
 
 
-  @execute
   Scenario: Unauthorised request to get a list of follower from a specified user
   The request must contain a valid token of an user
 
@@ -44,8 +42,6 @@ Feature: Get follower
 
 
 
-    #todo: status-code war zuvor bei 404 .. so lassen?
-  @execute
   Scenario: Account to get the list of follower from belongs to a moderator
   The account to get the list of follower from must be from an user
 
@@ -58,7 +54,6 @@ Feature: Get follower
       }
       """
 
-  @execute
   Scenario: Transmitted token from the request to get a list of follower from a specified user belongs to a moderator
   Just users can request a list of follower from a specified user
 
@@ -67,7 +62,6 @@ Feature: Get follower
     Then the HTTP response status-code will be 403
 
 
-  @execute
   Scenario: User to get the list of follower from doesn´t exist
   The user to get the list of follower from must be existing
 

@@ -8,7 +8,6 @@ Feature: Retweet a Tweet
   - If the specified tweet doesn´t exist or is in status "CANCELED", then the http response status-code will be 404
 
 
-  @execute
   Scenario: Retweet a tweet
   Request to like a specified tweet
 
@@ -44,7 +43,6 @@ Feature: Retweet a Tweet
         """
 
     #todo: wie überprüfen?
-  @execute
   Scenario: Tweet to retweet is already a retweet
   The new created retweet will have the same rootTweet as the retweet it got retweeted from
 
@@ -54,7 +52,6 @@ Feature: Retweet a Tweet
     Then the HTTP response status-code will be 201
 
 
-  @execute
   Scenario: Unauthorised request to retweet a tweet
   The request must contain a valid token of an user
 
@@ -62,7 +59,6 @@ Feature: Retweet a Tweet
     Then the HTTP response status-code will be 401
 
 
-  @execute
   Scenario: Transmitted token from the request to retweet a specified tweet belongs to a moderator
   Just users can retweet tweets
 
@@ -71,7 +67,6 @@ Feature: Retweet a Tweet
     Then the HTTP response status-code will be 403
 
 
-  @execute
   Scenario: Tweet to retweet doesn´t exist
   The tweet to retweet must exist
 
@@ -79,7 +74,7 @@ Feature: Retweet a Tweet
     When a client sends a request to retweet the tweet with id 9999
     Then the HTTP response status-code will be 404
 
-  @execute
+
   Scenario: Tweet to retweet is in status CANCELED
   The tweet to retweet must be in status PUBLISH
 

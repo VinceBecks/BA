@@ -163,7 +163,6 @@ Feature: Get all Tweets
     """
 
 
-  @execute
   Scenario Outline: Change QueryParams numTweets and index by request to get tweets from all users
   The QueryParam numTweets represents the number of requested tweets
   The default value for numTweets will be 3
@@ -193,7 +192,6 @@ Feature: Get all Tweets
 
 
 
-  @execute
   Scenario: Unauthorised request to get tweets from users the requesting user is following
   The request must contain a valid token
 

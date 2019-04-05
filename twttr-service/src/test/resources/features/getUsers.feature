@@ -24,7 +24,6 @@ Feature: Get users
 
 
 
-  @execute
   Scenario Outline: Request users
   Requesting users sorted in first grad by their userName, in second grade by their firstName and in third grade by their lastName
 
@@ -57,12 +56,11 @@ Feature: Get users
 
     Examples:
       | accountType | userName |
-      | user        | max    |
-      | moderator   | werner |
+      | user        | max      |
+      | moderator   | werner   |
 
 
 
-  @execute
   Scenario Outline: Change query params for request to get users
   The QueryParam numUsers represents the number of requested users
   The default value for numUsers will be 3
@@ -75,32 +73,44 @@ Feature: Get users
       | value:      | <searchString> | <numTweets> | <index> |
     Then the returned users will be the users with ids <returnedUsers> in presented order
 
-    Examples:
-      | searchString | index      | numTweets  | returnedUsers |
-      | not setted   | not setted | not setted | 3,2,5         |
-      | not setted   | not setted | 4          | 3,2,5,6       |
-      | not setted   | not setted | 6          | 3,2,5,6,1,0   |
-      | not setted   | not setted | 7          | 3,2,5,6,1,0   |
-      | not setted   | 0          | not setted | 3,2,5         |
-      | not setted   | 1          | not setted | 2,5,6         |
-      | not setted   | 5          | not setted | 0             |
-      | not setted   | 6          | not setted |               |
-      | not setted   | 2          | 2          | 5,6           |
-      | not setted   | 3          | 2          | 6,1           |
-      | not setted   | 3          | 3          | 6,1,0         |
-      | not setted   | 3          | 4          | 6,1,0         |
-      | Mustermann   | not setted | not setted | 0             |
-      | mustermann   | not setted | not setted |               |
-      | ma           | not setted | not setted | 1,0           |
-      | ma           | 1          | not setted | 0             |
-      | ma           | not setted | 1          | 1             |
+      Examples: Without any query parameters setted
+        | searchString | index      | numTweets  | returnedUsers |
+        | not setted   | not setted | not setted | 3,2,5         |
+
+      Examples: Just numTweets is setted
+        | searchString | index      | numTweets  | returnedUsers |
+        | not setted   | not setted | 4          | 3,2,5,6       |
+        | not setted   | not setted | 6          | 3,2,5,6,1,0   |
+        | not setted   | not setted | 7          | 3,2,5,6,1,0   |
+
+      Examples: Just index is setted
+        | searchString | index      | numTweets  | returnedUsers |
+        | not setted   | 0          | not setted | 3,2,5         |
+        | not setted   | 1          | not setted | 2,5,6         |
+        | not setted   | 5          | not setted | 0             |
+        | not setted   | 6          | not setted |               |
+
+      Examples: Just searchString is setted
+        | searchString | index      | numTweets  | returnedUsers |
+        | Mustermann   | not setted | not setted | 0             |
+        | mustermann   | not setted | not setted |               |
+        | ma           | not setted | not setted | 1,0           |
+
+      Examples:
+        | searchString | index      | numTweets  | returnedUsers |
+        | ma           | 1          | not setted | 0             |
+        | ma           | not setted | 1          | 1             |
+        | not setted   | 2          | 2          | 5,6           |
+        | not setted   | 3          | 2          | 6,1           |
+        | not setted   | 3          | 3          | 6,1,0         |
+        | not setted   | 3          | 4          | 6,1,0         |
 
 
 
 
-  @execute
   Scenario: Unauthorised request to get a list of users
   The request must contain a valid token from an account to get a list of users
 
     When a client sends a request without a valid token to get a list of users
     Then the HTTP response status-code will be 401
+

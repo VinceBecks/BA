@@ -1,4 +1,4 @@
-package de.openknowledge.playground.api.rest.security.infrastructure.repository;
+package de.openknowledge.playground.api.rest.security.infrastructure.persistence.repository;
 
 
 import de.openknowledge.playground.api.rest.security.domain.account.Account;

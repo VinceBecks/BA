@@ -5,7 +5,7 @@ import de.openknowledge.playground.api.rest.security.domain.account.Account;
 import de.openknowledge.playground.api.rest.security.domain.account.AccountType;
 import de.openknowledge.playground.api.rest.security.domain.account.User;
 import de.openknowledge.playground.api.rest.security.domain.tweet.Tweet;
-import de.openknowledge.playground.api.rest.security.infrastructure.repository.TwttrRepository;
+import de.openknowledge.playground.api.rest.security.infrastructure.persistence.repository.TwttrRepository;
 import de.openknowledge.playground.api.rest.security.infrastructure.rest.validation.ValidationErrorDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +26,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import java.security.Principal;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 

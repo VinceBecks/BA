@@ -7,7 +7,7 @@ import de.openknowledge.playground.api.rest.security.domain.account.AccountType;
 import de.openknowledge.playground.api.rest.security.domain.account.User;
 import de.openknowledge.playground.api.rest.security.domain.tweet.Tweet;
 import de.openknowledge.playground.api.rest.security.domain.tweet.TweetState;
-import de.openknowledge.playground.api.rest.security.infrastructure.repository.TwttrRepository;
+import de.openknowledge.playground.api.rest.security.infrastructure.persistence.repository.TwttrRepository;
 import de.openknowledge.playground.api.rest.security.infrastructure.rest.validation.ValidationErrorDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -30,6 +30,8 @@ Feature: Get all Tweets
 
 
 
+
+
   Scenario: User requests last tweets from users he is following
   Requesting last three tweets in status PUBLISH from users the requesting user is following
 

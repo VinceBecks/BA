@@ -11,8 +11,6 @@ Feature: Get all Tweets
   - If the QueryParam "index" or the QueryParam "numTweets" isn´t a positive integer, then the http response body will contain an appropriate information about the mistake and the status-code will be 400
   - If the request doesn´t contain a valid token, then the http response status-code will be 401
 
-  #todo: 3. letztes Kriterium überarbeiten, oder streichen?
-  #BAinfo: andersrum würde bei liker nicht gehen, da sonst beim persistieren der tweets die liker wieder überschrieben worden wären
   Background: Authenticate user max and moderator werner, persist tweets and let user max follow users john and jane
     Given the user "max" is authenticated
     And the moderator "werner" is authenticated
@@ -32,10 +30,6 @@ Feature: Get all Tweets
 
 
 
-
-  #fürBA: hier gibt es Beispiel, dass es mehrere Kriterien für ein Scenario Outline gibt
-  #fürBA: Kriterium hatte offengelassen, in welcher Reihenfolge sie sortiert werden... wird erst durch beispiel klar, dass neueste zuerst gesendet werden
-  @execute
   Scenario: User requests last tweets from users he is following
   Requesting last three tweets in status PUBLISH from users the requesting user is following
 
@@ -84,11 +78,9 @@ Feature: Get all Tweets
     """
 
 
-  @execute
   Scenario Outline: Change QueryParams numTweets and index by request to get tweets from users the requesting user is following
   The QueryParam numTweets represents the number of requested tweets and will overwrite its default value 3
   The QueryParam index represents the number of tweets to be skipped for the response from a list of all PUBLISH tweets from users the requesting user is following sorted by their publish date and will overwrite its default value 0
-  #todo: And the returning tweets will be sorted by their publish date
 
     When a client sends a GET "/tweets" request for user "max" to get a list of tweets with following Query Params
       | queryParam: | numTweets   | index   |
@@ -97,23 +89,31 @@ Feature: Get all Tweets
     And the HTTP response body contains the tweets with the ids <testIds>
     #todo: And the tweets will be responded as presented, ordered by their publish date
 
-    Examples:
+    Examples: No params are setted
       | numTweets  | index      | testIds      |
       | not setted | not setted | 10,9,7       |
+
+    Examples: Just index param is setted
+      | numTweets  | index      | testIds      |
       | not setted | 2          | 7,5,2        |
       | not setted | 0          | 10,9,7       |
       | not setted | 5          | 1            |
       | not setted | 6          |              |
+
+    Examples: Just numTweets param is setted
+      | numTweets  | index      | testIds      |
       | 3          | not setted | 10,9,7       |
       | 6          | not setted | 10,9,7,5,2,1 |
       | 7          | not setted | 10,9,7,5,2,1 |
+
+    Examples: Both params are setted
+      | numTweets  | index      | testIds      |
       | 3          | 1          | 9,7,5        |
 
 
 
 
 
-  @execute
   Scenario: Moderator requests last tweets from all users
   Requesting last three tweets in status PUBLISH from all users
   A moderator will receive the last three tweets from all users
@@ -168,7 +168,6 @@ Feature: Get all Tweets
   The default value for numTweets will be 3
   The QueryParam index represents the number of tweets to be skipped for the response from a list of all PUBLISH tweets from users the requesting user is following sorted by their publish date
   The default value for index will be 0
-  #todo: And the returning tweets will be sorted by their publish date
 
     When a client sends a GET "/tweets" request for moderator "werner" to get a list of tweets with following Query Params
       | queryParam: | numTweets   | index   |
@@ -177,18 +176,27 @@ Feature: Get all Tweets
     And the HTTP response body contains the tweets with the ids <testIds>
     #todo: And the tweets will be responded as presented, ordered by their publish date
 
-    Examples:
+    Examples: No params are setted
+      | numTweets  | index      | testIds |
+      | not setted | not setted | 10,9,8  |
+
+    Examples: Just index param is setted
+      | numTweets  | index      | testIds |
+      | not setted | 2          | 8,7,5   |
+      | not setted | 0          | 10,9,8  |
+      | not setted | 5          | 4,2,1   |
+      | not setted | 6          | 2,1     |
+
+    Examples: Just numTweets param is setted
       | numTweets  | index      | testIds          |
-      | not setted | not setted | 10,9,8           |
-      | not setted | 2          | 8,7,5            |
-      | not setted | 0          | 10,9,8           |
-      | not setted | 5          | 4,2,1            |
-      | not setted | 6          | 2,1              |
       | 3          | not setted | 10,9,8           |
       | 6          | not setted | 10,9,8,7,5,4     |
       | 8          | not setted | 10,9,8,7,5,4,2,1 |
       | 9          | not setted | 10,9,8,7,5,4,2,1 |
-      | 3          | 1          | 9,8,7            |
+
+    Examples: Both params are setted
+      | numTweets  | index      | testIds      |
+      | 3          | 1          | 9,8,7        |
 
 
 

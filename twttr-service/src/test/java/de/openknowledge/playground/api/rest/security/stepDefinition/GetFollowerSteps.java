@@ -5,12 +5,13 @@ import com.github.database.rider.core.configuration.DataSetConfig;
 import com.github.database.rider.core.connection.ConnectionHolderImpl;
 import com.github.database.rider.core.dataset.DataSetExecutorImpl;
 import com.github.database.rider.core.util.EntityManagerProvider;
-import cucumber.api.PendingException;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
+import de.openknowledge.playground.api.rest.security.supportCode.dataSetBuilder.DBSetCreator;
 import de.openknowledge.playground.api.rest.security.supportCode.IntegrationTestUtil;
 import de.openknowledge.playground.api.rest.security.supportCode.SharedDomain;
+import de.openknowledge.playground.api.rest.security.supportCode.converter.convertedClasses.FollowerEntity;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.junit.Rule;
@@ -18,6 +19,8 @@ import org.keycloak.authorization.client.AuthzClient;
 
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import java.util.LinkedList;
+import java.util.List;
 
 public class GetFollowerSteps {
 
@@ -38,7 +41,12 @@ public class GetFollowerSteps {
 
     @Given("the user john with id 2 has two followers jane and lena")
     public void the_user_john_with_id_has_two_followers_jane_and_lena() {
-        dbExecutor.createDataSet(new DataSetConfig("follower/jane-and-lena-follows-john.json"));
+        List<FollowerEntity> follower = new LinkedList<>();
+        follower.add(new FollowerEntity(3, 2));
+        follower.add(new FollowerEntity(6, 2));
+
+        DBSetCreator creator = new DBSetCreator(dbExecutor);
+        creator.createFollowerDataSet(new DataSetConfig(""), follower);
     }
 
 
@@ -53,6 +61,7 @@ public class GetFollowerSteps {
                 .get(IntegrationTestUtil.getBaseURI() + additionalPath);
         domain.setResponse(response);
     }
+
 
     @When("a client sends a request to to get a list of follower from a moderator")
     public void a_client_sends_a_request_to_to_get_a_list_of_follower_from_a_moderator() {

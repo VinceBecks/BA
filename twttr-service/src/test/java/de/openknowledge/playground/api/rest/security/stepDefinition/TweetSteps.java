@@ -1,7 +1,5 @@
 package de.openknowledge.playground.api.rest.security.stepDefinition;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.database.rider.core.api.dataset.DataSetExecutor;
 import com.github.database.rider.core.configuration.DataSetConfig;
 import com.github.database.rider.core.connection.ConnectionHolderImpl;
@@ -9,19 +7,13 @@ import com.github.database.rider.core.dataset.DataSetExecutorImpl;
 import com.github.database.rider.core.util.EntityManagerProvider;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
-import de.openknowledge.playground.api.rest.security.supportCode.DBSetCreator;
+import de.openknowledge.playground.api.rest.security.supportCode.dataSetBuilder.DBSetCreator;
 import de.openknowledge.playground.api.rest.security.supportCode.SharedDomain;
 import de.openknowledge.playground.api.rest.security.supportCode.converter.convertedClasses.FollowerEntity;
 import de.openknowledge.playground.api.rest.security.supportCode.converter.convertedClasses.LikeEntity;
 import de.openknowledge.playground.api.rest.security.supportCode.converter.convertedClasses.TweetEntity;
-import de.openknowledge.playground.api.rest.security.supportCode.datasets.TweetDataSet;
-import io.cucumber.datatable.DataTable;
 import org.junit.Rule;
 
-import javax.persistence.EntityManager;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;

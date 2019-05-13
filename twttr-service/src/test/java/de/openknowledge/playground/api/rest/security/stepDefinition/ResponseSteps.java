@@ -57,6 +57,7 @@ public class ResponseSteps {
         domain.getResponse().then()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body("content", Matchers.equalTo(expectedTweet.getContent()))
+                .body("author.userId", Matchers.equalTo(expectedTweet.getAuthor().getUserId()))
                 .body("author.firstName", Matchers.equalTo(expectedTweet.getAuthor().getFirstName()))
                 .body("author.lastName", Matchers.equalTo(expectedTweet.getAuthor().getLastName()))
                 .body("author.role", Matchers.equalTo(expectedTweet.getAuthor().getRole().toString()))

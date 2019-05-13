@@ -17,8 +17,6 @@ import java.util.Map;
 public class Converter implements TypeRegistryConfigurer{
     private SharedDomain domain = new SharedDomain();
 
-
-
     @Override
     public Locale locale() {
         return Locale.ENGLISH;
@@ -64,14 +62,12 @@ public class Converter implements TypeRegistryConfigurer{
                 }));
 
 
-
         typeRegistry.defineDataTableType(new DataTableType (GetTweetsQueryParams.class,
                 (Map<String, String> row)-> {
                     String numTweets = row.get("numTweets").equals("not setted") ? null : row.get("numTweets");
                     String index = row.get("index").equals("not setted") ? null : row.get("index");
                     return new GetTweetsQueryParams(index, numTweets);
                 }));
-
 
 
         typeRegistry.defineDataTableType(new DataTableType (GetUsersQueryParams.class,
@@ -93,7 +89,6 @@ public class Converter implements TypeRegistryConfigurer{
                 IntegerList.class,
                 IntegerList::new
         ));
-
 
     }
 }

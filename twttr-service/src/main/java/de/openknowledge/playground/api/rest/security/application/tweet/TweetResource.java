@@ -81,7 +81,7 @@ public class TweetResource {
             LOG.info("Requester is a user");
             User requestingUser = repository.findUserByUserName(userName);
             List<Tweet> finalPersistedTweets = persistedTweets;
-            requestingUser.getFollows().forEach(user -> finalPersistedTweets.addAll(repository.findTweetsFromUser(user.getAccountId())));
+            requestingUser.getFollows().forEach(user -> finalPersistedTweets.addAll(repository.findTweetsInStatePublishFromUser(user.getAccountId())));
             LOG.info("Found {} tweets from users the user {} is following", persistedTweets.size(), userName);
         }
 

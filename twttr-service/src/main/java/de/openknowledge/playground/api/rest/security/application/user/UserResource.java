@@ -73,7 +73,7 @@ public class UserResource {
         String userName = principal.getName();
         User requester = repository.findUserByUserName(userName);
 
-        List<Tweet> persistedTweets = repository.findTweetsFromUser(userId);
+        List<Tweet> persistedTweets = repository.findTweetsInStatePublishFromUser(userId);
         LOG.info("Found {} tweets", persistedTweets.size());
 
         int startIndex = persistedTweets.size() > index ? index : persistedTweets.size();

@@ -64,7 +64,7 @@ public class TwttrRepository {
         return users;
     }
 
-    public List<Tweet> findTweetsFromUser (final Integer userId) {
+    public List<Tweet> findTweetsInStatePublishFromUser(final Integer userId) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Tweet> cq = cb.createQuery(Tweet.class);
 

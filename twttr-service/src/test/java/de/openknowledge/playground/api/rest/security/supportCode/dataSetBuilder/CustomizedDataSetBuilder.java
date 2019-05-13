@@ -72,7 +72,6 @@ public class CustomizedDataSetBuilder {
 
     public IDataSet createFollower (List<FollowerEntity> follower) {
         DataSetBuilder builder =null;
-
         try {
             builder = new DataSetBuilder();
             for (FollowerEntity entity : follower) {

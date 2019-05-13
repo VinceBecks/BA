@@ -26,7 +26,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class DBSetCreator {
 
-
     private DataSetExecutor dbExecutor;
 
     public DBSetCreator(DataSetExecutor dbExecutor) {
@@ -34,18 +33,7 @@ public class DBSetCreator {
     }
 
 
-
     public void createTweetDataSet(DataSetConfig dataSetConfig, List<TweetEntity> tweets) {
-        if (new AtomicBoolean(true).compareAndSet(true, false)) {
-            StringBuilder sb = new StringBuilder(150);
-            sb.append("cacheConnection: ").append("" + dbExecutor.getDBUnitConfig().isCacheConnection()).append("\n")
-                    .append("cacheTableNames: ").append(dbExecutor.getDBUnitConfig().isCacheTableNames()).append("\n")
-                    .append("leakHunter: ").append("" + dbExecutor.getDBUnitConfig().isLeakHunter()).append("\n");
-            for (Map.Entry<String, Object> entry : dbExecutor.getDBUnitConfig().getProperties().entrySet()) {
-                sb.append(entry.getKey()).append(": ").append(entry.getValue()).append("\n");
-            }
-        }
-
         if (dataSetConfig != null) {
             try {
                 IDataSet resultingDataSet = new CustomizedDataSetBuilder().createTweets(tweets);
@@ -60,18 +48,7 @@ public class DBSetCreator {
     }
 
 
-
     public void createLikesDataSet(DataSetConfig dataSetConfig, List<LikeEntity> likes) {
-        if (new AtomicBoolean(true).compareAndSet(true, false)) {
-            StringBuilder sb = new StringBuilder(150);
-            sb.append("cacheConnection: ").append("" + dbExecutor.getDBUnitConfig().isCacheConnection()).append("\n")
-                    .append("cacheTableNames: ").append(dbExecutor.getDBUnitConfig().isCacheTableNames()).append("\n")
-                    .append("leakHunter: ").append("" + dbExecutor.getDBUnitConfig().isLeakHunter()).append("\n");
-            for (Map.Entry<String, Object> entry : dbExecutor.getDBUnitConfig().getProperties().entrySet()) {
-                sb.append(entry.getKey()).append(": ").append(entry.getValue()).append("\n");
-            }
-        }
-
         if (dataSetConfig != null) {
             try {
                 IDataSet resultingDataSet = new CustomizedDataSetBuilder().createLikes(likes);
@@ -86,18 +63,7 @@ public class DBSetCreator {
     }
 
 
-
     public void createFollowerDataSet(DataSetConfig dataSetConfig, List<FollowerEntity> follower) {
-        if (new AtomicBoolean(true).compareAndSet(true, false)) {
-            StringBuilder sb = new StringBuilder(150);
-            sb.append("cacheConnection: ").append("" + dbExecutor.getDBUnitConfig().isCacheConnection()).append("\n")
-                    .append("cacheTableNames: ").append(dbExecutor.getDBUnitConfig().isCacheTableNames()).append("\n")
-                    .append("leakHunter: ").append("" + dbExecutor.getDBUnitConfig().isLeakHunter()).append("\n");
-            for (Map.Entry<String, Object> entry : dbExecutor.getDBUnitConfig().getProperties().entrySet()) {
-                sb.append(entry.getKey()).append(": ").append(entry.getValue()).append("\n");
-            }
-        }
-
         if (dataSetConfig != null) {
             try {
                 IDataSet resultingDataSet = new CustomizedDataSetBuilder().createFollower(follower);
@@ -111,19 +77,7 @@ public class DBSetCreator {
         }
     }
 
-
-
     public void createAccountDataSet(DataSetConfig dataSetConfig, List<AccountEntity> accounts) {
-        if (new AtomicBoolean(true).compareAndSet(true, false)) {
-            StringBuilder sb = new StringBuilder(150);
-            sb.append("cacheConnection: ").append("" + dbExecutor.getDBUnitConfig().isCacheConnection()).append("\n")
-                    .append("cacheTableNames: ").append(dbExecutor.getDBUnitConfig().isCacheTableNames()).append("\n")
-                    .append("leakHunter: ").append("" + dbExecutor.getDBUnitConfig().isLeakHunter()).append("\n");
-            for (Map.Entry<String, Object> entry : dbExecutor.getDBUnitConfig().getProperties().entrySet()) {
-                sb.append(entry.getKey()).append(": ").append(entry.getValue()).append("\n");
-            }
-        }
-
         if (dataSetConfig != null) {
             try {
                 IDataSet resultingDataSet = new CustomizedDataSetBuilder().createAccounts(accounts);
@@ -136,9 +90,6 @@ public class DBSetCreator {
             }
         }
     }
-
-
-
 
     private IDataSet performSequenceFiltering(DataSetConfig dataSet, IDataSet target)
             throws DatabaseUnitException, SQLException {
@@ -160,7 +111,6 @@ public class DBSetCreator {
     }
 
     private IDataSet performReplacements(IDataSet dataSet, List<Replacer> replacersList) {
-
         if (replacersList==null || replacersList.isEmpty())
             return dataSet;
 

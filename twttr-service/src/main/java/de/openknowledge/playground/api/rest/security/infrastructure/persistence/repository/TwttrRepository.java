@@ -166,7 +166,7 @@ public class TwttrRepository {
 
         TypedQuery<Account> query = em.createQuery(cq);
         Account account= query.getSingleResult();
-        LOG.info("Found user with userName {}", userName);
+        LOG.info("Found account from {}", userName);
         return account;
     }
 

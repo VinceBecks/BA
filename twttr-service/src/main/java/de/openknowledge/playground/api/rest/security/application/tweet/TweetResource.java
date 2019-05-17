@@ -51,12 +51,11 @@ public class TweetResource {
         String userName = principal.getName();
         User requester = repository.findUserByUserName(userName);
 
-        LOG.info("Create new tweet");
         Tweet tweet = new Tweet(newTweet.getContent(), requester);
+        LOG.info("New tweet created");
         repository.persistTweet(tweet);
         requester.getTweets().add(tweet);
 
-        LOG.info("Response with new tweets");
         return Response.status(Response.Status.CREATED).entity(new TweetDTO(tweet)).build();
     }
 
@@ -75,12 +74,13 @@ public class TweetResource {
 
         List<Tweet> persistedTweets = new LinkedList<>();
         if (requester.getRole() == AccountType.MODERATOR) {
-            LOG.info("Requester is a moderator");
+            LOG.info("Request from a moderator");
             persistedTweets = repository.findAllTweetsInStatePublish();
         }else {
-            LOG.info("Requester is a user");
+            LOG.info("Request from a user");
             User requestingUser = repository.findUserByUserName(userName);
             List<Tweet> finalPersistedTweets = persistedTweets;
+            //Frage: So die Liste zusammenstellen lassen, oder direkt in der DB- Abfrage per Joins
             requestingUser.getFollows().forEach(user -> finalPersistedTweets.addAll(repository.findTweetsInStatePublishFromUser(user.getAccountId())));
             LOG.info("Found {} tweets from users the user {} is following", persistedTweets.size(), userName);
         }
@@ -99,6 +99,7 @@ public class TweetResource {
     }
 
 
+    //todo: Validierung von tweetId vornehmen?
     @Path("{tweetId}")
     @GET
     @RolesAllowed({USER, MODERATOR})
@@ -115,13 +116,13 @@ public class TweetResource {
     }
 
 
-
+    //todo: Validierung von tweetId vornehmen?
     @Path("{tweetId}")
     @DELETE
     @RolesAllowed({USER, MODERATOR})
     @Transactional
     public Response deleteTweet (@PathParam("tweetId") final Integer tweetId, @Context SecurityContext securityContext) {
-        LOG.info("Request to delete tweet with id {}", tweetId);
+        LOG.info("Request to cancel tweet with id {}", tweetId);
         Principal principal = securityContext.getUserPrincipal();
         String userName = principal.getName();
         Account requester = repository.findAccountByUserName(userName);
@@ -130,12 +131,13 @@ public class TweetResource {
             LOG.warn("Tweet with id {} isn´t in status PUBLISH", tweetId);
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        LOG.info("Found tweet");
 
         if (requester.getRole() == AccountType.MODERATOR || requester.getAccountId().equals(tweetToDelete.getAuthor().getAccountId())) {
             tweetToDelete.setState(TweetState.CANCELED);
+            LOG.info("Canceled tweet");
             return Response.status(Response.Status.NO_CONTENT).build();
         } else {
+            LOG.warn("User is not allowed to cancel tweet with id {}", tweetId);
             return Response.status(Response.Status.FORBIDDEN).build();
         }
     }
@@ -147,18 +149,24 @@ public class TweetResource {
     @RolesAllowed({USER})
     @Transactional
     public Response likeTweet (@PathParam("tweetId") final Integer tweetId, @Context SecurityContext securityContext) {
+        LOG.info("Request to like tweet with id {}", tweetId);
         Principal principal = securityContext.getUserPrincipal();
         String userName = principal.getName();
         User requester = repository.findUserByUserName(userName);
         Tweet tweetToLike = repository.findTweetById(tweetId);
-        if (!(tweetToLike.getState() == TweetState.PUBLISH)) { return Response.status(Response.Status.NOT_FOUND).build();}
+        if (!(tweetToLike.getState() == TweetState.PUBLISH)) {
+            LOG.warn("Tweet with id {} isn´t in state PUBLISH", tweetId);
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
         for (User user : tweetToLike.getLiker()) {
             if (user.getAccountId() == requester.getAccountId()){
+                LOG.warn("Requesting user has already liked tweet with id {}", tweetId);
                 return Response.status(Response.Status.BAD_REQUEST).entity(new ValidationErrorDTO("Requesting user is already a liker of the specified tweet")).build();
             }
         }
 
         tweetToLike.getLiker().add(requester);
+        LOG.info("Liked tweet with id {} for user {}", tweetId, userName);
         return Response.status(Response.Status.NO_CONTENT).build();
     }
 

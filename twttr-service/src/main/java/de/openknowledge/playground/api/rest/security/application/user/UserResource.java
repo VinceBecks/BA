@@ -47,14 +47,16 @@ public class UserResource {
     public Response getUser(@DefaultValue("") @QueryParam("searchString") final String searchString,
                             @DefaultValue("3")@QueryParam("numUsers") final Integer numUsers,
                             @DefaultValue("0") @QueryParam("index") final Integer index) {
+        LOG.info("Request to get users with \"{}\"", searchString);
 
         List<User> foundUsers = repository.findUsersBySearchString(searchString);
         List<UserDTO> users = new LinkedList<>();
         foundUsers.forEach(user -> users.add(new UserDTO(user)));
 
-        List<UserDTO> usersToResponse = new LinkedList<>();
         int startIndex = users.size() > index ? index : users.size();
         int endIndex = users.size() > index+numUsers ? index+numUsers : users.size();
+
+        List<UserDTO> usersToResponse = new LinkedList<>();
         users.subList(startIndex, endIndex).forEach(user -> usersToResponse.add(user));
 
         return Response.ok().entity(usersToResponse).build();
@@ -170,7 +172,6 @@ public class UserResource {
             return Response.status(Response.Status.NO_CONTENT).build();
         }
 
-        LOG.info("User with id {} isn´t a follower of user with id {}", requester.getAccountId(), userToUnfollow.getAccountId());
         return Response.status(Response.Status.BAD_REQUEST).entity(new ValidationErrorDTO("Requesting user isn´t a follower of the specified user")).build();
     }
 }

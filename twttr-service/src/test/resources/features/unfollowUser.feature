@@ -7,7 +7,6 @@ Feature: Unfollow a user
   - If the specified account belongs to a moderator, then the http response body contains an appropriate information about the mistake and the http response status- will be 400
   - If the specified user doesn´t exist, then the http response status-code will be 404
 
-  @execute
   Scenario: Unfollow a user
   Request to unfollow a specified user
 
@@ -16,7 +15,6 @@ Feature: Unfollow a user
     When a client sends a DELETE "/users/2/follower" request for user "max" to unfollow user john
     Then the HTTP response status-code will be 204
 
-  @execute
   Scenario: The requesting user isn´t a follower of the specified user
   The requesting user must be a follower of the specified user to unfollow him
 
@@ -32,7 +30,6 @@ Feature: Unfollow a user
       """
 
 
-  @execute
   Scenario: Unauthorised request to unfollow a user
   The request must contain a valid token of an user
 
@@ -40,7 +37,6 @@ Feature: Unfollow a user
     Then the HTTP response status-code will be 401
 
 
-  @execute
   Scenario: Token from request to unfollow a user belongs to a moderator
   Account must be from an user
 
@@ -50,7 +46,6 @@ Feature: Unfollow a user
 
 
 #todo: 400 lassen?
-  @execute
   Scenario: Account to unfollow belongs to a moderator
   The account to unfollow must be from an user
 
@@ -63,7 +58,6 @@ Feature: Unfollow a user
       }
       """
 
-  @execute
   Scenario: Specified user to unfollow doesn´t exist
   The user to unfollow must exist
 

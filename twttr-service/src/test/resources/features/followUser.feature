@@ -8,7 +8,6 @@ Feature: Follow a user
   - If the transmitted token belongs to a moderator, then the http response status-code will be 403
   - If the specified user to follow doesn´t exist, then the http response status-code will be 404
 
-  @execute
   Scenario: Follow a user
   Request to follow a user
 
@@ -17,7 +16,6 @@ Feature: Follow a user
     When a client sends a POST "/users/2/follower" request for user "max" to follow user john
     Then the HTTP response status-code will be 204
 
-    @execute
   Scenario: Requesting user is already a follower of the specified user
   Each user can be just once a follower of a specified user
 
@@ -32,7 +30,6 @@ Feature: Follow a user
       }
       """
 
-  @execute
   Scenario: Unauthorised request to follow a user
   The request to follow an user must contain a valid token of an user
 
@@ -41,7 +38,6 @@ Feature: Follow a user
 
 
   #todo: status-code war zuvor bei 404 .. so lassen?
-  @execute
   Scenario: Account to follow belongs to a moderator
   The account to follow must be from an user
 
@@ -54,7 +50,6 @@ Feature: Follow a user
       }
       """
 
-  @execute
   Scenario: Transmitted token from the request to follow a specified user belongs to a moderator
   Just users can follow users
 
@@ -63,7 +58,6 @@ Feature: Follow a user
     Then the HTTP response status-code will be 403
 
 
-  @execute
   Scenario: The user to follow doesn´t exist
   The account from an user to follow must be existing
 

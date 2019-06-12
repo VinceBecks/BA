@@ -7,7 +7,6 @@ Feature: Get retweeter of a specified tweet
   - If the specified tweet doesn´t exist or is in state "CANCELED", then the http response status-code will be 404
 
 
-  @execute
   Scenario: Get a list of retweeter of a specified tweet
   Requesting a list of retweeter of a specified tweet
 
@@ -35,14 +34,12 @@ Feature: Get retweeter of a specified tweet
         """
 
 
-  @execute
   Scenario: Unauthorised request to get a list of retweeter from a specified tweet
   The request must contain a valid token of an user
 
     When a client sends a request without a valid token of an user to get a list of retweeter of a tweet
     Then the HTTP response status-code will be 401
 
-  @execute
   Scenario: Transmitted token from the request to get a list of retweeter from a specified tweet belongs to a moderator
   Just users can request a list of retweeter from a specified tweet
 
@@ -50,7 +47,6 @@ Feature: Get retweeter of a specified tweet
     When a client sends a request for moderator "werner" to get a list of retweeter of a tweet
     Then the HTTP response status-code will be 403
 
-  @execute
   Scenario: Tweet to get the list of retweeter from doesn´t exist
   The user must exist
 
@@ -58,7 +54,6 @@ Feature: Get retweeter of a specified tweet
     When a client sends a request to get a list of retweeter of the tweet with id 9999
     Then the HTTP response status-code will be 404
 
-  @execute
   Scenario: Tweet to get the list of retweeter from is in status CANCELED
   The tweet to get the list of retweeter from must be existing
 

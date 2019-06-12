@@ -5,7 +5,6 @@ Feature: Get detailed information about a specified tweet
   - If the request doesn´t contain a valid token, then the http response status-code will be 401
   - If the specified tweet doesn´t exist or is in state "CANCELED", then the http response status-code will be 404
 
-  @execute
   Scenario: Request for user to get detailed information about a specified tweet
   Requesting information about a specified tweet
 
@@ -33,7 +32,6 @@ Feature: Get detailed information about a specified tweet
 
 
     #fürBA: Immer noch nicht ausreichend.. Immer noch offen, was mit den Likern des Root-Tweets passiert.. werden die mit übernommen? Hier hat Entwickler Spielraum und kann es so implementieren, wie er meint
-  @execute
   Scenario: Tweet to get detailed information about is a retweet
   Requesting information about a specified retweet
 
@@ -69,7 +67,6 @@ Feature: Get detailed information about a specified tweet
         }
         """
 
-  @execute
   Scenario: Request for moderator to get detailed information about a specified tweet
   Requesting information about a specified tweet
 
@@ -95,7 +92,6 @@ Feature: Get detailed information about a specified tweet
         """
 
 
-  @execute
   Scenario: Unauthorised request to get a detailed information about a specified tweet
   The request must contain a valid token
 
@@ -103,7 +99,6 @@ Feature: Get detailed information about a specified tweet
     Then the HTTP response status-code will be 401
 
 
-  @execute
   Scenario: Tweet to get detailed information about doesn´t exist
   The tweet to get detailed information about must exist
 
@@ -112,7 +107,6 @@ Feature: Get detailed information about a specified tweet
     Then the HTTP response status-code will be 404
 
 
-  @execute
   Scenario: Tweet to get detailed information about is in status CANCELED
   The tweet to get detailed information about must be in status PUBLISH
 

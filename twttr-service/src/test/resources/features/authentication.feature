@@ -1,6 +1,5 @@
 Feature: Get token from account
 
-  @execute
   Scenario Outline: Authenticate
 
     Given following <accountType>

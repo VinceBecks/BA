@@ -2,13 +2,11 @@ package de.openknowledge.playground.api.rest.security.infrastructure.rest.filter
 
 import org.wildfly.swarm.keycloak.deployment.KeycloakSecurityContextAssociation;
 
-import java.io.IOException;
-import java.security.Principal;
-
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.ext.Provider;
+import java.security.Principal;
 
 /**
  * JAX-RS filter that rewrites the principal name in the {@link SecurityContext}.

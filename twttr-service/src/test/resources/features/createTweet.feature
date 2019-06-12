@@ -7,7 +7,6 @@ Feature: Create tweet
   - If the transmitted token belongs to a moderator, then the http response status-code will be 403
 
 
-  @execute
   Scenario: Create a new tweet
   Request to create a new tweet and the tweetId will be genarated from the database.
   The date of publish will also from the system automatically assigned
@@ -32,7 +31,6 @@ Feature: Create tweet
             }
         """
 
-  @execute
   Scenario Outline: Wrong number of characters for the new tweet to be created
   The number of characters for the new tweet should be between 1 and 140
 
@@ -55,7 +53,6 @@ Feature: Create tweet
 
 
 
-  @execute
   Scenario: Unauthorised request to create a new tweet
   The request must contain a valid token of an user to create a new tweet
 
@@ -64,7 +61,6 @@ Feature: Create tweet
 
 
 
-  @execute @just
   Scenario: Transmitted token from the request to create a new tweet belongs to a moderator
   Just users can create new tweets
 

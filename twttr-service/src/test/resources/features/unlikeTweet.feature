@@ -6,7 +6,6 @@ Feature: Unlike a specified tweet
   - If the request contains a valid token which belongs to a moderator, then the http response status-code will be 403
   - If the specified tweet doesn´t exist or is in state "CANCELED", then the http response status-code will be 404
 
-  @execute
   Scenario: Unlike a tweet
   Request to unlike a tweet
 
@@ -16,7 +15,6 @@ Feature: Unlike a specified tweet
     When a client sends a DELETE "/tweets/1/liker" request for user "max" to unlike the tweet with id 1
     Then the HTTP response status-code will be 204
 
-    @execute
     Scenario: Requesting user isn´t a liker of the specified tweet
     The requesting user must be a liker of the specified tweet to unlike it
 
@@ -32,7 +30,6 @@ Feature: Unlike a specified tweet
       }
       """
 
-  @execute
   Scenario: Unauthorised request to unlike a tweet
   The request must contain a valid token of an user
 
@@ -40,7 +37,6 @@ Feature: Unlike a specified tweet
     Then the HTTP response status-code will be 401
 
 
-  @execute
   Scenario: Token from request to unlike a tweet belongs to a moderator
   Account must be from an user
 
@@ -50,7 +46,6 @@ Feature: Unlike a specified tweet
 
 
   #fürBA: Hier geht es nicht, dass gleiche Methode auf verschiedene Steps (unfollow, unlike, ... --> alle sehr ähnlich, aber unterschiedliche Pfade, bzw. methoden) matched, da es unterschiedliche Pfade sind
-  @execute
   Scenario: Tweet to unlike doesn´t exist
   The tweet to unlike must exist
 
@@ -58,7 +53,6 @@ Feature: Unlike a specified tweet
     When a client sends a request to unlike the tweet with id 9999
     Then the HTTP response status-code will be 404
 
-  @execute
   Scenario: Tweet to unlike is in status CANCELED
   The tweet to unlike must be in status PUBLISH
 

@@ -1,7 +1,7 @@
 package de.openknowledge.playground.api.rest.security.stepDefinitions;
 
 import cucumber.api.java.en.When;
-import de.openknowledge.playground.api.rest.security.domain.tweet.NewTweet;
+import de.openknowledge.playground.api.rest.security.supportCode.converter.convertedClasses.NewTweet;
 import de.openknowledge.playground.api.rest.security.supportCode.IntegrationTestUtil;
 import de.openknowledge.playground.api.rest.security.supportCode.SharedDomain;
 import de.openknowledge.playground.api.rest.security.supportCode.converter.convertedClasses.GetTweetsQueryParams;

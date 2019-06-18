@@ -1,4 +1,4 @@
-package de.openknowledge.playground.api.rest.security.domain.tweet;
+package de.openknowledge.playground.api.rest.security.supportCode.converter.convertedClasses;
 
 import java.io.Serializable;
 

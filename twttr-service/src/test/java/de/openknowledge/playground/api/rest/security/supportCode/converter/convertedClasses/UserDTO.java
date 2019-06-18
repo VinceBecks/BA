@@ -1,4 +1,4 @@
-package de.openknowledge.playground.api.rest.security.domain.accounts;
+package de.openknowledge.playground.api.rest.security.supportCode.converter.convertedClasses;
 
 import de.openknowledge.playground.api.rest.security.domain.account.AccountType;
 import de.openknowledge.playground.api.rest.security.domain.account.User;

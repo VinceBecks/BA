@@ -10,7 +10,7 @@ Feature: Get detailed information about a specified tweet
 
     Given the user "john" is authenticated
     And a stored tweet with id 1 from user max with content "Example content"
-    And the tweet with id 1 got liked by 1 user and retweeted by 2 users
+    And the tweet with id 1 has one liker and two retweets
     When a client sends a GET "/tweets/1" request for user "john" to get detailed information about the tweet with id 1
     Then the HTTP response status-code will be 200
     And the HTTP response body will contain following JSON with detailed information about the tweet with id 1
@@ -72,7 +72,7 @@ Feature: Get detailed information about a specified tweet
 
     Given the moderator "werner" is authenticated
     And a stored tweet with id 1 from user max with content "Example content"
-    And the tweet with id 1 got liked by 1 user and retweeted by 2 users
+    And the tweet with id 1 has one liker and two retweets
     When a client sends a GET "/tweets/1" request for moderator "werner" to get detailed information about the tweet with id 1
     Then the HTTP response status-code will be 200
     And the HTTP response body will contain following JSON with detailed information about the tweet with id 1

@@ -1,17 +1,20 @@
-package de.openknowledge.playground.api.rest.security.stepDefinition;
+package de.openknowledge.playground.api.rest.security.stepDefinitions;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cucumber.api.PendingException;
 import cucumber.api.java.en.Then;
 import de.openknowledge.playground.api.rest.security.application.tweet.DetailedTweet;
+import de.openknowledge.playground.api.rest.security.domain.accounts.UserDTO;
 import de.openknowledge.playground.api.rest.security.domain.tweet.TweetDTO;
 import de.openknowledge.playground.api.rest.security.supportCode.SharedDomain;
 import de.openknowledge.playground.api.rest.security.supportCode.converter.convertedClasses.ErrorMessage;
-import de.openknowledge.playground.api.rest.security.domain.accounts.UserDTO;
 import de.openknowledge.playground.api.rest.security.supportCode.converter.convertedClasses.IntegerList;
 import io.restassured.response.Response;
 import org.hamcrest.Matchers;
+import org.junit.Assert;
 
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
@@ -19,12 +22,37 @@ import java.util.Date;
 import java.util.List;
 
 public class ResponseSteps {
-    private SharedDomain domain;
 
+    private SharedDomain domain;
     public ResponseSteps (SharedDomain domain) {
         this.domain = domain;
     }
 
+
+    @Then("the response body should contain a valid token for the account of {string}")
+    public void the_response_body_should_contain_a_valid_token_for_the_account_of (String userName) {
+        //todo: Prüfung reicht nicht .. KeyCloak gibt immer einen Token zurück nur ist dieser nicht immer gültig
+        Assert.assertNotNull(domain.tokenFromAccount(userName));
+        DecodedJWT jwt = JWT.decode(domain.tokenFromAccount(userName));
+        Assert.assertEquals("Username stimmt nicht mit preferred_username überein", userName, jwt.getClaim("preferred_username").asString());
+    }
+
+    @Then("there should not be a valid token generated")
+    public void there_should_not_be_a_valid_token_generated () {
+        Assert.assertNull(domain.tokenFromAccount("max"));
+    }
+
+    @Then("the genarated token for user {string} is invalid")
+    public void the_genarated_token_for_user_is_invalid (String userName) {
+        Assert.assertNotNull(domain.tokenFromAccount(userName));
+        DecodedJWT jwt = JWT.decode(domain.tokenFromAccount(userName));
+        Assert.assertNotEquals("Username stimmt nicht mit preferred_username überein", userName, jwt.getClaim("preferred_username").asString());
+    }
+
+
+
+
+    // mixed Responses
 
     @Then("the HTTP response body contains following JSON of an error message:")
     public void the_HTTP_response_body_contains_following_JSON_of_an_error_message(ErrorMessage expectedErrorMessage) {

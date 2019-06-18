@@ -9,7 +9,7 @@ Feature: Get users
   - If the QueryParam "searchString" isn´t specified, then its default value will be ''
   - If the request doesn´t contain a valid token, then the http response status-code will be 401
 
-
+  #fürBA: TypeRegistry hieran vorstellen? Oder lieber an einem Beispiel einer Liste von Tweets? --> nur eine Registrierung möglich (Abfragen, ob Daten gesetzt sind also nötig, wenn unterschiedliche Arten der Initialisierung gewünscht
   Background: Persist users
     Given the system has persisted users
       | accountId | userName | firstName | lastName   | role      |
@@ -24,11 +24,12 @@ Feature: Get users
 
 
 
-  Scenario Outline: Request users
-  Requesting users sorted in first grad by their userName, in second grade by their firstName and in third grade by their lastName
+  Scenario: User requests user information
+  Requesting users sorted in first grad by their userName,
+  in second grade by their firstName and in third grade by their lastName
 
-    And the <accountType> "<userName>" is authenticated
-    When a client sends a "GET" "/users" request for <accountType> "<userName>" to get a list of users
+    And the user "max" is authenticated
+    When a client sends a "GET" "/users" request for user "max" to get a list of users
     Then the HTTP response status-code will be 200
     And the HTTP response body contains following JSON with a list of users
       """
@@ -54,11 +55,38 @@ Feature: Get users
       ]
       """
 
-    Examples:
-      | accountType | userName |
-      | user        | max      |
-      | moderator   | werner   |
 
+
+  Scenario: Moderator requests user information
+  Requesting users sorted in first grad by their userName,
+  in second grade by their firstName and in third grade by their lastName
+
+    And the moderator "werner" is authenticated
+    When a client sends a "GET" "/users" request for moderator "werner" to get a list of users
+    Then the HTTP response status-code will be 200
+    And the HTTP response body contains following JSON with a list of users
+      """
+      [
+          {
+              "userId": 3,
+              "firstName": "Jane",
+              "lastName": "Doe",
+              "role": "USER"
+          },
+          {
+              "userId": 2,
+              "firstName": "John",
+              "lastName": "Doe",
+              "role": "USER"
+          },
+          {
+              "userId": 5,
+              "firstName": "Karl",
+              "lastName": "Ranseier",
+              "role": "USER"
+          }
+      ]
+      """
 
 
   Scenario Outline: Change query params for request to get users
@@ -96,7 +124,7 @@ Feature: Get users
         | mustermann   | not setted | not setted |               |
         | ma           | not setted | not setted | 1,0           |
 
-      Examples:
+      Examples: Combined query parameters
         | searchString | index      | numTweets  | returnedUsers |
         | ma           | 1          | not setted | 0             |
         | ma           | not setted | 1          | 1             |

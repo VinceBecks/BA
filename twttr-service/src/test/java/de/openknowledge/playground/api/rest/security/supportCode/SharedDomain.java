@@ -16,7 +16,6 @@ public class SharedDomain {
     public SharedDomain () {
         accounts = new HashMap<>();
 
-        //todo: wie auslesen aus accounts.json?
         accounts.put("max", new Account(0, "max", "password", "Max", "Mustermann"));
         accounts.put("marta", new Account(1, "marta", "password", "Marta", "Musterfrau"));
         accounts.put("john", new Account(2, "john", "password", "John", "Doe"));

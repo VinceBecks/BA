@@ -6,6 +6,7 @@ Feature: Create tweet
   - If the request doesn´t contain a valid token of an user, then the http response status-code will be 401
   - If the transmitted token belongs to a moderator, then the http response status-code will be 403
 
+  #fürBA: 2 unterschiedliche Weisen wie JSON Datei beschrieben werden kann
 
   Scenario: Create a new tweet
   Request to create a new tweet and the tweetId will be genarated from the database.
@@ -21,6 +22,7 @@ Feature: Create tweet
             {
                 "tweetId": 5,
                 "content": "An example content",
+                "pubDate": 2322342342,
                 "author" : {
                     "userId": 0,
                     "firstName": "Max",

@@ -88,28 +88,28 @@ Feature: Get all Tweets
       | queryParam: | numTweets   | index   |
       | value:      | <numTweets> | <index> |
     Then the HTTP response status-code will be 200
-    And the HTTP response body contains the tweets with the ids <testIds>
+    And the HTTP response body contains the tweets with the ids <tweetIds>
     #todo: And the tweets will be responded as presented, ordered by their publish date
 
     Examples: No params are setted
-      | numTweets  | index      | testIds      |
+      | numTweets  | index      | tweetIds      |
       | not setted | not setted | 10,9,7       |
 
     Examples: Just index param is setted
-      | numTweets  | index      | testIds      |
+      | numTweets  | index      | tweetIds      |
       | not setted | 2          | 7,5,2        |
       | not setted | 0          | 10,9,7       |
       | not setted | 5          | 1            |
       | not setted | 6          |              |
 
     Examples: Just numTweets param is setted
-      | numTweets  | index      | testIds      |
+      | numTweets  | index      | tweetIds      |
       | 3          | not setted | 10,9,7       |
       | 6          | not setted | 10,9,7,5,2,1 |
       | 7          | not setted | 10,9,7,5,2,1 |
 
     Examples: Both params are setted
-      | numTweets  | index      | testIds      |
+      | numTweets  | index      | tweetIds      |
       | 3          | 1          | 9,7,5        |
 
 

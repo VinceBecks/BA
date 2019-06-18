@@ -1,4 +1,4 @@
-package de.openknowledge.playground.api.rest.security.stepDefinition;
+package de.openknowledge.playground.api.rest.security.stepDefinitions;
 
 import com.github.database.rider.core.api.dataset.DataSetExecutor;
 import com.github.database.rider.core.configuration.DataSetConfig;
@@ -7,14 +7,11 @@ import com.github.database.rider.core.dataset.DataSetExecutorImpl;
 import com.github.database.rider.core.util.EntityManagerProvider;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
-import de.openknowledge.playground.api.rest.security.supportCode.dataSetBuilder.DBSetCreator;
 import de.openknowledge.playground.api.rest.security.supportCode.SharedDomain;
-import de.openknowledge.playground.api.rest.security.supportCode.converter.convertedClasses.FollowerEntity;
 import de.openknowledge.playground.api.rest.security.supportCode.converter.convertedClasses.AccountEntity;
+import de.openknowledge.playground.api.rest.security.supportCode.dataSetBuilder.DBSetCreator;
 import io.cucumber.datatable.DataTable;
 import org.junit.Rule;
-import org.keycloak.authorization.client.AuthzClient;
-import org.keycloak.representations.idm.authorization.AuthorizationResponse;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -38,7 +35,6 @@ public class AccountSteps {
         this.domain = domain;
     }
 
-
     @Given("following moderator")
     public void following_moderator (DataTable dataTable) {
         Map<String, String> account = dataTable.transpose().asMap(String.class, String.class);
@@ -51,8 +47,6 @@ public class AccountSteps {
         Map<String, String> account = dataTable.transpose().asMap(String.class, String.class);
         domain.setPasswordForUser(account.get("userName"), account.get("password"));
     }
-
-
 
     @Given("the system has persisted users")
     public void the_system_has_persisted_users(List<AccountEntity> accounts) {

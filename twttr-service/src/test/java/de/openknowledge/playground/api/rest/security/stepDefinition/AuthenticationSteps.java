@@ -22,17 +22,12 @@ public class AuthenticationSteps {
     }
 
 
-    @Given("following moderator")
-    public void following_moderator (DataTable dataTable) {
-        Map<String, String> account = dataTable.transpose().asMap(String.class, String.class);
-        domain.setPasswordForUser(account.get("userName"), null);
-        domain.setPasswordForUser(account.get("userName"), account.get("password"));
-    }
 
-    @Given("following user")
-    public void following_user (DataTable dataTable) {
-        Map<String, String> account = dataTable.transpose().asMap(String.class, String.class);
-        domain.setPasswordForUser(account.get("userName"), account.get("password"));
+    //fürBA: Case Unterscheidung möglich --> Output Parameter wäre auch möglich gewesen
+    @Given("the (user|moderator) {string} is authenticated")
+    public void the_user_is_authenticated(String userName) {
+        AuthorizationResponse response = AuthzClient.create().authorization(userName, domain.getAccount(userName).getPassword()).authorize();
+        domain.addValidToken(userName, response.getToken());
     }
 
     @When("a client sends a POST request to \\/auth\\/realms\\/twttr\\/protocol\\/openid-connect\\/token to get a valid token for {string}")

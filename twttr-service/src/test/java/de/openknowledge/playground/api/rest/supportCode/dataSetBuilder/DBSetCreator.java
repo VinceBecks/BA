@@ -8,7 +8,6 @@ import de.openknowledge.playground.api.rest.supportCode.converter.convertedClass
 import de.openknowledge.playground.api.rest.supportCode.converter.convertedClasses.FollowerEntity;
 import de.openknowledge.playground.api.rest.supportCode.converter.convertedClasses.LikeEntity;
 import de.openknowledge.playground.api.rest.supportCode.converter.convertedClasses.TweetEntity;
-import de.openknowledge.playground.api.rest.supportCode.dataSetBuilder.CustomizedDataSetBuilder;
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseSequenceFilter;
 import org.dbunit.dataset.FilteredDataSet;
@@ -20,9 +19,7 @@ import org.dbunit.operation.DatabaseOperation;
 import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class DBSetCreator {
 
@@ -32,6 +29,20 @@ public class DBSetCreator {
         this.dbExecutor = dbExecutor;
     }
 
+
+    public void clearDataBase (DataSetConfig dataSetConfig) {
+        if (dataSetConfig != null) {
+            try {
+                IDataSet resultingDataSet = new CustomizedDataSetBuilder().emptyDataSet();
+                resultingDataSet = performSequenceFiltering(dataSetConfig, resultingDataSet);
+                resultingDataSet = performReplacements(resultingDataSet);
+                DatabaseOperation operation = dataSetConfig.getstrategy().getOperation();
+                operation.execute(dbExecutor.getRiderDataSource().getDBUnitConnection(), resultingDataSet);
+            } catch (Exception e) {
+                throw new DataBaseSeedingException("Could not initialize dataset: " + dataSetConfig, e);
+            }
+        }
+    }
 
     public void createTweetDataSet(DataSetConfig dataSetConfig, List<TweetEntity> tweets) {
         if (dataSetConfig != null) {

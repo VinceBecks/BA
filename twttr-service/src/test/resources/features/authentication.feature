@@ -26,7 +26,7 @@ Feature: Get token from account
     Given following user
       | userName | password |
       | max      | password |
-    When a client sends a request to get a valid token for user "max" with an incorrect password
+    When a client sends a request to /auth/realms/twttr/protocol/openid-connect/token to get a valid token for user "max" with an incorrect password
     Then there should not be a valid token generated
 
 
@@ -35,7 +35,7 @@ Feature: Get token from account
     Given following user
       | userName | password |
       | max      | password |
-    When a client sends a request to get a valid token for user "max" with an incorrect userName
+    When a client sends a request to /auth/realms/twttr/protocol/openid-connect/token to get a valid token for user "max" with an incorrect userName
     Then there should not be a valid token generated
 
 
@@ -44,7 +44,7 @@ Feature: Get token from account
     Given following user
       | userName | password |
       | max      | password |
-    When a client sends a request to get a valid token for user "max" without an userName
+    When a client sends a request to /auth/realms/twttr/protocol/openid-connect/token to get a valid token for user "max" without an userName
     Then the genarated token for user "max" is invalid
 
 
@@ -53,5 +53,5 @@ Feature: Get token from account
     Given following user
       | userName | password |
       | max      | password |
-    When a client sends a request to get a valid token for user "max" without an password
+    When a client sends a request to /auth/realms/twttr/protocol/openid-connect/token to get a valid token for user "max" without an password
     Then the genarated token for user "max" is invalid

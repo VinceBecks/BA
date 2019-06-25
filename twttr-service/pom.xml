@@ -34,7 +34,8 @@
         <version.assertj>3.9.1</version.assertj>
         <version.mockito>2.18.0</version.mockito>
 
-        <version.database-rider>1.4.0</version.database-rider>
+        <!--version.database-rider>1.4.0</version.database-rider-->
+        <version.database-rider>1.7.0</version.database-rider>
         <version.eclipselink>2.7.3</version.eclipselink>
 
         <version.rest-assured>3.0.7</version.rest-assured>
@@ -44,6 +45,10 @@
 
         <version.cucumber>3.0.2</version.cucumber>
         <version.picocontainer>2.15</version.picocontainer>
+
+        <version.hibernate>5.0.10.Final</version.hibernate>
+
+        <version.jpa>1.0.0.Final</version.jpa>
     </properties>
 
     <build>
@@ -355,6 +360,23 @@
             <groupId>org.keycloak</groupId>
             <artifactId>keycloak-authz-client</artifactId>
             <version>${version.keycloak-authz-client}</version>
+        </dependency>
+
+
+
+
+        <!-- hibernate -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${version.hibernate}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>${version.hibernate}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

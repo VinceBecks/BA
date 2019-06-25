@@ -205,5 +205,5 @@ Feature: Get all Tweets
   Scenario: Unauthorised request to get tweets from users the requesting user is following
   The request must contain a valid token
 
-    When a client sends a request without a valid token to get tweets
+    When a client sends a GET "/tweets" request without a valid token to get a list of tweets
     Then the HTTP response status-code will be 401

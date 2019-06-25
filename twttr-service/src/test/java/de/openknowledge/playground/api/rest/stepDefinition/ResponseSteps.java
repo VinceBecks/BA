@@ -87,7 +87,6 @@ public class ResponseSteps {
         } catch (IOException e) {
             throw new PendingException();
         }
-
     }
 
     @Then("the HTTP response body will contain following JSON with detailed information about the tweet with id 1")

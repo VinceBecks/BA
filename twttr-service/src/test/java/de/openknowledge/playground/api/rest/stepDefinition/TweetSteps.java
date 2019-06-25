@@ -155,8 +155,8 @@ public class TweetSteps {
         creator.createTweetDataSet(new DataSetConfig(""), tweets);
     }
 
-    @Given("the tweet with id 1 got liked by 1 user and retweeted by 2 users")
-    public void the_tweet_with_id_got_liked_by_user_and_retweeted_by_users() {
+    @Given("the tweet with id 1 has one liker and two retweets")
+    public void the_tweet_with_id_1_has_one_liker_and_two_retweets() {
         List<TweetEntity> tweets = new LinkedList<>();
 
         TweetEntity entity = new TweetEntity(1, "Example content", new Date(System.currentTimeMillis()),0, "max");
@@ -179,7 +179,6 @@ public class TweetSteps {
         List<LikeEntity> likes = new LinkedList<>();
         likes.add(new LikeEntity(1, 0));
         creator.createLikesDataSet(new DataSetConfig(""), likes);
-
     }
 
     @Given("a stored tweet with id 1 from user john and content \"Example content\" has a retweet with id 2 from user jane")

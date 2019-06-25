@@ -7,15 +7,21 @@ import com.github.database.rider.core.dataset.DataSetExecutorImpl;
 import com.github.database.rider.core.util.EntityManagerProvider;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
+import de.openknowledge.playground.api.rest.supportCode.dataSetBuilder.CustomizedDataSetBuilder;
+import de.openknowledge.playground.api.rest.supportCode.dataSetBuilder.DBConnection;
 import de.openknowledge.playground.api.rest.supportCode.dataSetBuilder.DBSetCreator;
 import de.openknowledge.playground.api.rest.supportCode.SharedDomain;
 import de.openknowledge.playground.api.rest.supportCode.converter.convertedClasses.FollowerEntity;
 import de.openknowledge.playground.api.rest.supportCode.converter.convertedClasses.AccountEntity;
 import io.cucumber.datatable.DataTable;
+import jdk.nashorn.internal.ir.RuntimeNode;
+import org.dbunit.DatabaseUnitException;
+import org.dbunit.dataset.IDataSet;
 import org.junit.Rule;
 import org.keycloak.authorization.client.AuthzClient;
 import org.keycloak.representations.idm.authorization.AuthorizationResponse;
 
+import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +29,6 @@ import java.util.Map;
 public class AccountSteps {
 
     private SharedDomain domain;
-    static boolean first = true;
 
     @Rule
     EntityManagerProvider entityManagerProvider = EntityManagerProvider.instance("test-local");
@@ -42,7 +47,6 @@ public class AccountSteps {
     @Given("following moderator")
     public void following_moderator (DataTable dataTable) {
         Map<String, String> account = dataTable.transpose().asMap(String.class, String.class);
-        domain.setPasswordForUser(account.get("userName"), null);
         domain.setPasswordForUser(account.get("userName"), account.get("password"));
     }
 
@@ -53,11 +57,16 @@ public class AccountSteps {
     }
 
 
-
     @Given("the system has persisted users")
     public void the_system_has_persisted_users(List<AccountEntity> accounts) {
-        DBSetCreator creator = new DBSetCreator(dbExecutor);
-        creator.createAccountDataSet(new DataSetConfig(""), accounts);
+       // DBSetCreator creator = new DBSetCreator(dbExecutor);
+      //  creator.createAccountDataSet(new DataSetConfig(""), accounts);
+        try {
+            new DBConnection().updateAccounts(accounts);
+        } catch (DatabaseUnitException | SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException();
+        }
     }
 
     @Given("there is no user with id 9999")

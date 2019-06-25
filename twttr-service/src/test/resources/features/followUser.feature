@@ -12,16 +12,16 @@ Feature: Follow a user
   Request to follow a user
 
     Given the user "max" is authenticated
-    And the user max isn´t a follower of user john with id 2
     When a client sends a POST "/users/2/follower" request for user "max" to follow user john
     Then the HTTP response status-code will be 204
+
 
   Scenario: Requesting user is already a follower of the specified user
   Each user can be just once a follower of a specified user
 
     Given the user "max" is authenticated
-    And the user max is already a follower of user john
-    When a client sends a request for user "max" to follow user "john"
+    And the user max is a follower of user john with id 2
+    When a client sends a POST "/users/2/follower" request for user "max" to follow user john
     Then the HTTP response status-code will be 400
     And the HTTP response body contains following JSON of an error message:
       """
@@ -33,15 +33,15 @@ Feature: Follow a user
   Scenario: Unauthorised request to follow a user
   The request to follow an user must contain a valid token of an user
 
-    When a client sends a request to follow an user without a valid token
+    When a client sends a POST "/users/2/follower" request for user max without a valid token to follow user john
     Then the HTTP response status-code will be 401
 
 
-  #todo: status-code war zuvor bei 404 .. so lassen?
   Scenario: Account to follow belongs to a moderator
   The account to follow must be from an user
 
-    When a client sends a request to follow the account of a moderator
+    Given the user "max" is authenticated
+    When a client sends a POST "/users/4/follower" request for user "max" to follow the account of a moderator
     Then the HTTP response status-code will be 400
     And the HTTP response body contains following JSON of an error message:
       """
@@ -54,13 +54,14 @@ Feature: Follow a user
   Just users can follow users
 
     Given the moderator "werner" is authenticated
-    When a client sends a request for the moderator "werner" to follow a user
+    When a client sends a POST "/users/2/follower" request for moderator "werner" to follow user john
     Then the HTTP response status-code will be 403
 
 
   Scenario: The user to follow doesn´t exist
   The account from an user to follow must be existing
 
-    Given there is no user with id 9999
-    When a client sends a request to follow the user with id 9999
+    Given the user "max" is authenticated
+    And there is no user with id 9999
+    When a client sends a POST "/users/9999/follower" request for user "max" to follow the specified account
     Then the HTTP response status-code will be 404

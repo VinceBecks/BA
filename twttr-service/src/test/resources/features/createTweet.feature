@@ -13,7 +13,7 @@ Feature: Create tweet
   The date of publish will also from the system automatically assigned
 
     Given the user "max" is authenticated
-    When a client sends a POST "/tweets" request for the user "max" to create a new tweet and the body contains following JSON
+    When a client sends a POST "/tweets" request for user "max" to create the following tweet
       | attribute | type   | value              |
       | content   | String | An example content |
     Then the HTTP response status-code will be 201
@@ -33,11 +33,13 @@ Feature: Create tweet
             }
         """
 
+
+
   Scenario Outline: Wrong number of characters for the new tweet to be created
   The number of characters for the new tweet should be between 1 and 140
-
+#todo: !!!! errorMessages überarbeiten
     Given the user "max" is authenticated
-    When a client sends a request for "max" to create a new tweet with <numberOfCharacters> characters
+    When a client sends a POST "/tweets" request for user "max" to create new tweet with <numberOfCharacter> character
     Then the HTTP response status-code will be 400
     And the HTTP response body contains following JSON of a list of error messages:
       """
@@ -49,7 +51,7 @@ Feature: Create tweet
       """
 
     Examples:
-      | numberOfCharacters |
+      | numberOfCharacter |
       | 0                  |
       | 141                |
 
@@ -58,7 +60,9 @@ Feature: Create tweet
   Scenario: Unauthorised request to create a new tweet
   The request must contain a valid token of an user to create a new tweet
 
-    When a client sends a request to create a new tweet without a valid token of an user
+    When a client sends a POST "/tweets" request for user "max" without a valid token to create the following tweet
+      | attribute | type   | value              |
+      | content   | String | An example content |
     Then the HTTP response status-code will be 401
 
 
@@ -67,5 +71,7 @@ Feature: Create tweet
   Just users can create new tweets
 
     Given the moderator "werner" is authenticated
-    When a client sends a request to create a tweet for the moderator "werner"
+    When a client sends a POST "/tweets" request for moderator "werner" to create the following tweet
+      | attribute | type   | value              |
+      | content   | String | An example content |
     Then the HTTP response status-code will be 403

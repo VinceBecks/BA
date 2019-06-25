@@ -30,8 +30,8 @@ Feature: Get all tweets of a member
 
 
 
-  Scenario Outline: Get tweets of a user
-    When a client sends a GET "/users/2/tweets" request for <accountType> "<userName>" to get a list of tweets from user john
+  Scenario: Get tweets of a user
+    When a client sends a GET "/users/2/tweets" request for user "max" to get a list of tweets from user john
     Then the HTTP response status-code will be 200
     And the HTTP response body will contain following JSON with tweets from user john
     """
@@ -75,10 +75,54 @@ Feature: Get all tweets of a member
     ]
     """
 
-    Examples:
-    | accountType | userName |
-    | moderator   | werner   |
-    | user        | max      |
+
+
+
+  Scenario: Moderator requests tweets from an user
+    When a client sends a GET "/users/2/tweets" request for moderator "werner" to get a list of tweets from user john
+    Then the HTTP response status-code will be 200
+    And the HTTP response body will contain following JSON with tweets from user john
+    """
+    [
+    {
+        "tweetId": 10,
+        "content": "10. tweet",
+        "pubDate": 1549016291000,
+        "author": {
+            "userId": 2,
+            "firstName": "John",
+            "lastName": "Doe",
+            "role": "USER"
+        },
+        "rootTweet": null
+    },
+    {
+        "tweetId": 9,
+        "content": "9. tweet",
+        "pubDate": 1549016231000,
+        "author": {
+            "userId": 2,
+            "firstName": "John",
+            "lastName": "Doe",
+            "role": "USER"
+        },
+        "rootTweet": null
+    },
+    {
+        "tweetId": 8,
+        "content": "8. tweet",
+        "pubDate": 1549016171000,
+        "author": {
+            "userId": 2,
+            "firstName": "John",
+            "lastName": "Doe",
+            "role": "USER"
+        },
+        "rootTweet": null
+    }
+    ]
+    """
+
 
 
 
@@ -90,7 +134,7 @@ Feature: Get all tweets of a member
   The QueryParam index represents the number of tweets to be skipped for the response from a list of all PUBLISH tweets from the specified user sorted by their publish date
   The default value for index will be 0
 
-    When a client sends a request to get a list of tweets from user "john" with following Query Params
+    When a client sends a GET "/users/2/tweets" request for user "max" to get a list of tweets from user john with following Query Params
       | queryParam: | numTweets   | index   |
       | value:      | <numTweets> | <index> |
     Then the HTTP response status-code will be 200
@@ -125,5 +169,5 @@ Feature: Get all tweets of a member
   Scenario: Unauthorised request to get tweets from a user
   The request must contain a valid token of a user
 
-    When a client sends a request without a valid token to get tweets from a specified user
+    When a client sends a GET "/users/2/tweets" request without a valid token to get a list of tweets from user john
     Then the HTTP response status-code will be 401

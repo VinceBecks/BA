@@ -37,7 +37,7 @@ Feature: Get follower
   Scenario: Unauthorised request to get a list of follower from a specified user
   The request must contain a valid token of an user
 
-    When a client sends a request without a valid token of an user to get a list of follower from a specified user
+    When a client sends a GET "/users/2/follower" request without a valid token to get a list of follower from user john
     Then the HTTP response status-code will be 401
 
 
@@ -45,7 +45,8 @@ Feature: Get follower
   Scenario: Account to get the list of follower from belongs to a moderator
   The account to get the list of follower from must be from an user
 
-    When a client sends a request to to get a list of follower from a moderator
+    Given the user "max" is authenticated
+    When a client sends a GET "/users/4/follower" request for user "max" to get a list of follower from a moderator
     Then the HTTP response status-code will be 400
     And the HTTP response body contains following JSON of an error message:
       """
@@ -58,13 +59,14 @@ Feature: Get follower
   Just users can request a list of follower from a specified user
 
     Given the moderator "werner" is authenticated
-    When a client sends a request for moderator "werner" to get a list of follower from a user
+    When a client sends a GET "/users/2/follower" request for moderator "werner" to get a list of follower from user john
     Then the HTTP response status-code will be 403
 
 
   Scenario: User to get the list of follower from doesn´t exist
   The user to get the list of follower from must be existing
 
-    Given there is no user with id 9999
-    When a client sends a request to get a list of follower from the user with id 9999
+    Given the user "max" is authenticated
+    But there is no user with id 9999
+    When a client sends a GET "/users/9999/follower" request for user "max" to get a list of the specified tweet
     Then the HTTP response status-code will be 404

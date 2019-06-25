@@ -12,7 +12,7 @@ Feature: Unlike a specified tweet
     Given the user "max" is authenticated
     And a stored tweet with id 1
     And the user max is a liker of tweet with id 1
-    When a client sends a DELETE "/tweets/1/liker" request for user "max" to unlike the tweet with id 1
+    When a client sends a DELETE "/tweets/1/liker" request for user "max" to unlike the specified tweet
     Then the HTTP response status-code will be 204
 
     Scenario: Requesting user isn´t a liker of the specified tweet
@@ -21,7 +21,7 @@ Feature: Unlike a specified tweet
       Given the user "max" is authenticated
       And a stored tweet with id 1
       And the user max is not a liker of the tweet with id 1
-      When a client sends a DELETE "/tweets/1/liker" request for user "max" to unlike the tweet with id 1
+      When a client sends a DELETE "/tweets/1/liker" request for user "max" to unlike the specified tweet
       Then the HTTP response status-code will be 400
       And the HTTP response body contains following JSON of an error message:
       """
@@ -33,7 +33,8 @@ Feature: Unlike a specified tweet
   Scenario: Unauthorised request to unlike a tweet
   The request must contain a valid token of an user
 
-    When a client sends a request without a valid token of an user to unlike a specified tweet
+    Given a stored tweet with id 1
+    When a client sends a DELETE "/tweets/1/liker" request without a valid token to unlike the specified tweet
     Then the HTTP response status-code will be 401
 
 
@@ -41,7 +42,7 @@ Feature: Unlike a specified tweet
   Account must be from an user
 
     Given the moderator "werner" is authenticated
-    When a client sends a request for moderator "werner" to unlike a specified tweet
+    When a client sends a DELETE "/tweets/1/liker" request for moderator "werner" to unlike the specified tweet
     Then the HTTP response status-code will be 403
 
 
@@ -49,13 +50,15 @@ Feature: Unlike a specified tweet
   Scenario: Tweet to unlike doesn´t exist
   The tweet to unlike must exist
 
-    Given there is no tweet with id 9999
-    When a client sends a request to unlike the tweet with id 9999
+    Given the user "max" is authenticated
+    But there is no tweet with id 9999
+    When a client sends a DELETE "/tweets/9999/liker" request for user "max" to unlike the specified tweet
     Then the HTTP response status-code will be 404
 
   Scenario: Tweet to unlike is in status CANCELED
   The tweet to unlike must be in status PUBLISH
 
-    Given a stored tweet with id 1 in status CANCELED from user max
-    When a client sends a request to unlike the tweet with id 1
+    Given the user "max" is authenticated
+    And a stored tweet with id 1 in status CANCELED from user max
+    When a client sends a DELETE "/tweets/1/liker" request for user "max" to unlike the specified tweet
     Then the HTTP response status-code will be 404

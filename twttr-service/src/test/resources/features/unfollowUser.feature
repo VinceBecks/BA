@@ -19,7 +19,7 @@ Feature: Unfollow a user
   The requesting user must be a follower of the specified user to unfollow him
 
     Given the user "max" is authenticated
-    And the user max is not a follower of user john with id 2
+    And the user max isn´t a follower of user john with id 2
     When a client sends a DELETE "/users/2/follower" request for user "max" to unfollow user john
     Then the HTTP response status-code will be 400
     And the HTTP response body contains following JSON of an error message:
@@ -33,7 +33,7 @@ Feature: Unfollow a user
   Scenario: Unauthorised request to unfollow a user
   The request must contain a valid token of an user
 
-    When a client sends a request to unfollow a specified user without a valid token of an user
+    When a client sends a DELETE "/users/2/follower" request without a valid token to unfollow user john
     Then the HTTP response status-code will be 401
 
 
@@ -41,15 +41,15 @@ Feature: Unfollow a user
   Account must be from an user
 
     Given the moderator "werner" is authenticated
-    When a client sends a request for moderator "werner" to unfollow a specified user
+    When a client sends a DELETE "/users/2/follower" request for moderator "werner" to unfollow user john
     Then the HTTP response status-code will be 403
 
 
-#todo: 400 lassen?
   Scenario: Account to unfollow belongs to a moderator
   The account to unfollow must be from an user
 
-    When a client sends a request to unfollow the account of a moderator
+    Given the user "max" is authenticated
+    When a client sends a DELETE "/users/4/follower" request for user "max" to unfollow a moderator
     Then the HTTP response status-code will be 400
     And the HTTP response body contains following JSON of an error message:
       """
@@ -58,9 +58,11 @@ Feature: Unfollow a user
       }
       """
 
+
   Scenario: Specified user to unfollow doesn´t exist
   The user to unfollow must exist
 
-    Given there is no user with id 9999
-    When a client sends a request to unfollow the user with id 9999
+    Given the user "max" is authenticated
+    But there is no user with id 9999
+    When a client sends a DELETE "/users/9999/follower" request for user "max" to unfollow the specified user
     Then the HTTP response status-code will be 404

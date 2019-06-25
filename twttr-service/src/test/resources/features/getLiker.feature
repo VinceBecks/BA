@@ -12,7 +12,7 @@ Feature: Get liker of a specified tweet
     Given the user "max" is authenticated
     And a stored tweet with id 1
     And the tweet with id 1 got liked by users max and john
-    When a client sends a GET "/tweets/1/liker" request for user "max" to get a list of likers of the tweet with id 1
+    When a client sends a GET "/tweets/1/liker" request for user "max" to get a list of likers of the specified tweet
     Then the HTTP response status-code will be 200
     And the HTTP response body will contain following JSON with a list of users who liked the stored tweet
         """
@@ -35,7 +35,8 @@ Feature: Get liker of a specified tweet
   Scenario: Unauthorised request to get a list of liker from a specified tweet
   The request to get a list of liker from a specified tweet must contain a valid token of an user
 
-    When a client sends a request without a valid token of an user to get a list of liker of a specified tweet
+    Given a stored tweet with id 1
+    When a client sends a GET "/tweets/1/liker" request without a valid token to get a list of likers of the specified tweet
     Then the HTTP response status-code will be 401
 
 
@@ -43,20 +44,24 @@ Feature: Get liker of a specified tweet
   Just users can request a list of liker from a specified tweet
 
     Given the moderator "werner" is authenticated
-    When a client sends a request for moderator "werner" to get a list of liker of a tweet
+    And a stored tweet with id 1
+    When a client sends a GET "/tweets/1/liker" request for moderator "werner" to get a list of likers of the specified tweet
     Then the HTTP response status-code will be 403
 
 
   Scenario: Tweet to get the list of liker from doesn´t exist
   The tweet to get the list of liker from must be existing
 
-    Given there is no tweet with id 9999
-    When a client sends a request to get a list of liker of the tweet with id 9999
+    Given the user "max" is authenticated
+    But there is no tweet with id 9999
+    When a client sends a GET "/tweets/9999/liker" request for user "max" to get a list of likers of the specified tweet
     Then the HTTP response status-code will be 404
+
 
   Scenario: Tweet to get a list of liker from is in status CANCELED
   The tweet to get a list of liker from must be in status PUBLISH
 
+    Given the user "max" is authenticated
     Given a stored tweet with id 1 in status CANCELED from user max
-    When a client sends a request to get a list of liker from the tweet with id 1
+    When a client sends a GET "/tweets/1/liker" request for user "max" to get a list of likers of the specified tweet
     Then the HTTP response status-code will be 404

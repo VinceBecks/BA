@@ -13,8 +13,9 @@ Feature: Like a specified tweet
     Given the user "max" is authenticated
     And a stored tweet with id 1
     And the user max is not a liker of the tweet with id 1
-    When a client sends a POST "/tweets/1/liker" request for user "max" to like the tweet with id 1
+    When a client sends a POST "/tweets/1/liker" request for user "max" to like the specified tweet
     Then the HTTP response status-code will be 204
+
 
   Scenario: Requesting user is already a liker of the specified tweet
   Each user can be just once a liker of a specified tweet
@@ -22,7 +23,7 @@ Feature: Like a specified tweet
     Given the user "max" is authenticated
     And a stored tweet with id 1
     And the user max is a liker of tweet with id 1
-    When a client sends a POST "/tweets/1/liker" request for user "max" to like the tweet with id 1
+    When a client sends a POST "/tweets/1/liker" request for user "max" to like the specified tweet
     Then the HTTP response status-code will be 400
     And the HTTP response body contains following JSON of an error message:
       """
@@ -35,7 +36,8 @@ Feature: Like a specified tweet
   Scenario: Unauthorised request to like a specified tweet
   The request must contain a valid token of an user
 
-    When a client sends a request without a valid token of an user to like a specified tweet
+    Given a stored tweet with id 1
+    When a client sends a POST "/tweets/1/liker" request without a valid token to like the specified tweet
     Then the HTTP response status-code will be 401
 
 
@@ -43,23 +45,26 @@ Feature: Like a specified tweet
   Just users can like tweets
 
     Given the moderator "werner" is authenticated
-    When a client sends a request for moderator "werner" to like a specified tweet
+    And a stored tweet with id 1
+    When a client sends a POST "/tweets/1/liker" request for moderator "werner" to like the specified tweet
     Then the HTTP response status-code will be 403
 
 
   Scenario: The tweet to like doesn´t exist
   The tweet to like must be existing
 
-    Given there is no tweet with id 9999
-    When a client sends a request to like the tweet with id 9999
+    Given the user "max" is authenticated
+    But there is no tweet with id 9999
+    When a client sends a POST "/tweets/9999/liker" request for user "max" to like the specified tweet
     Then the HTTP response status-code will be 404
 
 
   Scenario: Tweet to like is in status CANCELED
   The tweet to like must be in status PUBLISH
 
-    Given a stored tweet with id 1 in status CANCELED from user max
-    When a client sends a request to like the tweet with id 1
+    Given the user "max" is authenticated
+    And a stored tweet with id 1 in status CANCELED from user max
+    When a client sends a POST "/tweets/1/liker" request for user "max" to like the specified tweet
     Then the HTTP response status-code will be 404
 
 

@@ -39,7 +39,6 @@ public class Converter implements TypeRegistryConfigurer{
         typeRegistry.defineDataTableType(new DataTableType (ErrorMessage.class,
                 (String s)-> new ObjectMapper().readValue(s, ErrorMessage.class)));
 
-
         typeRegistry.defineDataTableType(new DataTableType (AccountEntity.class,
                 (Map<String, String> row)-> {
                     Integer id = Integer.parseInt(row.get("accountId"));
@@ -51,7 +50,6 @@ public class Converter implements TypeRegistryConfigurer{
                     return new AccountEntity(accountType, id, userName, firstName, lastName, role);
                 }));
 
-
         typeRegistry.defineDataTableType(new DataTableType (TweetEntity.class,
                 (Map<String, String> row)-> {
                     Integer id = Integer.parseInt(row.get("tweetId"));
@@ -61,14 +59,12 @@ public class Converter implements TypeRegistryConfigurer{
                     return new TweetEntity(id, content,null, state, author);
                 }));
 
-
         typeRegistry.defineDataTableType(new DataTableType (GetTweetsQueryParams.class,
                 (Map<String, String> row)-> {
                     String numTweets = row.get("numTweets").equals("not setted") ? null : row.get("numTweets");
                     String index = row.get("index").equals("not setted") ? null : row.get("index");
                     return new GetTweetsQueryParams(index, numTweets);
                 }));
-
 
         typeRegistry.defineDataTableType(new DataTableType (GetUsersQueryParams.class,
                 (Map<String, String> row)-> {
@@ -80,8 +76,6 @@ public class Converter implements TypeRegistryConfigurer{
                     String index = row.get("index").equals("not setted") ? null : row.get("index");
                     return new GetUsersQueryParams(serachString, numTweets, index);
                 }));
-
-
 
         typeRegistry.defineParameterType(new ParameterType<IntegerList>(
                 "Ids",

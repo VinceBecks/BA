@@ -17,6 +17,7 @@ import javax.ws.rs.core.MediaType;
 public class RequestSteps {
 
     private SharedDomain domain;
+
     public RequestSteps (SharedDomain domain) {
         this.domain = domain;
     }
@@ -131,7 +132,7 @@ public class RequestSteps {
     //Create Tweet Steps
 
     @When("a client sends a POST {string} request for the user {string} to create a new tweet and the body contains following JSON")
-    public void a_client_sends_a_POST_request_for_the_user_to_create_a_new_tweet_and_the_body_contains_following_JSON(String additionalPath, String userName, NewTweet newTweet) {
+    public void sendRequestToCreateNewTweet(String additionalPath, String userName, NewTweet newTweet) {
         Response response = RestAssured
                 .given()
                 .accept(MediaType.APPLICATION_JSON)

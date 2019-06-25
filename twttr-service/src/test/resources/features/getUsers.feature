@@ -11,6 +11,8 @@ Feature: Get users
 
   #fürBA: TypeRegistry hieran vorstellen? Oder lieber an einem Beispiel einer Liste von Tweets? --> nur eine Registrierung möglich (Abfragen, ob Daten gesetzt sind also nötig, wenn unterschiedliche Arten der Initialisierung gewünscht
   Background: Persist users
+    Given the user "max" is authenticated
+    Given the moderator "werner" is authenticated
     Given the system has persisted users
       | accountId | userName | firstName | lastName   | role      |
       | 0         | max      | Max       | Mustermann | USER      |
@@ -28,8 +30,7 @@ Feature: Get users
   Requesting users sorted in first grad by their userName,
   in second grade by their firstName and in third grade by their lastName
 
-    And the user "max" is authenticated
-    When a client sends a "GET" "/users" request for user "max" to get a list of users
+    When a client sends a GET "/users" request for user "max" to get a list of users
     Then the HTTP response status-code will be 200
     And the HTTP response body contains following JSON with a list of users
       """
@@ -61,8 +62,7 @@ Feature: Get users
   Requesting users sorted in first grad by their userName,
   in second grade by their firstName and in third grade by their lastName
 
-    And the moderator "werner" is authenticated
-    When a client sends a "GET" "/users" request for moderator "werner" to get a list of users
+    When a client sends a GET "/users" request for moderator "werner" to get a list of users
     Then the HTTP response status-code will be 200
     And the HTTP response body contains following JSON with a list of users
       """
@@ -96,7 +96,7 @@ Feature: Get users
   The default value for index will be 0
   The QueryParam searchString represents a string which must be containing in the userName, firstName or lastName
 
-    When a client sends a request to get a list of users with following QueryParams
+    When a client sends a GET "/users" request for user "max" to get a list of users with following QueryParameter
       | queryParam: | searchString   | numTweets   | index   |
       | value:      | <searchString> | <numTweets> | <index> |
     Then the returned users will be the users with ids <returnedUsers> in presented order
@@ -139,6 +139,6 @@ Feature: Get users
   Scenario: Unauthorised request to get a list of users
   The request must contain a valid token from an account to get a list of users
 
-    When a client sends a request without a valid token to get a list of users
+    When a client sends a GET "/users" request without a valid token to get a list of users with following QueryParameter
     Then the HTTP response status-code will be 401
 

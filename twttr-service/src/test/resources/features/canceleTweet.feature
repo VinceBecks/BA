@@ -12,7 +12,7 @@ Feature: Cancel a tweet
 
     Given the user "max" is authenticated
     And a stored tweet with id 1 from user max
-    When a client sends a DELETE "/tweets/1" request for user "max"
+    When a client sends a DELETE "/tweets/1" request for user "max" to cancel the specified tweet
     Then the HTTP response status-code will be 204
 
 
@@ -21,7 +21,7 @@ Feature: Cancel a tweet
 
     Given the user "john" is authenticated
     And a stored tweet with id 1 from user max
-    When a client sends a request for user "john" to cancel the tweet with id 1
+    When a client sends a DELETE "/tweets/1" request for user "john" to cancel the specified tweet
     Then the HTTP response status-code will be 403
 
 
@@ -32,7 +32,7 @@ Feature: Cancel a tweet
 
     Given the moderator "werner" is authenticated
     And a stored tweet with id 1 from user max
-    When a client sends a request for moderator "werner" to cancel the tweet with id 1
+    When a client sends a DELETE "/tweets/1" request for moderator "werner" to cancel the specified tweet
     Then the HTTP response status-code will be 204
 
 
@@ -41,7 +41,7 @@ Feature: Cancel a tweet
   The request to cancel a tweet must contain a valid token
 
     Given a stored tweet with id 1
-    When a client sends a request without a valid token to cancel the tweet with id 1
+    When a client sends a DELETE "/tweets/1" request without a valid token to cancel the specified tweet
     Then the HTTP response status-code will be 401
 
 
@@ -52,7 +52,7 @@ Feature: Cancel a tweet
 
     Given the user "max" is authenticated
     But there is no tweet with id 9999
-    When a client sends a request for user "max" to cancel the tweet with id 9999
+    When a client sends a DELETE "/tweets/9999" request for user "max" to cancel the specified tweet
     Then the HTTP response status-code will be 404
 
 
@@ -61,5 +61,5 @@ Feature: Cancel a tweet
 
     Given the user "max" is authenticated
     And a stored tweet with id 1 in status CANCELED from user max
-    When a client sends a request for user "max" to cancel the tweet with id 1
+    When a client sends a DELETE "/tweets/1" request for user "max" to cancel the specified tweet
     Then the HTTP response status-code will be 404

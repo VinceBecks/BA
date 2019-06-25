@@ -29,7 +29,8 @@ public class TweetSteps {
     DataSetExecutor dbExecutor;
     @Before
     public void init () {
-        this.dbExecutor = DataSetExecutorImpl.instance(new ConnectionHolderImpl(entityManagerProvider.connection()));
+        ConnectionHolderImpl db = new ConnectionHolderImpl(entityManagerProvider.connection());
+        this.dbExecutor = DataSetExecutorImpl.instance(db);
     }
 
 

@@ -1,4 +1,4 @@
-package de.openknowledge.playground.api.rest.stepDefinitionen;
+package de.openknowledge.playground.api.rest.stepDefinitions;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;

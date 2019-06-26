@@ -1,16 +1,13 @@
-package de.openknowledge.playground.api.rest.stepDefinitionen;
+package de.openknowledge.playground.api.rest.stepDefinitions;
 
-import com.github.database.rider.core.configuration.DataSetConfig;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 import de.openknowledge.playground.api.rest.supportCode.IntegrationTestUtil;
 import de.openknowledge.playground.api.rest.supportCode.SharedDomain;
 import de.openknowledge.playground.api.rest.supportCode.converter.convertedClasses.TweetEntity;
 import de.openknowledge.playground.api.rest.supportCode.dataSetBuilder.DBConnection;
-import de.openknowledge.playground.api.rest.supportCode.dataSetBuilder.DBSetCreator;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import org.keycloak.authorization.client.AuthzClient;
 
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;

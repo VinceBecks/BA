@@ -1,24 +1,16 @@
-package de.openknowledge.playground.api.rest.stepDefinitionen;
+package de.openknowledge.playground.api.rest.stepDefinitions;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.github.database.rider.core.configuration.DataSetConfig;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import de.openknowledge.playground.api.rest.supportCode.SharedDomain;
-import de.openknowledge.playground.api.rest.supportCode.converter.convertedClasses.AccountEntity;
-import de.openknowledge.playground.api.rest.supportCode.dataSetBuilder.CustomizedDataSetBuilder;
-import de.openknowledge.playground.api.rest.supportCode.dataSetBuilder.DBConnection;
-import de.openknowledge.playground.api.rest.supportCode.dataSetBuilder.DBSetCreator;
 import io.cucumber.datatable.DataTable;
-import org.dbunit.dataset.IDataSet;
 import org.junit.Assert;
 import org.keycloak.authorization.client.AuthzClient;
 import org.keycloak.representations.idm.authorization.AuthorizationResponse;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 public class AuthenticationSteps {

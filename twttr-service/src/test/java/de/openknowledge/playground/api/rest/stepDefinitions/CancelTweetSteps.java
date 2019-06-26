@@ -1,4 +1,4 @@
-package de.openknowledge.playground.api.rest.stepDefinitionen;
+package de.openknowledge.playground.api.rest.stepDefinitions;
 
 import cucumber.api.java.en.When;
 import de.openknowledge.playground.api.rest.supportCode.IntegrationTestUtil;

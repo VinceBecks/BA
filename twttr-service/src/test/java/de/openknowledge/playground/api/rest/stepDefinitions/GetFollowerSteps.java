@@ -1,4 +1,4 @@
-package de.openknowledge.playground.api.rest.stepDefinitionen;
+package de.openknowledge.playground.api.rest.stepDefinitions;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;

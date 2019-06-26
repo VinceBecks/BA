@@ -1,8 +1,7 @@
-package de.openknowledge.playground.api.rest.stepDefinitionen;
+package de.openknowledge.playground.api.rest.stepDefinitions;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.database.rider.core.configuration.DataSetConfig;
 import cucumber.api.PendingException;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
@@ -12,7 +11,6 @@ import de.openknowledge.playground.api.rest.supportCode.IntegrationTestUtil;
 import de.openknowledge.playground.api.rest.supportCode.SharedDomain;
 import de.openknowledge.playground.api.rest.supportCode.converter.convertedClasses.*;
 import de.openknowledge.playground.api.rest.supportCode.dataSetBuilder.DBConnection;
-import de.openknowledge.playground.api.rest.supportCode.dataSetBuilder.DBSetCreator;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.hamcrest.Matchers;

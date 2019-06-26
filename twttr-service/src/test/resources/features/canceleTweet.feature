@@ -8,7 +8,7 @@ Feature: Cancel a tweet
   - If the specified tweet doesn´t exist or is already in status "CANCELED", then the http response status-code will be 404
 
   Scenario: Cancele a tweet
-  Request to set a tweet in status CANCELED a specified tweet
+  Request to set a specified tweet in status CANCELED
 
     Given the user "max" is authenticated
     And a stored tweet with id 1 from user max

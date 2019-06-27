@@ -32,7 +32,8 @@ Feature: Get all Tweets
 
 
   Scenario: User requests last tweets from users he is following
-  Requesting last three tweets in status PUBLISH from users the requesting user is following
+  The last three published tweets will be responded when the queryParams default-values will not be overwritten
+  The response will contain only the tweets from users the requesting user is following
 
     And user max follows the users john and jane
     When a client sends a GET "/tweets" request for user "max" to get a list of tweets
@@ -82,7 +83,8 @@ Feature: Get all Tweets
 
   Scenario Outline: User change QueryParams for request to get tweet information
   The QueryParam numTweets represents the number of requested tweets and will overwrite its default value 3
-  The QueryParam index represents the number of tweets to be skipped for the response from a list of all PUBLISH tweets from users the requesting user is following sorted by their publish date and will overwrite its default value 0
+  The QueryParam index determines how many of the newest tweets in state PUBLISH should be skipped
+  The client will still receive just tweets from users the requesting user is following
 
     And user max follows the users john and jane
     When a client sends a GET "/tweets" request for user "max" to get a list of tweets with following Query Params
@@ -117,8 +119,8 @@ Feature: Get all Tweets
 
 
   Scenario: Moderator requests last tweets from all users
-  Requesting last three tweets in status PUBLISH from all users
-  A moderator will receive the last three tweets from all users
+  The response for a request from a moderator will contain tweets from all users
+  The last three published tweets will be responded when the queryParams default-values will not be overwritten
 
     And user max follows the users john and jane
     When a client sends a GET "/tweets" request for moderator "werner" to get a list of tweets
@@ -168,9 +170,8 @@ Feature: Get all Tweets
 
   Scenario Outline: Moderator changes QueryParams for request to get tweet information
   The QueryParam numTweets represents the number of requested tweets
-  The default value for numTweets will be 3
-  The QueryParam index represents the number of tweets to be skipped for the response from a list of all PUBLISH tweets from users the requesting user is following sorted by their publish date
-  The default value for index will be 0
+  The QueryParam index determines how many of the newest tweets in state PUBLISH should be skipped
+  The response for a request from a moderator will still contain tweets from all users
 
     When a client sends a GET "/tweets" request for moderator "werner" to get a list of tweets with following Query Params
       | queryParam: | numTweets   | index   |

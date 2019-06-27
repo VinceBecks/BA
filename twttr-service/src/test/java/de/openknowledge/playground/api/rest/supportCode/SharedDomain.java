@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class SharedDomain {
 
-    private Map<String, Account> accounts;
+    private Map<String, AccountCredentials> accounts;
     private Map<String, String> passwordForUser = new HashMap<>();
     private Map<String, String> tokenMap = new HashMap<>();
 
@@ -16,13 +16,13 @@ public class SharedDomain {
     public SharedDomain () {
         accounts = new HashMap<>();
 
-        accounts.put("max", new Account(0, "max", "password", "Max", "Mustermann"));
-        accounts.put("marta", new Account(1, "marta", "password", "Marta", "Musterfrau"));
-        accounts.put("john", new Account(2, "john", "password", "John", "Doe"));
-        accounts.put("jane", new Account(3, "jane", "password", "Jane", "Doe"));
-        accounts.put("werner", new Account(4, "werner", "password", "Werner", "Pflanzen"));
-        accounts.put("karl", new Account(5, "karl", "password", "Karl", "Ranseier"));
-        accounts.put("lena", new Account(6, "lena", "password", "Lena", "Löchte"));
+        accounts.put("max", new AccountCredentials(0, "max", "password", "Max", "Mustermann"));
+        accounts.put("marta", new AccountCredentials(1, "marta", "password", "Marta", "Musterfrau"));
+        accounts.put("john", new AccountCredentials(2, "john", "password", "John", "Doe"));
+        accounts.put("jane", new AccountCredentials(3, "jane", "password", "Jane", "Doe"));
+        accounts.put("werner", new AccountCredentials(4, "werner", "password", "Werner", "Pflanzen"));
+        accounts.put("karl", new AccountCredentials(5, "karl", "password", "Karl", "Ranseier"));
+        accounts.put("lena", new AccountCredentials(6, "lena", "password", "Lena", "Löchte"));
     }
 
 
@@ -50,11 +50,11 @@ public class SharedDomain {
         this.response = response;
     }
 
-    public Account getAccount (String userName) {
+    public AccountCredentials getAccount (String userName) {
         return accounts.get(userName);
     }
 
-    public Map<String, Account> getAccounts() {
+    public Map<String, AccountCredentials> getAccounts() {
         return accounts;
     }
 }

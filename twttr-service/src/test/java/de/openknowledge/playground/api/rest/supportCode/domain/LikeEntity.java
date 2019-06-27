@@ -1,4 +1,4 @@
-package de.openknowledge.playground.api.rest.supportCode.converter.convertedClasses;
+package de.openknowledge.playground.api.rest.supportCode.domain;
 
 public class LikeEntity {
     private Integer tweetId, userId;

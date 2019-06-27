@@ -1,4 +1,4 @@
-package de.openknowledge.playground.api.rest.supportCode.converter.convertedClasses;
+package de.openknowledge.playground.api.rest.supportCode.domain;
 
 public class FollowerEntity {
     private Integer followerId;

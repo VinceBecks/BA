@@ -8,11 +8,10 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import de.openknowledge.playground.api.rest.supportCode.IntegrationTestUtil;
 import de.openknowledge.playground.api.rest.supportCode.SharedDomain;
-import de.openknowledge.playground.api.rest.supportCode.converter.convertedClasses.AccountEntity;
-import de.openknowledge.playground.api.rest.supportCode.converter.convertedClasses.GetUsersQueryParams;
-import de.openknowledge.playground.api.rest.supportCode.converter.convertedClasses.IntegerList;
-import de.openknowledge.playground.api.rest.supportCode.converter.convertedClasses.UserDTO;
 import de.openknowledge.playground.api.rest.supportCode.dataBase.DBConnection;
+import de.openknowledge.playground.api.rest.supportCode.domain.AccountEntity;
+import de.openknowledge.playground.api.rest.supportCode.domain.GetUsersQueryParams;
+import de.openknowledge.playground.api.rest.supportCode.domain.UserDTO;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.dbunit.DatabaseUnitException;
@@ -115,9 +114,7 @@ public class GetUsersSteps {
     }
 
     @Then("the returned users will be the users with ids {Ids} in presented order")
-    public void the_returned_users_will_be_the_users_with_ids_in_presented_order(IntegerList ids) {
-        List<Integer> expectedIds = ids.getIntegerList();
-
+    public void the_returned_users_will_be_the_users_with_ids_in_presented_order(List<Integer> expectedIds) {
         domain.getResponse().then()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body("size()", Matchers.equalTo(expectedIds.size()));

@@ -1,10 +1,10 @@
 package de.openknowledge.playground.api.rest.supportCode.dataBase;
 
 import com.github.database.rider.core.util.EntityManagerProvider;
-import de.openknowledge.playground.api.rest.supportCode.converter.convertedClasses.AccountEntity;
-import de.openknowledge.playground.api.rest.supportCode.converter.convertedClasses.FollowerEntity;
-import de.openknowledge.playground.api.rest.supportCode.converter.convertedClasses.LikeEntity;
-import de.openknowledge.playground.api.rest.supportCode.converter.convertedClasses.TweetEntity;
+import de.openknowledge.playground.api.rest.supportCode.domain.AccountEntity;
+import de.openknowledge.playground.api.rest.supportCode.domain.FollowerEntity;
+import de.openknowledge.playground.api.rest.supportCode.domain.LikeEntity;
+import de.openknowledge.playground.api.rest.supportCode.domain.TweetEntity;
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;

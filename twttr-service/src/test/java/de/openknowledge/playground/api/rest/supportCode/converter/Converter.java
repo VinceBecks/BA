@@ -3,16 +3,15 @@ package de.openknowledge.playground.api.rest.supportCode.converter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cucumber.api.TypeRegistry;
 import cucumber.api.TypeRegistryConfigurer;
-import cucumber.api.java.bs.I;
 import de.openknowledge.playground.api.rest.security.application.tweet.DetailedTweet;
-import de.openknowledge.playground.api.rest.supportCode.Account;
-import de.openknowledge.playground.api.rest.supportCode.converter.convertedClasses.NewTweet;
-import de.openknowledge.playground.api.rest.supportCode.converter.convertedClasses.TweetDTO;
+import de.openknowledge.playground.api.rest.supportCode.AccountCredentials;
+import de.openknowledge.playground.api.rest.supportCode.domain.*;
 import de.openknowledge.playground.api.rest.supportCode.SharedDomain;
-import de.openknowledge.playground.api.rest.supportCode.converter.convertedClasses.*;
 import io.cucumber.cucumberexpressions.ParameterType;
 import io.cucumber.datatable.DataTableType;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -87,11 +86,23 @@ public class Converter implements TypeRegistryConfigurer{
                     return new GetUsersQueryParams(serachString, numTweets, index);
                 }));
 
-        typeRegistry.defineParameterType(new ParameterType<IntegerList>(
+        typeRegistry.defineParameterType(new ParameterType<List>(
                 "Ids",
                 "([0-9]{0,2}(,[0-9])*)",
-                IntegerList.class,
-                IntegerList::new
+                List.class,
+                (String s) -> {
+
+                    List<Integer> list = new LinkedList<>();
+                    if (s!=null) {
+                        String[] stringList = s.split(",");
+                        for (int i=0; i<stringList.length; i++) {
+                            if (!stringList[i].equals("")) {
+                                list.add(Integer.parseInt(stringList[i]));
+                            }
+                        }
+                    }
+                    return list;
+                }
         ));
 
         typeRegistry.defineDataTableType(new DataTableType(TweetEntity.Builder.class,
@@ -119,9 +130,9 @@ public class Converter implements TypeRegistryConfigurer{
     }
 
     public Integer accountIdToUserName(String userName){
-        Account account = domain.getAccount(userName);
-        if (account != null) {
-            return account.getAccountId();
+        AccountCredentials accountCredentials = domain.getAccount(userName);
+        if (accountCredentials != null) {
+            return accountCredentials.getAccountId();
         }else {
             throw new IllegalArgumentException("No account for userName \"" + userName + "\"");
         }

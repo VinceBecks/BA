@@ -9,8 +9,8 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import de.openknowledge.playground.api.rest.supportCode.IntegrationTestUtil;
 import de.openknowledge.playground.api.rest.supportCode.SharedDomain;
-import de.openknowledge.playground.api.rest.supportCode.converter.convertedClasses.*;
 import de.openknowledge.playground.api.rest.supportCode.dataBase.DBConnection;
+import de.openknowledge.playground.api.rest.supportCode.domain.*;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.hamcrest.Matchers;
@@ -177,8 +177,7 @@ public class GeneralSteps  {
     }
 
     @Then("the HTTP response body contains the tweets with the ids {Ids} in presented order")
-    public void the_HTTP_response_body_contains_the_tweets_with_the_ids_in_presented_order(IntegerList ids) {
-        List<Integer> expectedTweetIds  = ids.getIntegerList();
+    public void the_HTTP_response_body_contains_the_tweets_with_the_ids_in_presented_order(List<Integer> expectedTweetIds) {
 
         domain.getResponse().then()
                 .contentType(MediaType.APPLICATION_JSON)

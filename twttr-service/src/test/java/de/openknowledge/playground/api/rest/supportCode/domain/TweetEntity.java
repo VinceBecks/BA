@@ -1,4 +1,4 @@
-package de.openknowledge.playground.api.rest.supportCode.converter.convertedClasses;
+package de.openknowledge.playground.api.rest.supportCode.domain;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

@@ -4,7 +4,7 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 import de.openknowledge.playground.api.rest.supportCode.IntegrationTestUtil;
 import de.openknowledge.playground.api.rest.supportCode.SharedDomain;
-import de.openknowledge.playground.api.rest.supportCode.converter.convertedClasses.FollowerEntity;
+import de.openknowledge.playground.api.rest.supportCode.domain.FollowerEntity;
 import de.openknowledge.playground.api.rest.supportCode.dataBase.DBConnection;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;

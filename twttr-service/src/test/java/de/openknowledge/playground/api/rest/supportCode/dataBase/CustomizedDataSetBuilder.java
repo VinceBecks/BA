@@ -1,9 +1,9 @@
 package de.openknowledge.playground.api.rest.supportCode.dataBase;
 
-import de.openknowledge.playground.api.rest.supportCode.converter.convertedClasses.AccountEntity;
-import de.openknowledge.playground.api.rest.supportCode.converter.convertedClasses.FollowerEntity;
-import de.openknowledge.playground.api.rest.supportCode.converter.convertedClasses.LikeEntity;
-import de.openknowledge.playground.api.rest.supportCode.converter.convertedClasses.TweetEntity;
+import de.openknowledge.playground.api.rest.supportCode.domain.AccountEntity;
+import de.openknowledge.playground.api.rest.supportCode.domain.FollowerEntity;
+import de.openknowledge.playground.api.rest.supportCode.domain.LikeEntity;
+import de.openknowledge.playground.api.rest.supportCode.domain.TweetEntity;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;

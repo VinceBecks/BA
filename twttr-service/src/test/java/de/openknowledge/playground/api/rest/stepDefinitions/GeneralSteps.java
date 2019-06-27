@@ -176,8 +176,8 @@ public class GeneralSteps  {
         }
     }
 
-    @Then("the HTTP response body contains the tweets with the ids {Ids}")
-    public void the_HTTP_response_body_contains_the_tweets_with_the_ids(IntegerList ids) {
+    @Then("the HTTP response body contains the tweets with the ids {Ids} in presented order")
+    public void the_HTTP_response_body_contains_the_tweets_with_the_ids_in_presented_order(IntegerList ids) {
         List<Integer> expectedTweetIds  = ids.getIntegerList();
 
         domain.getResponse().then()

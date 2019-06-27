@@ -26,7 +26,6 @@ Feature: Get all Tweets
       | 8       | 8. tweet  | PUBLISH  | lena   |
       | 9       | 9. tweet  | PUBLISH  | jane   |
       | 10      | 10. tweet | PUBLISH  | jane   |
-    And user max follows the users john and jane
 
 
 
@@ -35,6 +34,7 @@ Feature: Get all Tweets
   Scenario: User requests last tweets from users he is following
   Requesting last three tweets in status PUBLISH from users the requesting user is following
 
+    And user max follows the users john and jane
     When a client sends a GET "/tweets" request for user "max" to get a list of tweets
     Then the HTTP response status-code will be 200
     And the HTTP response body will contain following JSON with tweets from users max is following
@@ -80,36 +80,36 @@ Feature: Get all Tweets
     """
 
 
-  Scenario Outline: Change QueryParams numTweets and index by request to get tweets from users the requesting user is following
+  Scenario Outline: User change QueryParams for request to get tweet information
   The QueryParam numTweets represents the number of requested tweets and will overwrite its default value 3
   The QueryParam index represents the number of tweets to be skipped for the response from a list of all PUBLISH tweets from users the requesting user is following sorted by their publish date and will overwrite its default value 0
 
+    And user max follows the users john and jane
     When a client sends a GET "/tweets" request for user "max" to get a list of tweets with following Query Params
       | queryParam: | numTweets   | index   |
       | value:      | <numTweets> | <index> |
     Then the HTTP response status-code will be 200
-    And the HTTP response body contains the tweets with the ids <tweetIds>
-    #todo: And the tweets will be responded as presented, ordered by their publish date
+    And the HTTP response body contains the tweets with the ids <tweetIds> in presented order
 
     Examples: No params are setted
-      | numTweets  | index      | tweetIds      |
+      | numTweets  | index      | tweetIds     |
       | not setted | not setted | 10,9,7       |
 
     Examples: Just index param is setted
-      | numTweets  | index      | tweetIds      |
+      | numTweets  | index      | tweetIds     |
       | not setted | 2          | 7,5,2        |
       | not setted | 0          | 10,9,7       |
       | not setted | 5          | 1            |
       | not setted | 6          |              |
 
     Examples: Just numTweets param is setted
-      | numTweets  | index      | tweetIds      |
+      | numTweets  | index      | tweetIds     |
       | 3          | not setted | 10,9,7       |
       | 6          | not setted | 10,9,7,5,2,1 |
       | 7          | not setted | 10,9,7,5,2,1 |
 
     Examples: Both params are setted
-      | numTweets  | index      | tweetIds      |
+      | numTweets  | index      | tweetIds     |
       | 3          | 1          | 9,7,5        |
 
 
@@ -120,6 +120,7 @@ Feature: Get all Tweets
   Requesting last three tweets in status PUBLISH from all users
   A moderator will receive the last three tweets from all users
 
+    And user max follows the users john and jane
     When a client sends a GET "/tweets" request for moderator "werner" to get a list of tweets
     Then the HTTP response status-code will be 200
     And the HTTP response body will contain following JSON with tweets from users max is following
@@ -165,7 +166,7 @@ Feature: Get all Tweets
     """
 
 
-  Scenario Outline: Change QueryParams numTweets and index by request to get tweets from all users
+  Scenario Outline: Moderator changes QueryParams for request to get tweet information
   The QueryParam numTweets represents the number of requested tweets
   The default value for numTweets will be 3
   The QueryParam index represents the number of tweets to be skipped for the response from a list of all PUBLISH tweets from users the requesting user is following sorted by their publish date
@@ -175,8 +176,7 @@ Feature: Get all Tweets
       | queryParam: | numTweets   | index   |
       | value:      | <numTweets> | <index> |
     Then the HTTP response status-code will be 200
-    And the HTTP response body contains the tweets with the ids <testIds>
-    #todo: And the tweets will be responded as presented, ordered by their publish date
+    And the HTTP response body contains the tweets with the ids <testIds> in presented order
 
     Examples: No params are setted
       | numTweets  | index      | testIds |
@@ -197,8 +197,8 @@ Feature: Get all Tweets
       | 9          | not setted | 10,9,8,7,5,4,2,1 |
 
     Examples: Both params are setted
-      | numTweets  | index      | testIds      |
-      | 3          | 1          | 9,8,7        |
+      | numTweets  | index      | testIds |
+      | 3          | 1          | 9,8,7   |
 
 
 

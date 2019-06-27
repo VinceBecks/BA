@@ -139,8 +139,7 @@ Feature: Get all tweets of a member
       | queryParam: | numTweets   | index   |
       | value:      | <numTweets> | <index> |
     Then the HTTP response status-code will be 200
-    And the HTTP response body contains the tweets with the ids <testIds>
-    #todo: And the tweets will be responded as presented, ordered by their publish date
+    And the HTTP response body contains the tweets with the ids <testIds> in presented order
 
     Examples: No params are setted
       | numTweets  | index      | testIds          |

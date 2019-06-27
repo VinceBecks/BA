@@ -62,14 +62,11 @@ public class Converter implements TypeRegistryConfigurer{
                     Integer id = Integer.parseInt(row.get("tweetId"));
                     String content = row.get("content");
                     String stateAsString = row.get("state");
+                    Integer state = stateAsString.equals("PUBLISH") ? 0 : null;
+                    state = stateAsString.equals("CANCELED") ? 1 : state;
                     String authorName = row.get("author");
                     Integer authorId = authorName != null ? accountIdToUserName(authorName) : null;
-                    if (stateAsString != null  && (stateAsString.equals("PUBLISH") || stateAsString.equals("CANCELED"))) {
-                        Integer state = stateAsString.equals("PUBLISH") ? 0 : 1;
-                        return new TweetEntity(id, content,null, state, authorId);
-                    }else {
-                        return new TweetEntity(id, content,null, null, authorId);
-                    }
+                    return new TweetEntity(id, content, null, state, authorId);
                 }));
 
         typeRegistry.defineDataTableType(new DataTableType (GetTweetsQueryParams.class,
@@ -104,7 +101,6 @@ public class Converter implements TypeRegistryConfigurer{
                     String stateAsString = row.get("state");
                     Integer state = stateAsString.equals("PUBLISH") ? 0 : null;
                     state = stateAsString.equals("CANCELED") ? 1 : state;
-                    state = (!stateAsString.equals("CANCELED") && !stateAsString.equals("PUBLISH")) ? null : state;
                     String authorName = row.get("author");
                     Integer authorId = authorName != null ? accountIdToUserName(authorName) : null;
                     String rootTweetAsString = row.get("rootTweetId");

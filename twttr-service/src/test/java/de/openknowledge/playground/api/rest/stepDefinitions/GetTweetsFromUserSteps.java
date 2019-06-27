@@ -40,21 +40,16 @@ public class GetTweetsFromUserSteps {
             builder.withPubDate(new Date(time.addAndGet(1000)));
             tweets.add(builder.build());
         });
-        /*tweets.forEach(tweetEntity -> {
-            tweetEntity.setPubDate(new Date(time.addAndGet(1000)));
-            tweetEntity.setAuthorId(2);
-        });*/
         new DBConnection().insertTweets(tweets);
     }
 
     @When("a client sends a GET {string} request for (user|moderator) {string} to get a list of tweets from user john")
     public void a_client_sends_a_GET_request_for_to_get_a_list_of_tweets_from_user_john(String additionalPath, String userName) {
-        String validToken = AuthzClient.create().authorization("max", "password").authorize().getToken();
         Response response = RestAssured
                 .given()
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + validToken)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + domain.tokenFromAccount(userName))
                 .when()
                 .get(IntegrationTestUtil.getBaseURI() + additionalPath);
         domain.setResponse(response);

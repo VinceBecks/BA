@@ -71,9 +71,6 @@ public class UserResource {
                               @DefaultValue("3") @QueryParam("numTweets") final Integer numTweets,
                               @Context SecurityContext securityContext) {
         LOG.info("Request to get {} tweets from user with id {}", numTweets, userId);
-        Principal principal = securityContext.getUserPrincipal();
-        String userName = principal.getName();
-        User requester = repository.findUserByUserName(userName);
 
         List<Tweet> persistedTweets = repository.findTweetsInStatePublishFromUser(userId);
         LOG.info("Found {} tweets", persistedTweets.size());

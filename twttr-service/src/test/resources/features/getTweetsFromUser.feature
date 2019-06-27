@@ -79,6 +79,7 @@ Feature: Get all tweets of a member
 
 
   Scenario: Moderator requests tweets from an user
+    Given the moderator "werner" is authenticated
     When a client sends a GET "/users/2/tweets" request for moderator "werner" to get a list of tweets from user john
     Then the HTTP response status-code will be 200
     And the HTTP response body will contain following JSON with tweets from user john

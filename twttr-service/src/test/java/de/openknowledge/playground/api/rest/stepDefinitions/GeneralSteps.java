@@ -10,7 +10,7 @@ import cucumber.api.java.en.When;
 import de.openknowledge.playground.api.rest.supportCode.IntegrationTestUtil;
 import de.openknowledge.playground.api.rest.supportCode.SharedDomain;
 import de.openknowledge.playground.api.rest.supportCode.converter.convertedClasses.*;
-import de.openknowledge.playground.api.rest.supportCode.dataSetBuilder.DBConnection;
+import de.openknowledge.playground.api.rest.supportCode.dataBase.DBConnection;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.hamcrest.Matchers;

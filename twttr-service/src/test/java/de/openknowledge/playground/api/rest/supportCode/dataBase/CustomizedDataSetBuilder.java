@@ -1,4 +1,4 @@
-package de.openknowledge.playground.api.rest.supportCode.dataSetBuilder;
+package de.openknowledge.playground.api.rest.supportCode.dataBase;
 
 import de.openknowledge.playground.api.rest.supportCode.converter.convertedClasses.AccountEntity;
 import de.openknowledge.playground.api.rest.supportCode.converter.convertedClasses.FollowerEntity;

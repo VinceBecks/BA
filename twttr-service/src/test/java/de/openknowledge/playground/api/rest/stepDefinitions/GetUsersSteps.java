@@ -12,7 +12,7 @@ import de.openknowledge.playground.api.rest.supportCode.converter.convertedClass
 import de.openknowledge.playground.api.rest.supportCode.converter.convertedClasses.GetUsersQueryParams;
 import de.openknowledge.playground.api.rest.supportCode.converter.convertedClasses.IntegerList;
 import de.openknowledge.playground.api.rest.supportCode.converter.convertedClasses.UserDTO;
-import de.openknowledge.playground.api.rest.supportCode.dataSetBuilder.DBConnection;
+import de.openknowledge.playground.api.rest.supportCode.dataBase.DBConnection;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.dbunit.DatabaseUnitException;

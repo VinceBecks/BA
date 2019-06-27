@@ -3,7 +3,9 @@ package de.openknowledge.playground.api.rest.supportCode.converter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cucumber.api.TypeRegistry;
 import cucumber.api.TypeRegistryConfigurer;
+import cucumber.api.java.bs.I;
 import de.openknowledge.playground.api.rest.security.application.tweet.DetailedTweet;
+import de.openknowledge.playground.api.rest.supportCode.Account;
 import de.openknowledge.playground.api.rest.supportCode.converter.convertedClasses.NewTweet;
 import de.openknowledge.playground.api.rest.supportCode.converter.convertedClasses.TweetDTO;
 import de.openknowledge.playground.api.rest.supportCode.SharedDomain;
@@ -45,18 +47,29 @@ public class Converter implements TypeRegistryConfigurer{
                     String userName = row.get("userName");
                     String firstName = row.get("firstName");
                     String lastName = row.get("lastName");
-                    Integer role = row.get("role").equals("USER") ? 0 : row.get("role").equals("MODERATOR") ? 1 : null;
-                    String accountType = role.equals(0) ? "USER" : role.equals(1) ? "MODERATOR" : null;
-                    return new AccountEntity(accountType, id, userName, firstName, lastName, role);
+                    String roleAsString = row.get("role");
+                    if (roleAsString != null && (roleAsString.equals("USER") || roleAsString.equals("MODERATOR"))) {
+                        Integer role = roleAsString.equals("USER") ? 0 : 1;
+                        String accountType = role.equals(0) ? "USER" : role.equals(1) ? "MODERATOR" : null;
+                        return new AccountEntity(accountType, id, userName, firstName, lastName, role);
+                    }else {
+                        return new AccountEntity(null, id, userName, firstName, lastName, null);
+                    }
                 }));
 
         typeRegistry.defineDataTableType(new DataTableType (TweetEntity.class,
                 (Map<String, String> row)-> {
                     Integer id = Integer.parseInt(row.get("tweetId"));
                     String content = row.get("content");
-                    Integer state = row.get("state").equals("PUBLISH") ? 0 : row.get("state").equals("CANCELED") ? 1 : null;
-                    String author = row.get("author") != null ? row.get("author") : null;
-                    return new TweetEntity(id, content,null, state, author);
+                    String stateAsString = row.get("state");
+                    String authorName = row.get("author");
+                    Integer authorId = authorName != null ? accountIdToUserName(authorName) : null;
+                    if (stateAsString != null  && (stateAsString.equals("PUBLISH") || stateAsString.equals("CANCELED"))) {
+                        Integer state = stateAsString.equals("PUBLISH") ? 0 : 1;
+                        return new TweetEntity(id, content,null, state, authorId);
+                    }else {
+                        return new TweetEntity(id, content,null, null, authorId);
+                    }
                 }));
 
         typeRegistry.defineDataTableType(new DataTableType (GetTweetsQueryParams.class,
@@ -84,5 +97,37 @@ public class Converter implements TypeRegistryConfigurer{
                 IntegerList::new
         ));
 
+        typeRegistry.defineDataTableType(new DataTableType(TweetEntity.Builder.class,
+                (Map<String, String> row) ->{
+                    Integer tweetId = Integer.parseInt(row.get("tweetId"));
+                    String content = row.get("content");
+                    String stateAsString = row.get("state");
+                    Integer state = stateAsString.equals("PUBLISH") ? 0 : null;
+                    state = stateAsString.equals("CANCELED") ? 1 : state;
+                    state = (!stateAsString.equals("CANCELED") && !stateAsString.equals("PUBLISH")) ? null : state;
+                    String authorName = row.get("author");
+                    Integer authorId = authorName != null ? accountIdToUserName(authorName) : null;
+                    String rootTweetAsString = row.get("rootTweetId");
+                    Integer rootTweetId = rootTweetAsString == null ? null : Integer.parseInt(rootTweetAsString) ;
+
+                    TweetEntity.Builder builder = TweetEntity.builderInstance();
+                    builder.withAuthorId(authorId);
+                    builder.withContent(content);
+                    builder.withRootTweetId(rootTweetId);
+                    builder.withState(state);
+                    builder.withPubDate(null);
+                    builder.withTweetId(tweetId);
+                    return builder;
+                }
+        ));
+    }
+
+    public Integer accountIdToUserName(String userName){
+        Account account = domain.getAccount(userName);
+        if (account != null) {
+            return account.getAccountId();
+        }else {
+            throw new IllegalArgumentException("No account for userName \"" + userName + "\"");
+        }
     }
 }

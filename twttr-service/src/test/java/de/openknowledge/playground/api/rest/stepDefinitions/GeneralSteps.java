@@ -53,8 +53,7 @@ public class GeneralSteps  {
 
     @Given("a stored tweet with id 1")
     public void a_stored_tweet_with_id() {
-        TweetEntity entity = new TweetEntity(1, "Example content", new Date(System.currentTimeMillis()),0, "max");
-        entity.setAuthorId(0);
+        TweetEntity entity = new TweetEntity(1, "Example content", new Date(System.currentTimeMillis()),0, 0);
         List<TweetEntity> tweets = new LinkedList<>();
         tweets.add(entity);
 
@@ -63,8 +62,7 @@ public class GeneralSteps  {
 
     @Given("a stored tweet with id 1 from user max")
     public void a_stored_tweet_with_id_from_user() {
-        TweetEntity entity = new TweetEntity(1, "Example content", new Date(System.currentTimeMillis()),0, "max");
-        entity.setAuthorId(0);
+        TweetEntity entity = new TweetEntity(1, "Example content", new Date(System.currentTimeMillis()),0, 0);
         List<TweetEntity> tweets = new LinkedList<>();
         tweets.add(entity);
 
@@ -76,7 +74,6 @@ public class GeneralSteps  {
         AtomicLong time = new AtomicLong(System.currentTimeMillis()-10000000);
         tweets.forEach(tweetEntity -> {
             tweetEntity.setPubDate(new Date(time.addAndGet(1000)));
-            tweetEntity.setAuthorId(domain.getAccounts().get(tweetEntity.getAuthorName()).getAccountId());
         });
         new DBConnection().insertTweets(tweets);
     }
@@ -89,8 +86,7 @@ public class GeneralSteps  {
 
     @Given("a stored tweet with id 1 in status CANCELED from user max")
     public void a_stored_tweet_with_id_in_status_CANCELED_from_user() {
-        TweetEntity entity = new TweetEntity(1, "Example content", new Date(System.currentTimeMillis()),1, "max");
-        entity.setAuthorId(0);
+        TweetEntity entity = new TweetEntity(1, "Example content", new Date(System.currentTimeMillis()),1, 0);
         List<TweetEntity> tweets = new LinkedList<>();
         tweets.add(entity);
 
@@ -115,13 +111,11 @@ public class GeneralSteps  {
     public void the_tweet_with_id_1_has_one_liker_and_two_retweets() {
         List<TweetEntity> tweets = new LinkedList<>();
 
-        TweetEntity entity = new TweetEntity(2, "Example content", new Date(System.currentTimeMillis()),0, "max");
-        entity.setAuthorId(0);
+        TweetEntity entity = new TweetEntity(2, "Example content", new Date(System.currentTimeMillis()),0, 0);
         entity.setRootTweetId(1);
         tweets.add(entity);
 
-        entity = new TweetEntity(3, "Example content", new Date(System.currentTimeMillis()),0, "john");
-        entity.setAuthorId(2);
+        entity = new TweetEntity(3, "Example content", new Date(System.currentTimeMillis()),0, 2);
         entity.setRootTweetId(1);
         tweets.add(entity);
 

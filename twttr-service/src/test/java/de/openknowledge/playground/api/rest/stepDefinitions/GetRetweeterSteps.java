@@ -26,18 +26,16 @@ public class GetRetweeterSteps {
     public void an_stored_tweet_with_id_got_retweeted_by_users_max_and_john() {
         List<TweetEntity> tweets = new LinkedList<>();
 
-        TweetEntity entity = new TweetEntity(1, "Example content", new Date(System.currentTimeMillis()),0, "martha");
-        entity.setAuthorId(1);
+        TweetEntity entity = new TweetEntity(1, "Example content", new Date(System.currentTimeMillis()),0, 1);
         tweets.add(entity);
 
-        entity = new TweetEntity(2, "Example content", new Date(System.currentTimeMillis()),0, "max");
+        entity = new TweetEntity(2, "Example content", new Date(System.currentTimeMillis()),0, 0);
         entity.setAuthorId(0);
         entity.setRootTweetId(1);
         tweets.add(entity);
 
 
-        entity = new TweetEntity(3, "Example content", new Date(System.currentTimeMillis()),0, "john");
-        entity.setAuthorId(2);
+        entity = new TweetEntity(3, "Example content", new Date(System.currentTimeMillis()),0, 2);
         entity.setRootTweetId(1);
         tweets.add(entity);
 

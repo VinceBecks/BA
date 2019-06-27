@@ -27,8 +27,7 @@ public class GetTweetDetailsSteps {
 
     @Given("a stored tweet with id {int} from user {string} and content {string}")
     public void a_stored_tweet_with_id_from_user_and_content(Integer tweetId, String userName, String content) {
-        TweetEntity entity = new TweetEntity(tweetId, content, new Date(System.currentTimeMillis()),0, userName);
-        entity.setAuthorId(domain.getAccount(userName).getAccountId());
+        TweetEntity entity = new TweetEntity(tweetId, content, new Date(System.currentTimeMillis()),0, domain.getAccount(userName).getAccountId());
         List<TweetEntity> tweets = new LinkedList<>();
         tweets.add(entity);
 
@@ -46,7 +45,7 @@ public class GetTweetDetailsSteps {
     public void the_tweet_with_id_has_a_retweet_with_id_from_user_jane(Integer tweetId, Integer retweetId) {
         List<TweetEntity> tweets = new LinkedList<>();
 
-        TweetEntity entity = new TweetEntity(retweetId, "Example content", new Date(System.currentTimeMillis()),0, "jane");
+        TweetEntity entity = new TweetEntity(retweetId, "Example content", new Date(System.currentTimeMillis()),0, 3);
         entity.setAuthorId(3);
         entity.setRootTweetId(tweetId);
         tweets.add(entity);

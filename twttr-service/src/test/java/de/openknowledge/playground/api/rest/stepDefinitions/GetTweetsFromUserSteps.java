@@ -20,6 +20,7 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -31,12 +32,18 @@ public class GetTweetsFromUserSteps {
     }
 
     @Given("following tweets got persisted from user john with id 2 in presented order")
-    public void following_tweets_got_persisted_from_user_john_with_id_in_presented_order(List<TweetEntity> tweets) {
+    public void following_tweets_got_persisted_from_user_john_with_id_in_presented_order(List<TweetEntity.Builder> tweetBuilders) {
         AtomicLong time = new AtomicLong(System.currentTimeMillis()-10000000);
-        tweets.forEach(tweetEntity -> {
+        List<TweetEntity> tweets = new LinkedList<>();
+        tweetBuilders.forEach(builder -> {
+            builder.withAuthorId(2);
+            builder.withPubDate(new Date(time.addAndGet(1000)));
+            tweets.add(builder.build());
+        });
+        /*tweets.forEach(tweetEntity -> {
             tweetEntity.setPubDate(new Date(time.addAndGet(1000)));
             tweetEntity.setAuthorId(2);
-        });
+        });*/
         new DBConnection().insertTweets(tweets);
     }
 

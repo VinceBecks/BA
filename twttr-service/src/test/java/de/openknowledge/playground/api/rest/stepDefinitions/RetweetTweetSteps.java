@@ -30,12 +30,10 @@ public class RetweetTweetSteps {
     public void a_stored_retweet_with_id_from_tweet_with_id() {
         List<TweetEntity> tweets = new LinkedList<>();
 
-        TweetEntity entity = new TweetEntity(1, "Example content", new Date(System.currentTimeMillis()),0, "max");
-        entity.setAuthorId(0);
+        TweetEntity entity = new TweetEntity(1, "Example content", new Date(System.currentTimeMillis()),0, 0);
         tweets.add(entity);
 
-        entity = new TweetEntity(2, "Example content", new Date(System.currentTimeMillis()),0, "max");
-        entity.setAuthorId(0);
+        entity = new TweetEntity(2, "Example content", new Date(System.currentTimeMillis()),0, 1);
         entity.setRootTweetId(1);
         tweets.add(entity);
 

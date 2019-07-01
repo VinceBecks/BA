@@ -105,7 +105,6 @@ public class UserResource {
 
         User userToFollow = repository.findUserById(userId);
 
-        //prüfen, ob requester bereits follower ist
         for (User user : userToFollow.getFollower()) {
             if (user.getAccountId() == requester.getAccountId()){
                 LOG.info("Requesting user is already a follower of the user with id {}", userId);

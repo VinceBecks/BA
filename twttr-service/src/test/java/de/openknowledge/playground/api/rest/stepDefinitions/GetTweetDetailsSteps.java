@@ -35,14 +35,9 @@ public class GetTweetDetailsSteps {
     }
 
 
-    @Given("the retweet hasn´t got liked")
-    public void the_retweet_hasn_t_got_liked() {
-        //todo: muss hier irgendwas passieren?
-    }
 
-
-    @Given("the tweet with id {int} has a retweet with id {int} from user jane")
-    public void the_tweet_with_id_has_a_retweet_with_id_from_user_jane(Integer tweetId, Integer retweetId) {
+    @Given("the tweet with id {int} has a retweet with id {int} from user jane that hasn´t got liked")
+    public void the_tweet_with_id_has_a_retweet_with_id_from_user_jane_that_hasnt_got_liked(Integer tweetId, Integer retweetId) {
         List<TweetEntity> tweets = new LinkedList<>();
 
         TweetEntity entity = new TweetEntity(retweetId, "Example content", new Date(System.currentTimeMillis()),0, 3);

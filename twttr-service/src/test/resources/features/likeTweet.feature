@@ -11,8 +11,7 @@ Feature: Like a specified tweet
   Request to like a specified tweet
 
     Given the user "max" is authenticated
-    And a stored tweet with id 1
-    And the user max is not a liker of the tweet with id 1
+    And the user max is not a liker of a tweet with id 1
     When a client sends a POST "/tweets/1/liker" request for user "max" to like the specified tweet
     Then the HTTP response status-code will be 204
 
@@ -54,7 +53,7 @@ Feature: Like a specified tweet
   The tweet to like must be existing
 
     Given the user "max" is authenticated
-    But there is no tweet with id 9999
+    And there is no tweet with id 9999
     When a client sends a POST "/tweets/9999/liker" request for user "max" to like the specified tweet
     Then the HTTP response status-code will be 404
 

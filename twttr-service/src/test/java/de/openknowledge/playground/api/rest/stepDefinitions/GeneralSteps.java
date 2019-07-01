@@ -60,6 +60,7 @@ public class GeneralSteps  {
         new DBConnection().insertTweets(tweets);
     }
 
+
     @Given("a stored tweet with id 1 from user max")
     public void a_stored_tweet_with_id_from_user() {
         TweetEntity entity = new TweetEntity(1, "Example content", new Date(System.currentTimeMillis()),0, 0);
@@ -80,8 +81,9 @@ public class GeneralSteps  {
 
     @Given("there is no tweet with id 9999")
     public void there_is_no_tweet_with_id() {
-        //todo: muss hier eigentlich was passieren? --> Szenario müsste Step beschreibene, der den speichert und dann in diesem wieder löschen
-
+        if (new DBConnection().isTweetPresent(9999)) {
+            throw new IllegalStateException("Tweet with id 9999 is present");
+        }
     }
 
     @Given("a stored tweet with id 1 in status CANCELED from user max")
@@ -100,12 +102,15 @@ public class GeneralSteps  {
         new DBConnection().insertLikes(likes);
     }
 
-    @Given("the user max is not a liker of the tweet with id 1")
-    public void the_user_max_is_not_a_liker_of_tweet_with_id() {
-        //todo: muss hier irgendwas passieren?
-        List<LikeEntity> likes = new LinkedList<>();
-        new DBConnection().insertLikes(likes);
+    @Given("the user max is not a liker of a tweet with id 1")
+    public void the_user_max_is_not_a_liker_of_a_tweet_with_id() {
+        TweetEntity entity = new TweetEntity(1, "Example content", new Date(System.currentTimeMillis()),0, 0);
+        List<TweetEntity> tweets = new LinkedList<>();
+        tweets.add(entity);
+
+        new DBConnection().insertTweets(tweets);
     }
+
 
     @Given("the tweet with id 1 has one liker and two retweets")
     public void the_tweet_with_id_1_has_one_liker_and_two_retweets() {

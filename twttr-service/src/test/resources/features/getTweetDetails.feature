@@ -37,8 +37,7 @@ Feature: Get detailed information about a specified tweet
 
     Given the user "john" is authenticated
     And a stored tweet with id 1 from user "john" and content "Example content"
-    And the tweet with id 1 has a retweet with id 2 from user jane
-    And the retweet hasn´t got liked
+    And the tweet with id 1 has a retweet with id 2 from user jane that hasn´t got liked
     When a client sends a GET "/tweets/2" request for user "john" to get detailed information about the specified retweet
     Then the HTTP response status-code will be 200
     And the HTTP response body will contain following JSON with detailed information about the retweet with id 2

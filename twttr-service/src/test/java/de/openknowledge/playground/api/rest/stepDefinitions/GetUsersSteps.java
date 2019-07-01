@@ -43,7 +43,9 @@ public class GetUsersSteps {
 
     @Given("there is no user with id {int}")
     public void there_is_no_user_with_id(int accountId) {
-        new DBConnection().deleteAccountIfPresent(accountId);
+        if (new DBConnection().isAccountPresent(accountId)){
+            throw new IllegalStateException("Account with id " + accountId + " is present");
+        }
     }
 
     @When("a client sends a GET {string} request for (user|moderator) {string} to get a list of users")

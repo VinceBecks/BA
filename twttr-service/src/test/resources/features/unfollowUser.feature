@@ -15,6 +15,7 @@ Feature: Unfollow a user
     When a client sends a DELETE "/users/2/follower" request for user "max" to unfollow user john
     Then the HTTP response status-code will be 204
 
+
   Scenario: The requesting user isn´t a follower of the specified user
   The requesting user must be a follower of the specified user to unfollow him
 

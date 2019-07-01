@@ -101,7 +101,8 @@ public class DBConnection {
         DatabaseOperation.CLEAN_INSERT.execute(this.connection, CustomizedDataSetBuilder.accountDataSet(accounts));
     }
 
-    public void deleteAccountIfPresent(int accountId) {
+
+    public boolean isAccountPresent(int accountId) {
         IDataSet dataSet = getActualDataSet();
         try {
             ITable table = dataSet.getTable("TAB_ACCOUNT");
@@ -109,21 +110,33 @@ public class DBConnection {
             for (int i=0; i<table.getRowCount(); i++) {
                 Integer id = (Integer) table.getValue(i, "ACCOUNT_ID");
                 if ( id.equals(accountId)) {
-                    String role = (String) table.getValue(i, "ACCOUNT_TYPE");
-                    if (role.equals("USER")){
-                        try {
-                            DatabaseOperation.CLEAN_INSERT.execute(this.connection, CustomizedDataSetBuilder.deleteAccountFromDataSet(accountId, getActualDataSet()));
-                        } catch (DatabaseUnitException | SQLException e) {
-                            e.printStackTrace();
-                            throw new RuntimeException();
-                        }
-                    }
+                    return true;
                 }
             }
         } catch (DataSetException e) {
             e.printStackTrace();
         }
+        return false;
     }
+
+    public boolean isTweetPresent(int tweetId) {
+        IDataSet dataSet = getActualDataSet();
+        try {
+            ITable table = dataSet.getTable("TAB_TWEET");
+
+            for (int i=0; i<table.getRowCount(); i++) {
+                Integer id = (Integer) table.getValue(i, "TWEET_ID");
+                if (id.equals(tweetId)) {
+                    return true;
+                }
+            }
+        } catch (DataSetException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
 
     public void initTables() {
         this.clearTables();
@@ -139,31 +152,4 @@ public class DBConnection {
         }
     }
 
-
-
-
-
-
-
-
-
-    public void setUpData (IDataSet dataSet) {
-        try {
-            DatabaseOperation.CLEAN_INSERT.execute(this.connection, dataSet);
-        } catch (DatabaseUnitException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void clearDataBase (IDataSet dataSet) {
-        try {
-            DatabaseOperation.DELETE_ALL.execute(this.connection, dataSet);
-        } catch (DatabaseUnitException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 }

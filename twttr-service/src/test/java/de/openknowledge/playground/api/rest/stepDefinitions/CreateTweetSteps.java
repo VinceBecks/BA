@@ -82,7 +82,6 @@ public class CreateTweetSteps {
         domain.setResponse(response);
     }
 
-    //todo: ggf. in GeneralSteps verschieben, wenn an mehreren Stellen genutzt...
     @Then("the HTTP response body contains following JSON of a list of error messages:")
     public void the_HTTP_response_body_contains_following_JSON_of_a_list_of_error_messages(String expectedJson) {
         try {

@@ -1,4 +1,4 @@
-package de.openknowledge.playground.api.rest.supportCode.converter;
+package de.openknowledge.playground.api.rest.supportCode;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cucumber.api.TypeRegistry;

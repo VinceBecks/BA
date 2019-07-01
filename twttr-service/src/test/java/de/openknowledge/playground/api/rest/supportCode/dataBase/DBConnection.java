@@ -109,11 +109,14 @@ public class DBConnection {
             for (int i=0; i<table.getRowCount(); i++) {
                 Integer id = (Integer) table.getValue(i, "ACCOUNT_ID");
                 if ( id.equals(accountId)) {
-                    try {
-                        DatabaseOperation.CLEAN_INSERT.execute(this.connection, CustomizedDataSetBuilder.deleteAccountFromDataSet(accountId, getActualDataSet()));
-                    } catch (DatabaseUnitException | SQLException e) {
-                        e.printStackTrace();
-                        throw new RuntimeException();
+                    String role = (String) table.getValue(i, "ACCOUNT_TYPE");
+                    if (role.equals("USER")){
+                        try {
+                            DatabaseOperation.CLEAN_INSERT.execute(this.connection, CustomizedDataSetBuilder.deleteAccountFromDataSet(accountId, getActualDataSet()));
+                        } catch (DatabaseUnitException | SQLException e) {
+                            e.printStackTrace();
+                            throw new RuntimeException();
+                        }
                     }
                 }
             }

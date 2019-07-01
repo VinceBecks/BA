@@ -27,7 +27,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class GeneralSteps  {
 
-    public SharedDomain domain; //todo: noch private machen?
+    private SharedDomain domain;
     public GeneralSteps(SharedDomain domain) {
         this.domain = domain;
     }

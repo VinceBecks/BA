@@ -43,7 +43,6 @@ public class GetUsersSteps {
 
     @Given("there is no user with id {int}")
     public void there_is_no_user_with_id(int accountId) {
-        //todo: Löscht Account, wenn vorhanden ... keine Prüfung, ob es ein User ist
         new DBConnection().deleteAccountIfPresent(accountId);
     }
 

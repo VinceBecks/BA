@@ -8,6 +8,7 @@ import de.openknowledge.playground.api.rest.security.domain.account.User;
 import de.openknowledge.playground.api.rest.security.domain.tweet.Tweet;
 import de.openknowledge.playground.api.rest.security.domain.tweet.TweetState;
 import de.openknowledge.playground.api.rest.security.infrastructure.persistence.repository.TwttrRepository;
+import de.openknowledge.playground.api.rest.security.infrastructure.rest.error.ErrorDTO;
 import de.openknowledge.playground.api.rest.security.infrastructure.rest.validation.ValidationErrorDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +45,7 @@ public class TweetResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Transactional
     public Response createNewTweet(@Valid @NotNull NewTweet newTweet, @Context SecurityContext securityContext) {
-        //todo: DateFormat festlegen
+        //todo: DateFormat festlegen?
 
         LOG.info("Request to create new tweet");
         Principal principal = securityContext.getUserPrincipal();
@@ -63,10 +64,15 @@ public class TweetResource {
     @GET
     @RolesAllowed({USER, MODERATOR})
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTweets(@DefaultValue("0") @QueryParam("index") final Integer index,
+    public Response getTweets(@Valid @DefaultValue("0") @QueryParam("index") final Integer index,
                               @DefaultValue("3") @QueryParam("numTweets") final Integer numTweets,
                               @Context SecurityContext securityContext) {
         LOG.info("Request to get {} tweets", numTweets);
+
+        if (index < 0 || numTweets < 0) {
+            LOG.warn("Invalid Query Param");
+            return Response.status(Response.Status.BAD_REQUEST).entity(new ValidationErrorDTO("Invalid Query Param")).build();
+        }
 
         Principal principal = securityContext.getUserPrincipal();
         String userName = principal.getName();
@@ -80,7 +86,6 @@ public class TweetResource {
             LOG.info("Request from a user");
             User requestingUser = repository.findUserByUserName(userName);
             List<Tweet> finalPersistedTweets = persistedTweets;
-            //Frage: So die Liste zusammenstellen lassen, oder direkt in der DB- Abfrage per Joins
             requestingUser.getFollows().forEach(user -> finalPersistedTweets.addAll(repository.findTweetsInStatePublishFromUser(user.getAccountId())));
             LOG.info("Found {} tweets from users the user {} is following", persistedTweets.size(), userName);
         }
@@ -99,7 +104,6 @@ public class TweetResource {
     }
 
 
-    //todo: Validierung von tweetId vornehmen?
     @Path("{tweetId}")
     @GET
     @RolesAllowed({USER, MODERATOR})
@@ -116,12 +120,11 @@ public class TweetResource {
     }
 
 
-    //todo: Validierung von tweetId vornehmen?
     @Path("{tweetId}")
     @DELETE
     @RolesAllowed({USER, MODERATOR})
     @Transactional
-    public Response deleteTweet (@PathParam("tweetId") final Integer tweetId, @Context SecurityContext securityContext) {
+    public Response cancelTweet (@PathParam("tweetId") final Integer tweetId, @Context SecurityContext securityContext) {
         LOG.info("Request to cancel tweet with id {}", tweetId);
         Principal principal = securityContext.getUserPrincipal();
         String userName = principal.getName();
@@ -159,7 +162,7 @@ public class TweetResource {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
         for (User user : tweetToLike.getLiker()) {
-            if (user.getAccountId() == requester.getAccountId()){
+            if (user.getAccountId().equals(requester.getAccountId())){
                 LOG.warn("Requesting user has already liked tweet with id {}", tweetId);
                 return Response.status(Response.Status.BAD_REQUEST).entity(new ValidationErrorDTO("Requesting user is already a liker of the specified tweet")).build();
             }

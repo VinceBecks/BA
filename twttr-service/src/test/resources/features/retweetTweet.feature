@@ -42,14 +42,14 @@ Feature: Retweet a Tweet
           }
         """
 
-    #todo: !!!!wie überprüfen? --> übergibt die Response nicht eine JSON?
   Scenario: Tweet to retweet is already a retweet
   The new created retweet will have the same rootTweet as the retweet it got retweeted from
 
     Given the user "max" is authenticated
-    And a stored retweet with id 2 from tweet with id 1
+    And a stored retweet with id 2 from a tweet with id 1
     When a client sends a POST "/tweets/2/retweets" request for user "max" to retweet the specified retweet
     Then the HTTP response status-code will be 201
+    And the responded retweet is a retweet of the tweet with id 1
 
 
   Scenario: Unauthorised request to retweet a tweet

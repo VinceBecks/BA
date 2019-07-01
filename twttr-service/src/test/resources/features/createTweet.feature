@@ -37,7 +37,6 @@ Feature: Create tweet
 
   Scenario Outline: Wrong number of characters for the new tweet to be created
   The number of characters for the new tweet should be between 1 and 140
-#todo: !!!! errorMessages überarbeiten
     Given the user "max" is authenticated
     When a client sends a POST "/tweets" request for user "max" to create new tweet with <numberOfCharacter> character
     Then the HTTP response status-code will be 400

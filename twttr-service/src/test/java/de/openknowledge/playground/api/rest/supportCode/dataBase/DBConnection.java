@@ -137,6 +137,25 @@ public class DBConnection {
         return false;
     }
 
+    public boolean isUserAFollower(int followerId, int followingId) {
+        IDataSet dataSet = getActualDataSet();
+        try {
+            ITable table = dataSet.getTable("TAB_FOLLOWER");
+
+            for (int i=0; i<table.getRowCount(); i++) {
+                Integer follower = (Integer) table.getValue(i, "FOLLOWER_ID");
+                Integer following = (Integer) table.getValue(i, "FOLLOWING_ID");
+                if (follower.equals(followerId) && following.equals(followingId)) {
+                    return true;
+                }
+            }
+        } catch (DataSetException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
 
     public void initTables() {
         this.clearTables();

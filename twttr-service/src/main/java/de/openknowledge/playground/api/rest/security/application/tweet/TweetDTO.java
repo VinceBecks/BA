@@ -9,7 +9,6 @@ import java.util.Date;
 public class TweetDTO implements Serializable {
     private Integer tweetId;
     private String content;
-    //Frage: Bestimmtes Datum Format versenden? Als String? Oder reicht Millisekunden?
     private Date pubDate;
     private UserDTO author;
     private TweetDTO rootTweet;

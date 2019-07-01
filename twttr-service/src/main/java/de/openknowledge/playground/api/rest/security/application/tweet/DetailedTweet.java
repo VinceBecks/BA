@@ -9,7 +9,6 @@ import java.util.Date;
 public class DetailedTweet implements Serializable {
     private Integer tweetId;
     private String content;
-    //Frage: Welches Datumformat?
     private Date pubDate;
     private UserDTO author;
     private Integer numRetweets;

@@ -196,7 +196,7 @@ public class TweetResource {
     @RolesAllowed({USER})
     @Transactional
     public Response unlikeTweet (@PathParam("tweetId") final Integer tweetId, @Context SecurityContext securityContext) {
-        LOG.info("Request to unlike the tweet with id {}", tweetId); //todo: mit aufnehmen, wer unliken will?
+        LOG.info("Request to unlike the tweet with id {}", tweetId);
         Principal principal = securityContext.getUserPrincipal();
         String userName = principal.getName();
         User requester = repository.findUserByUserName(userName);

@@ -39,7 +39,7 @@ public class GetTweetsFromUserSteps {
             builder.withPubDate(new Date(time.addAndGet(1000)));
             tweets.add(builder.build());
         });
-        new DBConnection().insertTweets(tweets);
+        DBConnection.insertTweets(tweets);
     }
 
     @When("a client sends a GET {string} request for (user|moderator) {string} to get a list of tweets from user john")

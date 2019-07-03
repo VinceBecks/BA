@@ -20,7 +20,7 @@ public class UnfollowUserSteps {
 
     @Given("the user max isn´t a follower of user john with id 2")
     public void the_user_isn_t_a_follower_of_user_with_id() {
-        if (new DBConnection().isUserAFollower(0, 2)){
+        if (DBConnection.isUserAFollower(0, 2)){
             throw new IllegalStateException("Max is a follower of user john");
         }
     }

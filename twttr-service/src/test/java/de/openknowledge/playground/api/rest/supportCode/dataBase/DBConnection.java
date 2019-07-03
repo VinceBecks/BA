@@ -24,12 +24,16 @@ import java.util.Properties;
 
 
 public class DBConnection {
-    private final Properties dbConfig;
-    private IDatabaseConnection connection;
+    private final static Properties dbConfig;
+    private static IDatabaseConnection connection;
     private static EntityManagerFactory emFactory;
-    private EntityManager entityManager;
+    private static EntityManager entityManager;
 
     public DBConnection() {
+
+    }
+
+    static{
         emFactory = Persistence.createEntityManagerFactory("test-local");
         entityManager = emFactory.createEntityManager();
 
@@ -38,7 +42,7 @@ public class DBConnection {
         dbConfig.setProperty(DatabaseConfig.FEATURE_QUALIFIED_TABLE_NAMES, "false");
 
         try {
-            this.connection = getConnection();
+            connection = getConnection();
         }catch (Exception e){
             e.printStackTrace();
             throw new RuntimeException("Can´t get connection to DB");
@@ -51,14 +55,14 @@ public class DBConnection {
         return DbUnitDatatypeFactory.getDatatypeFactory(databaseDriverClazz);
     }
 
-    private IDatabaseConnection getConnection() throws DatabaseUnitException {
+    private static IDatabaseConnection getConnection() throws DatabaseUnitException {
         connection = new DatabaseConnection(EntityManagerProvider.instance("test-local").connection());
         connection.getConfig().setPropertiesByString(dbConfig);
 
         return connection;
     }
 
-    public IDataSet getActualDataSet() {
+    public static IDataSet getActualDataSet() {
         IDataSet actualDataSet;
         String[] tableNames = new String []{"TAB_TWEET", "TAB_ACCOUNT", "TAB_FOLLOWER", "TAB_LIKE"};
         try {
@@ -71,39 +75,39 @@ public class DBConnection {
     }
 
 
-    public void insertTweets(List<TweetEntity> tweets) {
+    public static void insertTweets(List<TweetEntity> tweets) {
         try {
-            DatabaseOperation.INSERT.execute(this.connection, CustomizedDataSetBuilder.tweetDataSet(tweets));
+            DatabaseOperation.INSERT.execute(connection, CustomizedDataSetBuilder.tweetDataSet(tweets));
         } catch (DatabaseUnitException | SQLException e) {
             e.printStackTrace();
             throw new RuntimeException();
         }
     }
 
-    public void insertLikes (List<LikeEntity> likes) {
+    public static void insertLikes (List<LikeEntity> likes) {
         try {
-            DatabaseOperation.INSERT.execute(this.connection, CustomizedDataSetBuilder.likeDataSet(likes));
+            DatabaseOperation.INSERT.execute(connection, CustomizedDataSetBuilder.likeDataSet(likes));
         } catch (DatabaseUnitException | SQLException e) {
             e.printStackTrace();
             throw new RuntimeException();
         }
     }
 
-    public void insertFollower (List<FollowerEntity> follower) {
+    public static void insertFollower (List<FollowerEntity> follower) {
         try {
-            DatabaseOperation.INSERT.execute(this.connection, CustomizedDataSetBuilder.followerDataSet(follower));
+            DatabaseOperation.INSERT.execute(connection, CustomizedDataSetBuilder.followerDataSet(follower));
         } catch (DatabaseUnitException | SQLException e) {
             e.printStackTrace();
             throw new RuntimeException();
         }
     }
 
-    public void updateAccounts (List<AccountEntity> accounts) throws DatabaseUnitException, SQLException {
-        DatabaseOperation.CLEAN_INSERT.execute(this.connection, CustomizedDataSetBuilder.accountDataSet(accounts));
+    public static void updateAccounts (List<AccountEntity> accounts) throws DatabaseUnitException, SQLException {
+        DatabaseOperation.CLEAN_INSERT.execute(connection, CustomizedDataSetBuilder.accountDataSet(accounts));
     }
 
 
-    public boolean isAccountPresent(int accountId) {
+    public static boolean isAccountPresent(int accountId) {
         IDataSet dataSet = getActualDataSet();
         try {
             ITable table = dataSet.getTable("TAB_ACCOUNT");
@@ -121,7 +125,7 @@ public class DBConnection {
         return false;
     }
 
-    public boolean isTweetPresent(int tweetId) {
+    public static boolean isTweetPresent(int tweetId) {
         IDataSet dataSet = getActualDataSet();
         try {
             ITable table = dataSet.getTable("TAB_TWEET");
@@ -140,7 +144,7 @@ public class DBConnection {
         return false;
     }
 
-    public boolean isUserAFollower(int followerId, int followingId) {
+    public static boolean isUserAFollower(int followerId, int followingId) {
         IDataSet dataSet = getActualDataSet();
         try {
             ITable table = dataSet.getTable("TAB_FOLLOWER");
@@ -161,14 +165,14 @@ public class DBConnection {
     }
 
 
-    public void initTables() {
-        this.clearTables();
+    public static void initTables() {
+        clearTables();
     }
 
-    public void clearTables () {
+    public static void clearTables () {
         //todo: Löscht nicht die Daten aus TAB_ACCOUNT --> Namen ändern?
         try {
-            DatabaseOperation.DELETE_ALL.execute(this.connection, CustomizedDataSetBuilder.emptyTableDataSet());
+            DatabaseOperation.DELETE_ALL.execute(connection, CustomizedDataSetBuilder.emptyTableDataSet());
         } catch (DatabaseUnitException | SQLException e) {
             e.printStackTrace();
             throw new RuntimeException();

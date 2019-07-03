@@ -48,7 +48,7 @@ public class GeneralSteps  {
         List<FollowerEntity> follower = new LinkedList<>();
         follower.add(new FollowerEntity(0, 2));
         follower.add(new FollowerEntity(0, 3));
-        new DBConnection().insertFollower(follower);
+        DBConnection.insertFollower(follower);
     }
 
     @Given("a stored tweet with id 1")
@@ -57,7 +57,7 @@ public class GeneralSteps  {
         List<TweetEntity> tweets = new LinkedList<>();
         tweets.add(entity);
 
-        new DBConnection().insertTweets(tweets);
+        DBConnection.insertTweets(tweets);
     }
 
 
@@ -67,7 +67,7 @@ public class GeneralSteps  {
         List<TweetEntity> tweets = new LinkedList<>();
         tweets.add(entity);
 
-        new DBConnection().insertTweets(tweets);
+        DBConnection.insertTweets(tweets);
     }
 
     @Given("following tweets got persisted in presented order")
@@ -76,12 +76,12 @@ public class GeneralSteps  {
         tweets.forEach(tweetEntity -> {
             tweetEntity.setPubDate(new Date(time.addAndGet(1000)));
         });
-        new DBConnection().insertTweets(tweets);
+        DBConnection.insertTweets(tweets);
     }
 
     @Given("there is no tweet with id 9999")
     public void there_is_no_tweet_with_id() {
-        if (new DBConnection().isTweetPresent(9999)) {
+        if (DBConnection.isTweetPresent(9999)) {
             throw new IllegalStateException("Tweet with id 9999 is present");
         }
     }
@@ -92,14 +92,14 @@ public class GeneralSteps  {
         List<TweetEntity> tweets = new LinkedList<>();
         tweets.add(entity);
 
-        new DBConnection().insertTweets(tweets);
+        DBConnection.insertTweets(tweets);
     }
 
     @Given("the user max is a liker of tweet with id 1")
     public void the_user_max_is_a_liker_of_tweet_with_id() {
         List<LikeEntity> likes = new LinkedList<>();
         likes.add(new LikeEntity(1,0));
-        new DBConnection().insertLikes(likes);
+        DBConnection.insertLikes(likes);
     }
 
     @Given("the user max is not a liker of a tweet with id 1")
@@ -108,7 +108,7 @@ public class GeneralSteps  {
         List<TweetEntity> tweets = new LinkedList<>();
         tweets.add(entity);
 
-        new DBConnection().insertTweets(tweets);
+        DBConnection.insertTweets(tweets);
     }
 
 
@@ -124,12 +124,11 @@ public class GeneralSteps  {
         entity.setRootTweetId(1);
         tweets.add(entity);
 
-        DBConnection connection = new DBConnection();
-        connection.insertTweets(tweets);
+        DBConnection.insertTweets(tweets);
 
         List<LikeEntity> likes = new LinkedList<>();
         likes.add(new LikeEntity(1, 0));
-        connection.insertLikes(likes);
+        DBConnection.insertLikes(likes);
     }
 
     @When("a client sends a {string} {string} request for user {string}")

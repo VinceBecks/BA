@@ -37,7 +37,7 @@ public class RetweetTweetSteps {
         entity.setRootTweetId(1);
         tweets.add(entity);
 
-        new DBConnection().insertTweets(tweets);
+        DBConnection.insertTweets(tweets);
     }
 
 

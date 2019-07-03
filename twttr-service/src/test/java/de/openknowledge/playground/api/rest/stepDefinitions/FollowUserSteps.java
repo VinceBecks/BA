@@ -28,7 +28,7 @@ public class FollowUserSteps {
     public void the_user_max_is_a_follower_of_user_john_with_id() {
         List<FollowerEntity> follower = new LinkedList<>();
         follower.add(new FollowerEntity(0,2));
-        new DBConnection().insertFollower(follower);
+        DBConnection.insertFollower(follower);
     }
 
 

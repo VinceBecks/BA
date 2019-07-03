@@ -24,7 +24,7 @@ public class GetLikerSteps  {
         List<LikeEntity> likes = new LinkedList<>();
         likes.add(new LikeEntity(1,0));
         likes.add(new LikeEntity(1,2));
-        new DBConnection().insertLikes(likes);
+        DBConnection.insertLikes(likes);
     }
 
     @When("a client sends a GET {string} request for (user|moderator) {string} to get a list of likers of the specified tweet")

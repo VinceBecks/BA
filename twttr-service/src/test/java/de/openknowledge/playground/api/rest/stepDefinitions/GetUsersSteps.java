@@ -34,7 +34,7 @@ public class GetUsersSteps {
     @Given("the system has persisted users")
     public void the_system_has_persisted_users(List<AccountEntity> accounts) {
         try {
-            new DBConnection().updateAccounts(accounts);
+            DBConnection.updateAccounts(accounts);
         } catch (DatabaseUnitException | SQLException e) {
             e.printStackTrace();
             throw new RuntimeException();
@@ -43,7 +43,7 @@ public class GetUsersSteps {
 
     @Given("there is no user with id {int}")
     public void there_is_no_user_with_id(int accountId) {
-        if (new DBConnection().isAccountPresent(accountId)){
+        if (DBConnection.isAccountPresent(accountId)){
             throw new IllegalStateException("Account with id " + accountId + " is present");
         }
     }

@@ -31,7 +31,7 @@ public class GetTweetDetailsSteps {
         List<TweetEntity> tweets = new LinkedList<>();
         tweets.add(entity);
 
-        new DBConnection().insertTweets(tweets);
+        DBConnection.insertTweets(tweets);
     }
 
 
@@ -45,7 +45,7 @@ public class GetTweetDetailsSteps {
         entity.setRootTweetId(tweetId);
         tweets.add(entity);
 
-        new DBConnection().insertTweets(tweets);
+        DBConnection.insertTweets(tweets);
     }
 
 

@@ -28,7 +28,7 @@ public class GetFollowerSteps  {
         follower.add(new FollowerEntity(3, 2));
         follower.add(new FollowerEntity(6, 2));
 
-        new DBConnection().insertFollower(follower);
+        DBConnection.insertFollower(follower);
     }
 
 

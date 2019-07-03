@@ -19,8 +19,9 @@ public class Tweet implements Serializable{
     @Column(name = "TWEET_ID")
     private Integer tweetId;
 
-    @Column(name = "CONTENT", nullable = false)
-    private String content;
+    @Embedded
+    @AttributeOverride(name="content", column = @Column(name = "CONTENT", nullable = false))
+    private Content content;
 
     @Enumerated
     @Column(name = "STATE", nullable = false)
@@ -60,12 +61,14 @@ public class Tweet implements Serializable{
         this.tweetId = tweetId;
     }
 
-    public String getContent() {
-        return content;
+    public Content getContent() {
+        return new Content(this.content.getContent());
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setContent(Content content) {
+        if (Content.isValid(content.getContent())){
+            this.content = content;
+        }
     }
 
     public TweetState getState() {
@@ -128,7 +131,7 @@ public class Tweet implements Serializable{
             tweet.setState(TweetState.PUBLISH);
         }
 
-        public Builder withContent(String content) {
+        public Builder withContent(Content content) {
             tweet.setContent(content);
             return this;
         }

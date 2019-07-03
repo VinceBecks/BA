@@ -5,6 +5,7 @@ import de.openknowledge.playground.api.rest.security.application.user.UserDTO;
 import de.openknowledge.playground.api.rest.security.domain.account.Account;
 import de.openknowledge.playground.api.rest.security.domain.account.AccountType;
 import de.openknowledge.playground.api.rest.security.domain.account.User;
+import de.openknowledge.playground.api.rest.security.domain.tweet.Content;
 import de.openknowledge.playground.api.rest.security.domain.tweet.Tweet;
 import de.openknowledge.playground.api.rest.security.domain.tweet.TweetState;
 import de.openknowledge.playground.api.rest.security.infrastructure.persistence.repository.TwttrRepository;
@@ -53,7 +54,7 @@ public class TweetResource {
         User requester = repository.findUserByUserName(userName);
 
         Tweet tweet = Tweet.newTweet()
-                .withContent(newTweet.getContent())
+                .withContent(new Content(newTweet.getContent()))
                 .withAuthor(requester)
                 .build();
         LOG.info("New tweet created");

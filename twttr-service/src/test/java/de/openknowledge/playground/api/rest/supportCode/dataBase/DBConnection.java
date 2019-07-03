@@ -41,6 +41,7 @@ public class DBConnection {
             this.connection = getConnection();
         }catch (Exception e){
             e.printStackTrace();
+            throw new RuntimeException("Can´t get connection to DB");
         }
     }
 
@@ -59,7 +60,7 @@ public class DBConnection {
 
     public IDataSet getActualDataSet() {
         IDataSet actualDataSet;
-        String[] tableNames = new String []{"TAB_TWEET", "TAB_ACCOUNT"};
+        String[] tableNames = new String []{"TAB_TWEET", "TAB_ACCOUNT", "TAB_FOLLOWER", "TAB_LIKE"};
         try {
             actualDataSet = connection.createDataSet(tableNames);
         } catch (SQLException | DataSetException e) {
@@ -115,6 +116,7 @@ public class DBConnection {
             }
         } catch (DataSetException e) {
             e.printStackTrace();
+            throw new RuntimeException();
         }
         return false;
     }
@@ -132,6 +134,7 @@ public class DBConnection {
             }
         } catch (DataSetException e) {
             e.printStackTrace();
+            throw new RuntimeException();
         }
 
         return false;
@@ -151,6 +154,7 @@ public class DBConnection {
             }
         } catch (DataSetException e) {
             e.printStackTrace();
+            throw new RuntimeException();
         }
 
         return false;

@@ -52,7 +52,10 @@ public class TweetResource {
         String userName = principal.getName();
         User requester = repository.findUserByUserName(userName);
 
-        Tweet tweet = new Tweet(newTweet.getContent(), requester);
+        Tweet tweet = Tweet.newTweet()
+                .withContent(newTweet.getContent())
+                .withAuthor(requester)
+                .build();
         LOG.info("New tweet created");
         repository.persistTweet(tweet);
         requester.getTweets().add(tweet);
@@ -233,7 +236,10 @@ public class TweetResource {
         Tweet tweetToRetweet = repository.findTweetById(tweetId);
         if (tweetToRetweet.getState() == TweetState.CANCELED) { return Response.status(Response.Status.NOT_FOUND).build(); }
         tweetToRetweet = tweetToRetweet.getRootTweet() != null ? tweetToRetweet.getRootTweet() : tweetToRetweet;        //case Tweet is already a retweet
-        Tweet retweet = new Tweet(tweetToRetweet.getContent(), requester);
+        Tweet retweet = Tweet.newTweet()
+                .withContent(tweetToRetweet.getContent())
+                .withAuthor(requester)
+                .build();
         retweet.setRootTweet(tweetToRetweet);
         repository.persistTweet(retweet);
         tweetToRetweet.getRetweets().add(retweet);

@@ -2,6 +2,7 @@ package de.openknowledge.playground.api.rest.security.domain.tweet;
 
 
 import de.openknowledge.playground.api.rest.security.domain.account.User;
+import org.apache.commons.lang3.Validate;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -46,18 +47,10 @@ public class Tweet implements Serializable{
     @Column(name = "PUBLISH_DATE")
     private Date pubDate;
 
-    public Tweet() {
-        //for JPA
+    private Tweet() {
+
     }
 
-    public Tweet (String content, User author) {
-        this.content = content;
-        this.author = author;
-        this.state = TweetState.PUBLISH;
-        this.liker = new LinkedList<>();
-        this.retweets = new LinkedList<>();
-        this.pubDate = new Date(System.currentTimeMillis());
-    }
 
     public Integer getTweetId() {
         return tweetId;
@@ -121,6 +114,66 @@ public class Tweet implements Serializable{
 
     public void setPubDate(Date pubDate) {
         this.pubDate = pubDate;
+    }
+
+    public static Builder newTweet() { return new Builder(); }
+
+    public static class Builder {
+        Tweet tweet;
+        Builder(){
+            tweet = new Tweet();
+            tweet.setRetweets(new LinkedList<>());
+            tweet.setLiker(new LinkedList<>());
+            tweet.setPubDate(new Date(System.currentTimeMillis()));
+            tweet.setState(TweetState.PUBLISH);
+        }
+
+        public Builder withContent(String content) {
+            tweet.setContent(content);
+            return this;
+        }
+
+        public Builder withState(TweetState state) {
+            tweet.setState(state);
+            return this;
+        }
+
+        public Builder withAuthor(User author) {
+            tweet.setAuthor(author);
+            return this;
+        }
+
+        public Builder withLikes(LinkedList<User> liker) {
+            tweet.setLiker(liker);
+            return this;
+        }
+
+        public Builder withRetweets(LinkedList<Tweet> retweets) {
+            tweet.setRetweets(retweets);
+            return this;
+        }
+
+        public Builder withRootTweet(Tweet rootTweet){
+            tweet.setRootTweet(rootTweet);
+            return this;
+        }
+
+        public Builder withPubDate(Date pubDate) {
+            tweet.setPubDate(pubDate);
+            return this;
+        }
+
+        public Tweet build(){
+            Validate.notNull(tweet.getContent());
+            Validate.notNull(tweet.getAuthor());
+            Validate.notNull(tweet.getPubDate());
+            Validate.notNull(tweet.getState());
+            Validate.notNull(tweet.getLiker());
+            Validate.notNull(tweet.getRetweets());
+            Tweet toBuild = tweet;
+            tweet = null;
+            return toBuild;
+        }
     }
 
 

@@ -23,7 +23,7 @@ public class DetailedTweet implements Serializable {
     public DetailedTweet (Tweet tweet) {
         this.tweetId = tweet.getTweetId();
         this.content = tweet.getContent().getContent();
-        this.pubDate = tweet.getPubDate();
+        this.pubDate = tweet.getPubDate().getPubDate();
         this.author = new UserDTO(tweet.getAuthor());
         this.numLiker = tweet.getLiker().size();
         this.numRetweets = tweet.getRetweets().size();

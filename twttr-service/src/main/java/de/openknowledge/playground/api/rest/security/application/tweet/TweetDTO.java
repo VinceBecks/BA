@@ -20,7 +20,7 @@ public class TweetDTO implements Serializable {
     public TweetDTO (Tweet tweet) {
         this.tweetId = tweet.getTweetId();
         this.content = tweet.getContent().getContent();
-        this.pubDate = tweet.getPubDate();
+        this.pubDate = tweet.getPubDate().getPubDate();
         this.author = new UserDTO(tweet.getAuthor());
         if (tweet.getRootTweet() != null) { this.rootTweet = new TweetDTO(tweet.getRootTweet()); }
     }

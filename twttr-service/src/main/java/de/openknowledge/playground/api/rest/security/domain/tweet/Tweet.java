@@ -44,9 +44,9 @@ public class Tweet implements Serializable{
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "rootTweet", fetch = FetchType.EAGER)
     private List<Tweet> retweets;
 
-    @Temporal(value = TemporalType.TIMESTAMP)
-    @Column(name = "PUBLISH_DATE")
-    private Date pubDate;
+    @Embedded
+    @AttributeOverride(name= "pubDate", column = @Column(name = "PUBLISH_DATE", nullable = false))
+    private PublicationDate pubDate;
 
     private Tweet() {
 
@@ -111,11 +111,11 @@ public class Tweet implements Serializable{
         this.rootTweet = rootTweet;
     }
 
-    public Date getPubDate() {
-        return pubDate;
+    public PublicationDate getPubDate() {
+        return new PublicationDate(pubDate.getPubDate());
     }
 
-    public void setPubDate(Date pubDate) {
+    public void setPubDate(PublicationDate pubDate) {
         this.pubDate = pubDate;
     }
 
@@ -127,7 +127,7 @@ public class Tweet implements Serializable{
             tweet = new Tweet();
             tweet.setRetweets(new LinkedList<>());
             tweet.setLiker(new LinkedList<>());
-            tweet.setPubDate(new Date(System.currentTimeMillis()));
+            tweet.setPubDate(new PublicationDate(new Date(System.currentTimeMillis())));
             tweet.setState(TweetState.PUBLISH);
         }
 
@@ -161,7 +161,7 @@ public class Tweet implements Serializable{
             return this;
         }
 
-        public Builder withPubDate(Date pubDate) {
+        public Builder withPubDate(PublicationDate pubDate) {
             tweet.setPubDate(pubDate);
             return this;
         }

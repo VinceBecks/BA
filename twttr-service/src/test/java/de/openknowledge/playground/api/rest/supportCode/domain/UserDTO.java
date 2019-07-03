@@ -23,8 +23,8 @@ public class UserDTO implements Serializable {
 
     public UserDTO(User user) {
         this.userId = user.getAccountId();
-        this.firstName = user.getFirstName();
-        this.lastName = user.getLastName();
+        this.firstName = user.getName().getFirstName().getFirstName();
+        this.lastName = user.getName().getLastName().getLastName();
         this.role = user.getRole();
     }
 

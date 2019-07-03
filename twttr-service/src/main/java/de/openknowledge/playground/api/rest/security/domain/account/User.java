@@ -1,6 +1,7 @@
 package de.openknowledge.playground.api.rest.security.domain.account;
 
 import de.openknowledge.playground.api.rest.security.domain.tweet.Tweet;
+import org.apache.commons.lang3.Validate;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -27,17 +28,10 @@ public class User extends Account {
     @ManyToMany(mappedBy = "liker", fetch = FetchType.EAGER)
     private List<Tweet> likes;
 
-    public User () {
+    private User () {
 
     }
 
-    public User (String firstName, String lastName, String userName) {
-        super (firstName, lastName, userName);
-        this.follower = new HashSet<>();
-        this.follows = new HashSet<>();
-        this.tweets = new LinkedList<>();
-        setRole(AccountType.USER);
-    }
 
     public Set<User> getFollower() {
         return follower;
@@ -69,5 +63,29 @@ public class User extends Account {
 
     public void setLikes(List<Tweet> likes) {
         this.likes = likes;
+    }
+
+    public static Builder newUser() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        User user;
+
+        private Builder(){
+            user = new User();
+        }
+
+        public Builder withName(Name name) {
+            user.setName(name);
+            return this;
+        }
+
+        public User build() {
+            Validate.notNull(user.getName());
+            User toBuild = user;
+            user = null;
+            return toBuild;
+        }
     }
 }

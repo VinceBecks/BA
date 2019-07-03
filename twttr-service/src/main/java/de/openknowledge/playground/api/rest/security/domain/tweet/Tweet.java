@@ -48,10 +48,11 @@ public class Tweet implements Serializable{
     @AttributeOverride(name= "pubDate", column = @Column(name = "PUBLISH_DATE", nullable = false))
     private PublicationDate pubDate;
 
+
+
     private Tweet() {
 
     }
-
 
     public Integer getTweetId() {
         return tweetId;

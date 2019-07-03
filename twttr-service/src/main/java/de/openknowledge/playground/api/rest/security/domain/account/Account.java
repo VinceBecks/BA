@@ -15,25 +15,20 @@ public class Account implements Serializable {
     private Integer accountId;
 
     @Column(name = "USERNAME", nullable = false, unique = true)
-    private String userName;
-
-    @Column(name = "FIRST_NAME", nullable = false)
-    private String firstName;
-
-    @Column(name = "LAST_NAME", nullable = false)
-    private String lastName;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "userName.userName", column = @Column(name = "USERNAME", nullable = false, unique = true)),
+            @AttributeOverride(name = "lastName.lastName", column = @Column(name = "LAST_NAME", nullable = false)),
+            @AttributeOverride(name = "firstName.firstName", column = @Column(name = "FIRST_NAME", nullable = false))
+    })
+    private Name name;
 
     @Column(name = "ROLE", nullable = false)
     private AccountType role;
 
-    public Account () {
-        //for JPA
-    }
 
-    public Account (String firstName, String lastName, String userName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.userName = userName;
+    Account () {
+        //for JPA
     }
 
     public Integer getAccountId() {
@@ -44,20 +39,12 @@ public class Account implements Serializable {
         this.accountId = accountId;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public void setName(Name name) {
+        this.name = name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public Name getName() {
+        return new Name(this.name.getUserName(), this.name.getFirstName(), this.name.getLastName());
     }
 
     public AccountType getRole() {
@@ -67,14 +54,4 @@ public class Account implements Serializable {
     public void setRole(AccountType role) {
         this.role = role;
     }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-
 }

@@ -44,14 +44,14 @@ public class TwttrRepository {
         cq.select(root)
                 .distinct(true)
                 .where(cb.or(
-                        cb.like(root.get("userName"), "%" + searchString + "%"),
-                        cb.like(root.get("firstName"), "%" + searchString + "%"),
-                        cb.like(root.get("lastName"), "%" + searchString + "%")
+                        cb.like(root.get("name").get("userName").get("userName"), "%" + searchString + "%"),
+                        cb.like(root.get("name").get("firstName").get("firstName"), "%" + searchString + "%"),
+                        cb.like(root.get("name").get("lastName").get("lastName"), "%" + searchString + "%")
                 ))
                 .orderBy(
-                        cb.asc(root.get("userName")),
-                        cb.asc(root.get("firstName")),
-                        cb.asc((root.get("lastName")))
+                        cb.asc(root.get("name").get("userName").get("userName")),
+                        cb.asc(root.get("name").get("firstName").get("firstName")),
+                        cb.asc((root.get("name").get("lastName").get("lastName")))
                 );
 
         TypedQuery<User> query = em.createQuery(cq);
@@ -142,7 +142,7 @@ public class TwttrRepository {
 
         Root<User> root = cq.from(User.class);
 
-        cq.select(root).where(cb.equal(root.get("userName"), userName));
+        cq.select(root).where(cb.equal(root.get("name").get("userName").get("userName"), userName));
 
         TypedQuery<User> query = em.createQuery(cq);
         try {
@@ -162,7 +162,7 @@ public class TwttrRepository {
 
         Root<Account> root = cq.from(Account.class);
 
-        cq.select(root).where(cb.equal(root.get("userName"), userName));
+        cq.select(root).where(cb.equal(root.get("name").get("userName").get("userName"), userName));
 
         TypedQuery<Account> query = em.createQuery(cq);
         Account account= query.getSingleResult();

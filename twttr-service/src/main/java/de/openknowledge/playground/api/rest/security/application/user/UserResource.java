@@ -13,21 +13,10 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.DefaultValue;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.SecurityContext;
-import java.security.Principal;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -37,13 +26,11 @@ import static de.openknowledge.playground.api.rest.security.infrastructure.secur
 @Path("users")
 public class UserResource {
 
-    Logger LOG = LoggerFactory.getLogger("UserResource.class");
+    private static final Logger LOG = LoggerFactory.getLogger("UserResource.class");
+
 
     @Inject @Authenticated
-    User authenticated;
-
-    @Inject
-    HttpServletRequest request;
+    private Account authenticatedAccount;
 
     @Inject
     private TwttrRepository repository;
@@ -55,7 +42,6 @@ public class UserResource {
     public Response getUser(@DefaultValue("") @QueryParam("searchString") final String searchString,
                             @DefaultValue("3")@QueryParam("numUsers") final Integer numUsers,
                             @DefaultValue("0") @QueryParam("index") final Integer index) {
-        Integer id = authenticated.getAccountId();
         LOG.info("Request to get users with \"{}\"", searchString);
 
         List<User> foundUsers = repository.findUsersBySearchString(searchString);
@@ -77,8 +63,7 @@ public class UserResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTweets(@PathParam("userId") final Integer userId,
                               @DefaultValue("0") @QueryParam("index") final Integer index,
-                              @DefaultValue("3") @QueryParam("numTweets") final Integer numTweets,
-                              @Context SecurityContext securityContext) {
+                              @DefaultValue("3") @QueryParam("numTweets") final Integer numTweets) {
         LOG.info("Request to get {} tweets from user with id {}", numTweets, userId);
 
         List<Tweet> persistedTweets = repository.findTweetsInStatePublishFromUser(userId);
@@ -100,11 +85,10 @@ public class UserResource {
     @RolesAllowed({USER})
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    public Response followUser (@PathParam("userId") final Integer userId, @Context SecurityContext securityContext) {
+    public Response followUser (@PathParam("userId") final Integer userId) {
         LOG.info("Request to follow user with id {}", userId);
-        Principal principal = securityContext.getUserPrincipal();
-        String userName = principal.getName();
-        User requester = repository.findUserByUserName(userName);
+        //User requester = (User) authenticatedAccount;
+        User requester = repository.findUserById(authenticatedAccount.getAccountId());
 
         Account accountToFollow = repository.findAccountById(userId);
         if (accountToFollow.getRole() == AccountType.MODERATOR) {
@@ -156,10 +140,8 @@ public class UserResource {
     @RolesAllowed({USER})
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    public Response unfollowUser (@PathParam("userId") final Integer userId, @Context SecurityContext securityContext) {
-        Principal principal = securityContext.getUserPrincipal();
-        String userName = principal.getName();
-        User requester = repository.findUserByUserName(userName);
+    public Response unfollowUser (@PathParam("userId") final Integer userId) {
+        User requester = repository.findUserById(authenticatedAccount.getAccountId());
 
         Account accountToUnfollow = repository.findAccountById(userId);
         if (accountToUnfollow.getRole() == AccountType.MODERATOR ) {

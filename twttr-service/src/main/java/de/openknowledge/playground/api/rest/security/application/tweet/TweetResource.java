@@ -11,11 +11,13 @@ import de.openknowledge.playground.api.rest.security.domain.tweet.TweetState;
 import de.openknowledge.playground.api.rest.security.infrastructure.persistence.repository.TwttrRepository;
 import de.openknowledge.playground.api.rest.security.infrastructure.rest.error.ErrorDTO;
 import de.openknowledge.playground.api.rest.security.infrastructure.rest.validation.ValidationErrorDTO;
+import de.openknowledge.playground.api.rest.security.infrastructure.security.Authenticated;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -34,10 +36,13 @@ import static de.openknowledge.playground.api.rest.security.infrastructure.secur
 @Path("tweets")
 public class TweetResource {
 
-    Logger LOG = LoggerFactory.getLogger("TweetResource.class");
+    private static final Logger LOG = LoggerFactory.getLogger("TweetResource.class");
 
     @Inject
     private TwttrRepository repository;
+
+    @Inject @Authenticated
+    private Account authenticatedAccount;
 
 
     @POST
@@ -45,13 +50,9 @@ public class TweetResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Transactional
-    public Response createNewTweet(@Valid @NotNull NewTweet newTweet, @Context SecurityContext securityContext) {
-        //todo: DateFormat festlegen?
-
+    public Response createNewTweet(@Valid @NotNull NewTweet newTweet) {
         LOG.info("Request to create new tweet");
-        Principal principal = securityContext.getUserPrincipal();
-        String userName = principal.getName();
-        User requester = repository.findUserByUserName(userName);
+        User requester = repository.findUserById(authenticatedAccount.getAccountId());
 
         Tweet tweet = Tweet.newTweet()
                 .withContent(new Content(newTweet.getContent()))
@@ -69,8 +70,7 @@ public class TweetResource {
     @RolesAllowed({USER, MODERATOR})
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTweets(@Valid @DefaultValue("0") @QueryParam("index") final Integer index,
-                              @DefaultValue("3") @QueryParam("numTweets") final Integer numTweets,
-                              @Context SecurityContext securityContext) {
+                              @DefaultValue("3") @QueryParam("numTweets") final Integer numTweets) {
         LOG.info("Request to get {} tweets", numTweets);
 
         if (index < 0 || numTweets < 0) {
@@ -78,33 +78,29 @@ public class TweetResource {
             return Response.status(Response.Status.BAD_REQUEST).entity(new ValidationErrorDTO("Invalid Query Param")).build();
         }
 
-        Principal principal = securityContext.getUserPrincipal();
-        String userName = principal.getName();
-        Account requester = repository.findAccountByUserName(userName);
-
         List<Tweet> persistedTweets = new LinkedList<>();
-        if (requester.getRole() == AccountType.MODERATOR) {
+        if (authenticatedAccount.getRole() == AccountType.MODERATOR) {
             LOG.info("Request from a moderator");
             persistedTweets = repository.findAllTweetsInStatePublish();
         }else {
             LOG.info("Request from a user");
-            User requestingUser = repository.findUserByUserName(userName);
+            User requestingUser = repository.findUserById(authenticatedAccount.getAccountId());
             List<Tweet> finalPersistedTweets = persistedTweets;
             requestingUser.getFollows().forEach(user -> finalPersistedTweets.addAll(repository.findTweetsInStatePublishFromUser(user.getAccountId())));
-            LOG.info("Found {} tweets from users the user {} is following", persistedTweets.size(), userName);
+            LOG.info("Found {} tweets from users the user {} is following", persistedTweets.size(), requestingUser.getName().getUserName().getUserName());
         }
 
-        List<TweetDTO> allPublishTweets  = new LinkedList<>();
-        persistedTweets.forEach(tweet -> allPublishTweets.add(new TweetDTO(tweet)));
-        allPublishTweets.sort((t1, t2) -> t1.getPubDate().getTime() >= t2.getPubDate().getTime() ? -1 : 1);
+        persistedTweets.sort((t1, t2) -> t1.getPubDate().getPubDate().getTime() >= t2.getPubDate().getPubDate().getTime() ? -1 : 1);
         LOG.info("Sorted tweets after pubDate");
 
-        List<TweetDTO> tweetsToResponse  = new LinkedList<>();
-        int startIndex = allPublishTweets.size() > index ? index : allPublishTweets.size();
-        int endIndex = allPublishTweets.size() > index+numTweets ? index+numTweets : allPublishTweets.size();
-        allPublishTweets.subList(startIndex, endIndex).forEach(tweet -> tweetsToResponse.add(tweet));
+        int startIndex = persistedTweets.size() > index ? index : persistedTweets.size();
+        int endIndex = persistedTweets.size() > index+numTweets ? index+numTweets : persistedTweets.size();
+        persistedTweets = persistedTweets.subList(startIndex, endIndex);
 
-        return Response.ok().entity(tweetsToResponse).build();
+        List<TweetDTO> tweetDTOS = new LinkedList<>();
+        persistedTweets.forEach(tweet -> tweetDTOS.add(new TweetDTO(tweet)));
+
+        return Response.ok().entity(tweetDTOS).build();
     }
 
 
@@ -128,18 +124,15 @@ public class TweetResource {
     @DELETE
     @RolesAllowed({USER, MODERATOR})
     @Transactional
-    public Response cancelTweet (@PathParam("tweetId") final Integer tweetId, @Context SecurityContext securityContext) {
+    public Response cancelTweet (@PathParam("tweetId") final Integer tweetId) {
         LOG.info("Request to cancel tweet with id {}", tweetId);
-        Principal principal = securityContext.getUserPrincipal();
-        String userName = principal.getName();
-        Account requester = repository.findAccountByUserName(userName);
         Tweet tweetToDelete = repository.findTweetById(tweetId);
         if (!(tweetToDelete.getState() == TweetState.PUBLISH)) {
             LOG.warn("Tweet with id {} isn´t in status PUBLISH", tweetId);
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        if (requester.getRole() == AccountType.MODERATOR || requester.getAccountId().equals(tweetToDelete.getAuthor().getAccountId())) {
+        if (authenticatedAccount.getRole() == AccountType.MODERATOR || authenticatedAccount.getAccountId().equals(tweetToDelete.getAuthor().getAccountId())) {
             tweetToDelete.setState(TweetState.CANCELED);
             LOG.info("Canceled tweet");
             return Response.status(Response.Status.NO_CONTENT).build();
@@ -155,11 +148,9 @@ public class TweetResource {
     @POST
     @RolesAllowed({USER})
     @Transactional
-    public Response likeTweet (@PathParam("tweetId") final Integer tweetId, @Context SecurityContext securityContext) {
+    public Response likeTweet (@PathParam("tweetId") final Integer tweetId) {
         LOG.info("Request to like tweet with id {}", tweetId);
-        Principal principal = securityContext.getUserPrincipal();
-        String userName = principal.getName();
-        User requester = repository.findUserByUserName(userName);
+        User requester = repository.findUserById(authenticatedAccount.getAccountId());
         Tweet tweetToLike = repository.findTweetById(tweetId);
         if (!(tweetToLike.getState() == TweetState.PUBLISH)) {
             LOG.warn("Tweet with id {} isn´t in state PUBLISH", tweetId);
@@ -173,7 +164,7 @@ public class TweetResource {
         }
 
         tweetToLike.getLiker().add(requester);
-        LOG.info("Liked tweet with id {} for user {}", tweetId, userName);
+        LOG.info("Liked tweet with id {} for user {}", tweetId, requester.getName().getUserName().getUserName());
         return Response.status(Response.Status.NO_CONTENT).build();
     }
 
@@ -199,11 +190,9 @@ public class TweetResource {
     @DELETE
     @RolesAllowed({USER})
     @Transactional
-    public Response unlikeTweet (@PathParam("tweetId") final Integer tweetId, @Context SecurityContext securityContext) {
+    public Response unlikeTweet (@PathParam("tweetId") final Integer tweetId) {
         LOG.info("Request to unlike the tweet with id {}", tweetId);
-        Principal principal = securityContext.getUserPrincipal();
-        String userName = principal.getName();
-        User requester = repository.findUserByUserName(userName);
+        User requester = repository.findUserById(authenticatedAccount.getAccountId());
         Tweet tweetToUnlike = repository.findTweetById(tweetId);
 
         if (tweetToUnlike.getState() == TweetState.CANCELED) {
@@ -223,16 +212,13 @@ public class TweetResource {
 
 
 
-
     @Path("{tweetId}/retweets")
     @POST
     @RolesAllowed({USER})
     @Transactional
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retweetTweet (@PathParam("tweetId") final Integer tweetId, @Context SecurityContext securityContext) {
-        Principal principal = securityContext.getUserPrincipal();
-        String userName = principal.getName();
-        User requester = repository.findUserByUserName(userName);
+    public Response retweetTweet (@PathParam("tweetId") final Integer tweetId) {
+        User requester = repository.findUserById(authenticatedAccount.getAccountId());
 
         Tweet tweetToRetweet = repository.findTweetById(tweetId);
         if (tweetToRetweet.getState() == TweetState.CANCELED) { return Response.status(Response.Status.NOT_FOUND).build(); }

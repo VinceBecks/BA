@@ -1,20 +1,15 @@
 package de.openknowledge.playground.api.rest.security.application.tweet;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import de.openknowledge.playground.api.rest.security.application.user.UserDTO;
 import de.openknowledge.playground.api.rest.security.domain.tweet.Tweet;
 
 import java.io.Serializable;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class DetailedTweet implements Serializable {
     private Integer tweetId;
     private String content;
-    @JsonIgnore
-    private Date pubDate;
+    private String pubDate;
     private UserDTO author;
     private Integer numRetweets;
     private Integer numLiker;
@@ -28,7 +23,7 @@ public class DetailedTweet implements Serializable {
     public DetailedTweet (Tweet tweet) {
         this.tweetId = tweet.getTweetId();
         this.content = tweet.getContent().getContent();
-        this.pubDate = tweet.getPubDate().getPubDate();
+        this.pubDate = new SimpleDateFormat().format(tweet.getPubDate().getPubDate());
         this.author = new UserDTO(tweet.getAuthor());
         this.numLiker = tweet.getLiker().size();
         this.numRetweets = tweet.getRetweets().size();
@@ -49,14 +44,6 @@ public class DetailedTweet implements Serializable {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public Date getPubDate() {
-        return pubDate;
-    }
-
-    public void setPubDate(Date pubDate) {
-        this.pubDate = pubDate;
     }
 
     public UserDTO getAuthor() {
@@ -91,9 +78,11 @@ public class DetailedTweet implements Serializable {
         this.rootTweet = rootTweet;
     }
 
-    @JsonProperty(value= "pubDate")
-    public String getPubDateAsString() {
-        DateFormat df = new SimpleDateFormat();
-        return df.format(this.pubDate);
+    public String getPubDate() {
+        return pubDate;
+    }
+
+    public void setPubDate(String pubDate) {
+        this.pubDate = pubDate;
     }
 }

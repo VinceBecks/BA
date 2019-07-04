@@ -15,6 +15,7 @@
  */
 package de.openknowledge.playground.api.rest.security.application.user;
 
+import de.openknowledge.playground.api.rest.security.domain.account.Account;
 import de.openknowledge.playground.api.rest.security.domain.account.User;
 import de.openknowledge.playground.api.rest.security.infrastructure.persistence.repository.TwttrRepository;
 import de.openknowledge.playground.api.rest.security.infrastructure.security.Authenticated;
@@ -25,22 +26,21 @@ import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 
 /**
- * Produces an authenticated user for the application.
+ * Produces an authenticatedAccount user for the application.
  */
 
 @RequestScoped
-public class AuthenticatedUserProducer {
+public class AuthenticatedAccountProducer {
 
   @Inject
-  TwttrRepository repository;
+  private TwttrRepository repository;
 
   @Produces
   @RequestScoped
   @Authenticated
-  public User getUser(final KeycloakSecurityContext context) {
+  public Account getUser(final KeycloakSecurityContext context) {
     String userName = context.getToken().getPreferredUsername();
-    User user = repository.findUserByUserName(userName);
-
-    return user;
+    Account account = repository.findAccountByUserName(userName);
+    return account;
   }
 }

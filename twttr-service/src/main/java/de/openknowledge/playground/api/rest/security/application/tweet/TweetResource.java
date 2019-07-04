@@ -226,8 +226,8 @@ public class TweetResource {
         Tweet retweet = Tweet.newTweet()
                 .withContent(tweetToRetweet.getContent())
                 .withAuthor(requester)
+                .withRootTweet(tweetToRetweet)
                 .build();
-        retweet.setRootTweet(tweetToRetweet);
         repository.persistTweet(retweet);
         tweetToRetweet.getRetweets().add(retweet);
 

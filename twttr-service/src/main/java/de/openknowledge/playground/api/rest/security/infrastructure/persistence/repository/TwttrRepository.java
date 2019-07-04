@@ -30,7 +30,6 @@ public class TwttrRepository {
     private EntityManager em;
 
     public void persistTweet (final Tweet tweet) {
-
         em.persist(tweet);
         LOG.info("Persisted tweet");
     }

@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 public class NewTweet implements Serializable {
     @Schema (example="Exmaple content", required = true, minLength = 1, maxLength = 140)
-    @NotNull
+    @NotNull(payload = TweetValidationErrorPayload.ContentIsNull.class, message ="Content not setted")
     @Size(min=1, max=140, payload = TweetValidationErrorPayload.TweetHasWrongSize.class, message = "Wrong number of character")
     private String content;
 

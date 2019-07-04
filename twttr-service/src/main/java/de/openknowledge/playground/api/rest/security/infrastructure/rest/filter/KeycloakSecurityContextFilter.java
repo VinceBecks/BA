@@ -1,5 +1,6 @@
 package de.openknowledge.playground.api.rest.security.infrastructure.rest.filter;
 
+import org.keycloak.KeycloakSecurityContext;
 import org.wildfly.swarm.keycloak.deployment.KeycloakSecurityContextAssociation;
 
 import javax.ws.rs.container.ContainerRequestContext;
@@ -21,7 +22,7 @@ public class KeycloakSecurityContextFilter implements ContainerRequestFilter {
     public void filter(ContainerRequestContext requestContext) {
         SecurityContext securityContext = requestContext.getSecurityContext();
         Principal principal = () -> KeycloakSecurityContextAssociation.get().getToken().getPreferredUsername();
-        
+
         requestContext.setSecurityContext(new SecurityContext() {
 
             @Override

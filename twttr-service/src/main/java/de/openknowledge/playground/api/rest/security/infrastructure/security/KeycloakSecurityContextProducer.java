@@ -18,11 +18,10 @@ package de.openknowledge.playground.api.rest.security.infrastructure.security;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.KeycloakSecurityContext;
 
-import java.security.Principal;
-
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 
 /**
  * Produces the {@link KeycloakSecurityContext} for the application.

@@ -39,7 +39,7 @@ Feature: Get all tweets of a member
     {
         "tweetId": 10,
         "content": "10. tweet",
-        "pubDate": 1549016291000,
+        "pubDate": "04.07.2019 13:49",
         "author": {
             "userId": 2,
             "firstName": "John",
@@ -51,7 +51,7 @@ Feature: Get all tweets of a member
     {
         "tweetId": 9,
         "content": "9. tweet",
-        "pubDate": 1549016231000,
+        "pubDate": "04.07.2019 13:48",
         "author": {
             "userId": 2,
             "firstName": "John",
@@ -63,7 +63,7 @@ Feature: Get all tweets of a member
     {
         "tweetId": 8,
         "content": "8. tweet",
-        "pubDate": 1549016171000,
+        "pubDate": "04.07.2019 13:47",
         "author": {
             "userId": 2,
             "firstName": "John",
@@ -88,7 +88,7 @@ Feature: Get all tweets of a member
     {
         "tweetId": 10,
         "content": "10. tweet",
-        "pubDate": 1549016291000,
+        "pubDate": "04.07.2019 13:49",
         "author": {
             "userId": 2,
             "firstName": "John",
@@ -100,7 +100,7 @@ Feature: Get all tweets of a member
     {
         "tweetId": 9,
         "content": "9. tweet",
-        "pubDate": 1549016231000,
+        "pubDate": "04.07.2019 13:48",
         "author": {
             "userId": 2,
             "firstName": "John",
@@ -112,7 +112,7 @@ Feature: Get all tweets of a member
     {
         "tweetId": 8,
         "content": "8. tweet",
-        "pubDate": 1549016171000,
+        "pubDate": "04.07.2019 13:47",
         "author": {
             "userId": 2,
             "firstName": "John",

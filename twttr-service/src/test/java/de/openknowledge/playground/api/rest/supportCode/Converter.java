@@ -4,9 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import cucumber.api.TypeRegistry;
 import cucumber.api.TypeRegistryConfigurer;
 import de.openknowledge.playground.api.rest.security.application.tweet.DetailedTweet;
-import de.openknowledge.playground.api.rest.supportCode.AccountCredentials;
 import de.openknowledge.playground.api.rest.supportCode.domain.*;
-import de.openknowledge.playground.api.rest.supportCode.SharedDomain;
 import io.cucumber.cucumberexpressions.ParameterType;
 import io.cucumber.datatable.DataTableType;
 

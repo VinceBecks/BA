@@ -18,7 +18,7 @@ Feature: Get detailed information about a specified tweet
         {
             "tweetId": 1,
             "content": "Example content",
-            "pubDate": 679658765,
+            "pubDate": "04.07.2019 13:49",
             "author": {
                 "userId": 0,
                 "firstName": "Max",
@@ -45,7 +45,7 @@ Feature: Get detailed information about a specified tweet
         {
             "tweetId": 2,
             "content": "Example content",
-            "pubDate": 679658765,
+            "pubDate": "04.07.2019 13:49",
             "author": {
                 "userId": 3,
                 "firstName": "Jane",
@@ -56,7 +56,7 @@ Feature: Get detailed information about a specified tweet
             "rootTweet": {
                 "tweetId": 1,
                 "content": "Example content",
-                "pubDate": 679658765,
+                "pubDate": "04.07.2019 13:49",
                 "author": {
                     "userId": 2,
                     "firstName": "John",
@@ -80,7 +80,7 @@ Feature: Get detailed information about a specified tweet
         {
             "tweetId": 1,
             "content": "Example content",
-            "pubDate": 679658765,
+            "pubDate": "04.07.2019 13:49",
             "author": {
                 "userId": 0,
                 "firstName": "Max",

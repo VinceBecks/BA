@@ -20,7 +20,7 @@ Feature: Retweet a Tweet
           {
               "tweetId": 12,
               "content": "Example content",
-              "pubDate": 1552498895703,
+              "pubDate": "04.07.2019 13:49",
               "author": {
                   "userId": 0,
                   "firstName": "Max",
@@ -30,7 +30,7 @@ Feature: Retweet a Tweet
               "rootTweet": {
                   "tweetId": 1,
                   "content": "Example content",
-                  "pubDate": 1549015871000,
+                  "pubDate": "04.07.2019 13:47",
                   "author": {
                       "userId": 0,
                       "firstName": "Max",

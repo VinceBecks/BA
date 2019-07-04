@@ -22,7 +22,7 @@ Feature: Create tweet
             {
                 "tweetId": 5,
                 "content": "An example content",
-                "pubDate": 2322342342,
+                "pubDate": "04.07.2019 13:49",
                 "author" : {
                     "userId": 0,
                     "firstName": "Max",

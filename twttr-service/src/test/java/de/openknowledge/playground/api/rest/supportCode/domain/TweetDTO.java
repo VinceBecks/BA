@@ -8,7 +8,7 @@ import java.util.Date;
 public class TweetDTO implements Serializable {
     private Integer tweetId;
     private String content;
-    private Date pubDate;
+    private String pubDate;
     private UserDTO author;
     private TweetDTO rootTweet;
 
@@ -16,7 +16,7 @@ public class TweetDTO implements Serializable {
         //for REST
     }
 
-    public TweetDTO(Integer tweetId, String content, Date pubDate, UserDTO author, TweetDTO rootTweet) {
+    public TweetDTO(Integer tweetId, String content, String pubDate, UserDTO author, TweetDTO rootTweet) {
         this.tweetId = tweetId;
         this.content = content;
         this.pubDate = pubDate;
@@ -40,11 +40,11 @@ public class TweetDTO implements Serializable {
         this.content = content;
     }
 
-    public Date getPubDate() {
+    public String getPubDate() {
         return pubDate;
     }
 
-    public void setPubDate(Date pubDate) {
+    public void setPubDate(String pubDate) {
         this.pubDate = pubDate;
     }
 

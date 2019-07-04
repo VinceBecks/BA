@@ -31,21 +31,21 @@ import javax.ws.rs.ext.ExceptionMapper;
  */
 public class DefaultExceptionMapper implements ExceptionMapper<Exception> {
 
-  private static final Logger LOG = LoggerFactory.getLogger(DefaultExceptionMapper.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DefaultExceptionMapper.class);
 
-  @Override
-  public Response toResponse(final Exception exception) {
-    LOG.error(exception.getMessage(), exception);
+    @Override
+    public Response toResponse(final Exception exception) {
+        LOG.error(exception.getMessage(), exception);
 
-    if (exception instanceof NotFoundException) {
-      // do not leak information about non existing entity
-      return Response.status(Status.UNAUTHORIZED).build();
+        if (exception instanceof NotFoundException) {
+          // do not leak information about non existing entity
+          return Response.status(Status.UNAUTHORIZED).build();
+        }
+
+        if (exception instanceof WebApplicationException) {
+          return ((WebApplicationException)exception).getResponse();
+        }
+
+        return Response.status(Status.UNAUTHORIZED).build();
     }
-
-    if (exception instanceof WebApplicationException) {
-      return ((WebApplicationException)exception).getResponse();
-    }
-
-    return Response.status(Status.UNAUTHORIZED).build();
-  }
 }

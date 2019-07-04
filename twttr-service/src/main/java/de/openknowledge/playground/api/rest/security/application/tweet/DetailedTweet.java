@@ -1,14 +1,19 @@
 package de.openknowledge.playground.api.rest.security.application.tweet;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import de.openknowledge.playground.api.rest.security.application.user.UserDTO;
 import de.openknowledge.playground.api.rest.security.domain.tweet.Tweet;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DetailedTweet implements Serializable {
     private Integer tweetId;
     private String content;
+    @JsonIgnore
     private Date pubDate;
     private UserDTO author;
     private Integer numRetweets;
@@ -84,5 +89,11 @@ public class DetailedTweet implements Serializable {
 
     public void setRootTweet(TweetDTO rootTweet) {
         this.rootTweet = rootTweet;
+    }
+
+    @JsonProperty(value= "pubDate")
+    public String getPubDateAsString() {
+        DateFormat df = new SimpleDateFormat();
+        return df.format(this.pubDate);
     }
 }

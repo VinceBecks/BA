@@ -28,9 +28,10 @@ public class User extends Account {
     @ManyToMany(mappedBy = "liker", fetch = FetchType.EAGER)
     private List<Tweet> likes;
 
-    private User () {
+    public User () {
 
     }
+
 
 
     public Set<User> getFollower() {

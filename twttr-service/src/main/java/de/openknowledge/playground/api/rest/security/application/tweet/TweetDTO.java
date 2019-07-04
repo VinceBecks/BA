@@ -1,17 +1,22 @@
 package de.openknowledge.playground.api.rest.security.application.tweet;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import de.openknowledge.playground.api.rest.security.application.user.UserDTO;
 import de.openknowledge.playground.api.rest.security.domain.tweet.Tweet;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class TweetDTO implements Serializable {
     private Integer tweetId;
     private String content;
-    private Date pubDate;
     private UserDTO author;
     private TweetDTO rootTweet;
+    @JsonIgnore
+    private Date pubDate;
 
     public TweetDTO () {
         //for JaxRs
@@ -64,4 +69,11 @@ public class TweetDTO implements Serializable {
     public void setRootTweet(TweetDTO rootTweet) {
         this.rootTweet = rootTweet;
     }
+
+    @JsonProperty(value = "pubDate")
+    public String getPubDateAsString() {
+        DateFormat df = new SimpleDateFormat();
+        return df.format(pubDate);
+    }
+
 }

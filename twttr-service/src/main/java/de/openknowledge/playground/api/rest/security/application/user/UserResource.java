@@ -7,11 +7,13 @@ import de.openknowledge.playground.api.rest.security.domain.account.User;
 import de.openknowledge.playground.api.rest.security.domain.tweet.Tweet;
 import de.openknowledge.playground.api.rest.security.infrastructure.persistence.repository.TwttrRepository;
 import de.openknowledge.playground.api.rest.security.infrastructure.rest.validation.ValidationErrorDTO;
+import de.openknowledge.playground.api.rest.security.infrastructure.security.Authenticated;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
@@ -37,6 +39,12 @@ public class UserResource {
 
     Logger LOG = LoggerFactory.getLogger("UserResource.class");
 
+    @Inject @Authenticated
+    User authenticated;
+
+    @Inject
+    HttpServletRequest request;
+
     @Inject
     private TwttrRepository repository;
 
@@ -47,6 +55,7 @@ public class UserResource {
     public Response getUser(@DefaultValue("") @QueryParam("searchString") final String searchString,
                             @DefaultValue("3")@QueryParam("numUsers") final Integer numUsers,
                             @DefaultValue("0") @QueryParam("index") final Integer index) {
+        Integer id = authenticated.getAccountId();
         LOG.info("Request to get users with \"{}\"", searchString);
 
         List<User> foundUsers = repository.findUsersBySearchString(searchString);

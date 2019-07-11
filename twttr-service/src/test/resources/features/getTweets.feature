@@ -37,7 +37,7 @@ Feature: Get all Tweets
 
     And user max follows the users john and jane
     When a client sends a GET "/tweets" request for user "max" to get a list of tweets
-    Then the HTTP response status-code will be 200
+    Then the client will receive the "OK" Status Code
     And the HTTP response body will contain following JSON with tweets from users max is following
     """
     [
@@ -90,7 +90,7 @@ Feature: Get all Tweets
     When a client sends a GET "/tweets" request for user "max" to get a list of tweets with following Query Params
       | queryParam: | numTweets   | index   |
       | value:      | <numTweets> | <index> |
-    Then the HTTP response status-code will be 200
+    Then the client will receive the "OK" Status Code
     And the HTTP response body contains the tweets with the ids <tweetIds> in presented order
 
     Examples: No params are setted
@@ -124,7 +124,7 @@ Feature: Get all Tweets
 
     And user max follows the users john and jane
     When a client sends a GET "/tweets" request for moderator "werner" to get a list of tweets
-    Then the HTTP response status-code will be 200
+    Then the client will receive the "OK" Status Code
     And the HTTP response body will contain following JSON with tweets from users max is following
     """
     [
@@ -176,7 +176,7 @@ Feature: Get all Tweets
     When a client sends a GET "/tweets" request for moderator "werner" to get a list of tweets with following Query Params
       | queryParam: | numTweets   | index   |
       | value:      | <numTweets> | <index> |
-    Then the HTTP response status-code will be 200
+    Then the client will receive the "OK" Status Code
     And the HTTP response body contains the tweets with the ids <testIds> in presented order
 
     Examples: No params are setted
@@ -207,4 +207,4 @@ Feature: Get all Tweets
   The request must contain a valid token
 
     When a client sends a GET "/tweets" request without a valid token to get a list of tweets
-    Then the HTTP response status-code will be 401
+    Then the client will receive the "UNAUTHORIZED" Status Code

@@ -16,7 +16,7 @@ public class TweetEntity {
     private TweetEntity () {
     }
 
-    public TweetEntity(Integer tweetId, String conent, Date pubDate, Integer state, Integer authorId) {
+    private TweetEntity(Integer tweetId, String conent, Date pubDate, Integer state, Integer authorId) {
         this.tweetId = notNull(tweetId, "tweetId should not be null");
         this.conent = notNull(conent, "content should not be null");
         this.pubDate = pubDate != null ? pubDate : new Date(System.currentTimeMillis());
@@ -116,6 +116,7 @@ public class TweetEntity {
 
             entity = new TweetEntity(tweetId, content, pubDate, state, authorId);
             entity.setRootTweetId(rootTweetId);
+            entity.setPubDate(pubDate);
             TweetEntity build = entity;
             entity = new TweetEntity();
             return build;

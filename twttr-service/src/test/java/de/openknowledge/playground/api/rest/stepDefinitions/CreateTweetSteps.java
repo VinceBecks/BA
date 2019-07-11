@@ -62,11 +62,6 @@ public class CreateTweetSteps {
         domain.setResponse(response);
     }
 
-    @When("a client sends a request to create a new tweet without a valid token of an user")
-    public void a_client_sends_a_request_to_create_a_new_tweet_without_a_valid_token_of_an_user() {
-
-    }
-
     @When("a client sends a POST {string} request for user {string} without a valid token to create the following tweet")
     public void a_client_sends_a_POST_request_for_user_without_a_valid_token_to_create_the_following_tweet(String additionalPath, String userName, NewTweet newTweet) {
         String randomToken = "xxx";

@@ -13,7 +13,7 @@ Feature: Cancel a tweet
     Given the user "max" is authenticated
     And a stored tweet with id 1 from user max
     When a client sends a DELETE "/tweets/1" request for user "max" to cancel the specified tweet
-    Then the HTTP response status-code will be 204
+    Then the client will receive the "NO_CONTENT" Status Code
 
 
   Scenario: Another user than the author wants to cancel a tweet
@@ -22,7 +22,7 @@ Feature: Cancel a tweet
     Given the user "john" is authenticated
     And a stored tweet with id 1 from user max
     When a client sends a DELETE "/tweets/1" request for user "john" to cancel the specified tweet
-    Then the HTTP response status-code will be 403
+    Then the client will receive the "FORBIDDEN" Status Code
 
 
 
@@ -33,7 +33,7 @@ Feature: Cancel a tweet
     Given the moderator "werner" is authenticated
     And a stored tweet with id 1 from user max
     When a client sends a DELETE "/tweets/1" request for moderator "werner" to cancel the specified tweet
-    Then the HTTP response status-code will be 204
+    Then the client will receive the "NO_CONTENT" Status Code
 
 
 
@@ -42,7 +42,7 @@ Feature: Cancel a tweet
 
     Given a stored tweet with id 1
     When a client sends a DELETE "/tweets/1" request without a valid token to cancel the specified tweet
-    Then the HTTP response status-code will be 401
+    Then the client will receive the "UNAUTHORIZED" Status Code
 
 
 
@@ -53,7 +53,7 @@ Feature: Cancel a tweet
     Given the user "max" is authenticated
     But there is no tweet with id 9999
     When a client sends a DELETE "/tweets/9999" request for user "max" to cancel the specified tweet
-    Then the HTTP response status-code will be 404
+    Then the client will receive the "NOT_FOUND" Status Code
 
 
   Scenario: Tweet to delete is in status CANCELED
@@ -62,4 +62,4 @@ Feature: Cancel a tweet
     Given the user "max" is authenticated
     And a stored tweet with id 1 in status CANCELED from user max
     When a client sends a DELETE "/tweets/1" request for user "max" to cancel the specified tweet
-    Then the HTTP response status-code will be 404
+    Then the client will receive the "NOT_FOUND" Status Code

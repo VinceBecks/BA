@@ -13,7 +13,7 @@ Feature: Follow a user
 
     Given the user "max" is authenticated
     When a client sends a POST "/users/2/follower" request for user "max" to follow user john
-    Then the HTTP response status-code will be 204
+    Then the client will receive the "NO_CONTENT" Status Code
 
 
   Scenario: Requesting user is already a follower of the specified user
@@ -22,7 +22,7 @@ Feature: Follow a user
     Given the user "max" is authenticated
     And the user max is a follower of user john with id 2
     When a client sends a POST "/users/2/follower" request for user "max" to follow user john
-    Then the HTTP response status-code will be 400
+    Then the client will receive the "BAD_REQUEST" Status Code
     And the HTTP response body contains following JSON of an error message:
       """
       {
@@ -34,7 +34,7 @@ Feature: Follow a user
   The request to follow an user must contain a valid token of an user
 
     When a client sends a POST "/users/2/follower" request for user max without a valid token to follow user john
-    Then the HTTP response status-code will be 401
+    Then the client will receive the "UNAUTHORIZED" Status Code
 
 
   Scenario: Account to follow belongs to a moderator
@@ -42,7 +42,7 @@ Feature: Follow a user
 
     Given the user "max" is authenticated
     When a client sends a POST "/users/4/follower" request for user "max" to follow the account of a moderator
-    Then the HTTP response status-code will be 400
+    Then the client will receive the "BAD_REQUEST" Status Code
     And the HTTP response body contains following JSON of an error message:
       """
       {
@@ -55,7 +55,7 @@ Feature: Follow a user
 
     Given the moderator "werner" is authenticated
     When a client sends a POST "/users/2/follower" request for moderator "werner" to follow user john
-    Then the HTTP response status-code will be 403
+    Then the client will receive the "FORBIDDEN" Status Code
 
 
   Scenario: The user to follow doesn´t exist
@@ -64,4 +64,4 @@ Feature: Follow a user
     Given the user "max" is authenticated
     And there is no user with id 9999
     When a client sends a POST "/users/9999/follower" request for user "max" to follow the specified account
-    Then the HTTP response status-code will be 404
+    Then the client will receive the "NOT_FOUND" Status Code

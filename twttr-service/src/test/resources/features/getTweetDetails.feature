@@ -12,7 +12,7 @@ Feature: Get detailed information about a specified tweet
     And a stored tweet with id 1 from user "max" and content "Example content"
     And the tweet with id 1 has one liker and two retweets
     When a client sends a GET "/tweets/1" request for user "john" to get detailed information about the specified tweet
-    Then the HTTP response status-code will be 200
+    Then the client will receive the "OK" Status Code
     And the HTTP response body will contain following JSON with detailed information about the tweet with id 1
         """
         {
@@ -39,7 +39,7 @@ Feature: Get detailed information about a specified tweet
     And a stored tweet with id 1 from user "john" and content "Example content"
     And the tweet with id 1 has a retweet with id 2 from user jane that hasn´t got liked
     When a client sends a GET "/tweets/2" request for user "john" to get detailed information about the specified retweet
-    Then the HTTP response status-code will be 200
+    Then the client will receive the "OK" Status Code
     And the HTTP response body will contain following JSON with detailed information about the retweet with id 2
         """
         {
@@ -74,7 +74,7 @@ Feature: Get detailed information about a specified tweet
     And a stored tweet with id 1 from user "max" and content "Example content"
     And the tweet with id 1 has one liker and two retweets
     When a client sends a GET "/tweets/1" request for moderator "werner" to get detailed information about the specified tweet
-    Then the HTTP response status-code will be 200
+    Then the client will receive the "OK" Status Code
     And the HTTP response body will contain following JSON with detailed information about the tweet with id 1
         """
         {
@@ -97,7 +97,7 @@ Feature: Get detailed information about a specified tweet
 
     Given a stored tweet with id 1
     When a client sends a GET "/tweets/1" request without a valid token to get detailed information about the specified tweet
-    Then the HTTP response status-code will be 401
+    Then the client will receive the "UNAUTHORIZED" Status Code
 
 
   Scenario: Tweet to get detailed information about doesn´t exist
@@ -106,7 +106,7 @@ Feature: Get detailed information about a specified tweet
     Given the user "max" is authenticated
     But there is no tweet with id 9999
     When a client sends a GET "/tweets/9999" request for user "max" to get detailed information about the specified tweet
-    Then the HTTP response status-code will be 404
+    Then the client will receive the "NOT_FOUND" Status Code
 
 
   Scenario: Tweet to get detailed information about is in status CANCELED
@@ -115,4 +115,4 @@ Feature: Get detailed information about a specified tweet
     Given the user "max" is authenticated
     And a stored tweet with id 1 in status CANCELED from user max
     When a client sends a GET "/tweets/1" request for user "max" to get detailed information about the specified tweet
-    Then the HTTP response status-code will be 404
+    Then the client will receive the "NOT_FOUND" Status Code

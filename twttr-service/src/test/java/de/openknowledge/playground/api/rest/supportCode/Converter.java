@@ -54,17 +54,7 @@ public class Converter implements TypeRegistryConfigurer{
                     }
                 }));
 
-        typeRegistry.defineDataTableType(new DataTableType (TweetEntity.class,
-                (Map<String, String> row)-> {
-                    Integer id = Integer.parseInt(row.get("tweetId"));
-                    String content = row.get("content");
-                    String stateAsString = row.get("state");
-                    Integer state = stateAsString.equals("PUBLISH") ? 0 : null;
-                    state = stateAsString.equals("CANCELED") ? 1 : state;
-                    String authorName = row.get("author");
-                    Integer authorId = authorName != null ? accountIdToUserName(authorName) : null;
-                    return new TweetEntity(id, content, null, state, authorId);
-                }));
+
 
         typeRegistry.defineDataTableType(new DataTableType (GetTweetsQueryParams.class,
                 (Map<String, String> row)-> {
@@ -104,26 +94,26 @@ public class Converter implements TypeRegistryConfigurer{
         ));
 
         typeRegistry.defineDataTableType(new DataTableType(TweetEntity.Builder.class,
-                (Map<String, String> row) ->{
-                    Integer tweetId = Integer.parseInt(row.get("tweetId"));
-                    String content = row.get("content");
-                    String stateAsString = row.get("state");
-                    Integer state = stateAsString.equals("PUBLISH") ? 0 : null;
-                    state = stateAsString.equals("CANCELED") ? 1 : state;
-                    String authorName = row.get("author");
-                    Integer authorId = authorName != null ? accountIdToUserName(authorName) : null;
-                    String rootTweetAsString = row.get("rootTweetId");
-                    Integer rootTweetId = rootTweetAsString == null ? null : Integer.parseInt(rootTweetAsString) ;
+            (Map<String, String> row) ->{
+                Integer tweetId = Integer.parseInt(row.get("tweetId"));
+                String content = row.get("content");
+                String stateAsString = row.get("state");
+                Integer state = stateAsString.equals("PUBLISH") ? 0 : null;
+                state = stateAsString.equals("CANCELED") ? 1 : state;
+                String authorName = row.get("author");
+                Integer authorId = authorName != null ? accountIdToUserName(authorName) : null;
+                String rootTweetAsString = row.get("rootTweetId");
+                Integer rootTweetId = rootTweetAsString == null ? null : Integer.parseInt(rootTweetAsString);
 
-                    TweetEntity.Builder builder = TweetEntity.builderInstance();
-                    builder.withAuthorId(authorId);
-                    builder.withContent(content);
-                    builder.withRootTweetId(rootTweetId);
-                    builder.withState(state);
-                    builder.withPubDate(null);
-                    builder.withTweetId(tweetId);
-                    return builder;
-                }
+                TweetEntity.Builder builder = TweetEntity.builderInstance()
+                        .withAuthorId(authorId)
+                        .withContent(content)
+                        .withRootTweetId(rootTweetId)
+                        .withState(state)
+                        .withPubDate(null)
+                        .withTweetId(tweetId);
+                return builder;
+            }
         ));
     }
 

@@ -10,10 +10,10 @@ Feature: Get users
   - If the request doesn´t contain a valid token, then the http response status-code will be 401
 
   #fürBA: TypeRegistry hieran vorstellen? Oder lieber an einem Beispiel einer Liste von Tweets? --> nur eine Registrierung möglich (Abfragen, ob Daten gesetzt sind also nötig, wenn unterschiedliche Arten der Initialisierung gewünscht
-  Background: Persist users
+  Background: Persist accounts
     Given the user "max" is authenticated
     Given the moderator "werner" is authenticated
-    Given the system has persisted users
+    Given the system has persisted accounts
       | accountId | userName | firstName | lastName   | role      |
       | 0         | max      | Max       | Mustermann | USER      |
       | 1         | marta    | Marta     | Musterfrau | USER      |
@@ -31,7 +31,7 @@ Feature: Get users
   in second grade by their firstName and in third grade by their lastName
 
     When a client sends a GET "/users" request for user "max" to get a list of users
-    Then the HTTP response status-code will be 200
+    Then the client will receive the "OK" Status Code
     And the HTTP response body contains following JSON with a list of users
       """
       [
@@ -63,7 +63,7 @@ Feature: Get users
   in second grade by their firstName and in third grade by their lastName
 
     When a client sends a GET "/users" request for moderator "werner" to get a list of users
-    Then the HTTP response status-code will be 200
+    Then the client will receive the "OK" Status Code
     And the HTTP response body contains following JSON with a list of users
       """
       [
@@ -140,5 +140,5 @@ Feature: Get users
   The request must contain a valid token from an account to get a list of users
 
     When a client sends a GET "/users" request without a valid token to get a list of users with following QueryParameter
-    Then the HTTP response status-code will be 401
+    Then the client will receive the "UNAUTHORIZED" Status Code
 

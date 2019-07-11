@@ -13,7 +13,7 @@ Feature: Get liker of a specified tweet
     And a stored tweet with id 1
     And the tweet with id 1 got liked by users max and john
     When a client sends a GET "/tweets/1/liker" request for user "max" to get a list of likers of the specified tweet
-    Then the HTTP response status-code will be 200
+    Then the client will receive the "OK" Status Code
     And the HTTP response body will contain following JSON with a list of users who liked the stored tweet
         """
           [
@@ -37,7 +37,7 @@ Feature: Get liker of a specified tweet
 
     Given a stored tweet with id 1
     When a client sends a GET "/tweets/1/liker" request without a valid token to get a list of likers of the specified tweet
-    Then the HTTP response status-code will be 401
+    Then the client will receive the "UNAUTHORIZED" Status Code
 
 
   Scenario: Transmitted token from the request to get a list of liker from a specified tweet belongs to a moderator
@@ -46,7 +46,7 @@ Feature: Get liker of a specified tweet
     Given the moderator "werner" is authenticated
     And a stored tweet with id 1
     When a client sends a GET "/tweets/1/liker" request for moderator "werner" to get a list of likers of the specified tweet
-    Then the HTTP response status-code will be 403
+    Then the client will receive the "FORBIDDEN" Status Code
 
 
   Scenario: Tweet to get the list of liker from doesn´t exist
@@ -55,7 +55,7 @@ Feature: Get liker of a specified tweet
     Given the user "max" is authenticated
     But there is no tweet with id 9999
     When a client sends a GET "/tweets/9999/liker" request for user "max" to get a list of likers of the specified tweet
-    Then the HTTP response status-code will be 404
+    Then the client will receive the "NOT_FOUND" Status Code
 
 
   Scenario: Tweet to get a list of liker from is in status CANCELED
@@ -64,4 +64,4 @@ Feature: Get liker of a specified tweet
     Given the user "max" is authenticated
     Given a stored tweet with id 1 in status CANCELED from user max
     When a client sends a GET "/tweets/1/liker" request for user "max" to get a list of likers of the specified tweet
-    Then the HTTP response status-code will be 404
+    Then the client will receive the "NOT_FOUND" Status Code

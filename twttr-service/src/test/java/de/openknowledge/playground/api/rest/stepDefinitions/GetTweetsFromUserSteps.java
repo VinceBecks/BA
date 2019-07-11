@@ -31,12 +31,13 @@ public class GetTweetsFromUserSteps {
     }
 
     @Given("following tweets got persisted from user john with id 2 in presented order")
-    public void following_tweets_got_persisted_from_user_john_with_id_in_presented_order(List<TweetEntity.Builder> tweetBuilders) {
+    public void following_tweets_got_persisted_from_user_john_with_id_in_presented_order(List<TweetEntity.Builder> builders) {
         AtomicLong time = new AtomicLong(System.currentTimeMillis()-10000000);
         List<TweetEntity> tweets = new LinkedList<>();
-        tweetBuilders.forEach(builder -> {
-            builder.withAuthorId(2);
-            builder.withPubDate(new Date(time.addAndGet(1000)));
+        builders.forEach(builder -> {
+            builder
+                .withAuthorId(2)
+                .withPubDate(new Date(time.addAndGet(1000)));
             tweets.add(builder.build());
         });
         DBConnection.insertTweets(tweets);

@@ -22,6 +22,8 @@ import javax.ws.rs.core.UriBuilder;
  */
 public final class IntegrationTestUtil {
 
+  public final static String CREATE_TWEET  = "/tweets";
+
   private IntegrationTestUtil() {
     super();
   }

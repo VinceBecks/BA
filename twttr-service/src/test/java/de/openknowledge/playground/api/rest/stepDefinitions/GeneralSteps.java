@@ -53,7 +53,14 @@ public class GeneralSteps  {
 
     @Given("a stored tweet with id 1")
     public void a_stored_tweet_with_id() {
-        TweetEntity entity = new TweetEntity(1, "Example content", new Date(System.currentTimeMillis()),0, 0);
+        TweetEntity entity = TweetEntity.builderInstance()
+                .withTweetId(1)
+                .withContent("Example content")
+                .withPubDate(new Date(System.currentTimeMillis()))
+                .withState(0)
+                .withAuthorId(0)
+                .build();
+
         List<TweetEntity> tweets = new LinkedList<>();
         tweets.add(entity);
 
@@ -63,7 +70,14 @@ public class GeneralSteps  {
 
     @Given("a stored tweet with id 1 from user max")
     public void a_stored_tweet_with_id_from_user() {
-        TweetEntity entity = new TweetEntity(1, "Example content", new Date(System.currentTimeMillis()),0, 0);
+        TweetEntity entity = TweetEntity.builderInstance()
+                .withTweetId(1)
+                .withContent("Example content")
+                .withPubDate(new Date(System.currentTimeMillis()))
+                .withState(0)
+                .withAuthorId(0)
+                .build();
+
         List<TweetEntity> tweets = new LinkedList<>();
         tweets.add(entity);
 
@@ -71,11 +85,14 @@ public class GeneralSteps  {
     }
 
     @Given("following tweets got persisted in presented order")
-    public void following_tweets_got_persisted_in_presented_order(List<TweetEntity> tweets) {
+    public void following_tweets_got_persisted_in_presented_order(List<TweetEntity.Builder> tweetBuilders) {
         AtomicLong time = new AtomicLong(System.currentTimeMillis()-10000000);
-        tweets.forEach(tweetEntity -> {
-            tweetEntity.setPubDate(new Date(time.addAndGet(1000)));
+        List<TweetEntity> tweets = new LinkedList<>();
+        tweetBuilders.forEach(tweetBuilder -> {
+            tweetBuilder.withPubDate(new Date (time.addAndGet(1000)));
+            tweets.add(tweetBuilder.build());
         });
+
         DBConnection.insertTweets(tweets);
     }
 
@@ -88,7 +105,13 @@ public class GeneralSteps  {
 
     @Given("a stored tweet with id 1 in status CANCELED from user max")
     public void a_stored_tweet_with_id_in_status_CANCELED_from_user() {
-        TweetEntity entity = new TweetEntity(1, "Example content", new Date(System.currentTimeMillis()),1, 0);
+        TweetEntity entity = TweetEntity.builderInstance()
+                .withTweetId(1)
+                .withContent("Example content")
+                .withPubDate(new Date(System.currentTimeMillis()))
+                .withState(1)
+                .withAuthorId(0)
+                .build();
         List<TweetEntity> tweets = new LinkedList<>();
         tweets.add(entity);
 
@@ -104,7 +127,14 @@ public class GeneralSteps  {
 
     @Given("the user max is not a liker of a tweet with id 1")
     public void the_user_max_is_not_a_liker_of_a_tweet_with_id() {
-        TweetEntity entity = new TweetEntity(1, "Example content", new Date(System.currentTimeMillis()),0, 0);
+        TweetEntity entity = TweetEntity.builderInstance()
+                .withTweetId(1)
+                .withContent("Example content")
+                .withPubDate(new Date(System.currentTimeMillis()))
+                .withState(0)
+                .withAuthorId(0)
+                .build();
+
         List<TweetEntity> tweets = new LinkedList<>();
         tweets.add(entity);
 
@@ -116,12 +146,24 @@ public class GeneralSteps  {
     public void the_tweet_with_id_1_has_one_liker_and_two_retweets() {
         List<TweetEntity> tweets = new LinkedList<>();
 
-        TweetEntity entity = new TweetEntity(2, "Example content", new Date(System.currentTimeMillis()),0, 0);
-        entity.setRootTweetId(1);
+        TweetEntity entity = TweetEntity.builderInstance()
+                .withTweetId(2)
+                .withContent("Example content")
+                .withPubDate(new Date(System.currentTimeMillis()))
+                .withState(0)
+                .withAuthorId(0)
+                .withRootTweetId(1)
+                .build();
         tweets.add(entity);
 
-        entity = new TweetEntity(3, "Example content", new Date(System.currentTimeMillis()),0, 2);
-        entity.setRootTweetId(1);
+        entity = TweetEntity.builderInstance()
+                .withTweetId(3)
+                .withContent("Example content")
+                .withPubDate(new Date(System.currentTimeMillis()))
+                .withState(0)
+                .withAuthorId(2)
+                .withRootTweetId(1)
+                .build();
         tweets.add(entity);
 
         DBConnection.insertTweets(tweets);
@@ -151,11 +193,10 @@ public class GeneralSteps  {
                 .body("errorMessage", Matchers.equalTo(expectedErrorMessage.getErrorMessage()));
     }
 
-    @Then("the HTTP response status-code will be {int}")
-    public void the_HTTP_response_status_code_will_be(Integer expectedStatusCode) {
-        Response response = domain.getResponse();
-        response.then()
-                .statusCode(expectedStatusCode);
+    @Then("the client will receive the {string} Status Code")
+    public void the_client_will_receive_the_Status_Code(String statusLine) {
+        int statusCode = javax.ws.rs.core.Response.Status.valueOf(statusLine).getStatusCode();
+        domain.getResponse().then().statusCode(statusCode);
     }
 
     //fürBA: Eine Methode, die quasi immer das gleiche macht, und auf die 3 verschiedene Steps gemapped werden

@@ -26,17 +26,34 @@ public class GetRetweeterSteps {
     public void an_stored_tweet_with_id_got_retweeted_by_users_max_and_john() {
         List<TweetEntity> tweets = new LinkedList<>();
 
-        TweetEntity entity = new TweetEntity(1, "Example content", new Date(System.currentTimeMillis()),0, 1);
+        TweetEntity entity = TweetEntity.builderInstance()
+                .withTweetId(1)
+                .withContent("Example content")
+                .withPubDate(new Date(System.currentTimeMillis()-2000))
+                .withAuthorId(1)
+                .withState(0)
+                .build();
         tweets.add(entity);
 
-        entity = new TweetEntity(2, "Example content", new Date(System.currentTimeMillis()),0, 0);
-        entity.setAuthorId(0);
-        entity.setRootTweetId(1);
+        entity = TweetEntity.builderInstance()
+                .withTweetId(2)
+                .withContent("Example content")
+                .withPubDate(new Date(System.currentTimeMillis()-1000))
+                .withState(0)
+                .withAuthorId(0)
+                .withRootTweetId(1)
+                .build();
         tweets.add(entity);
 
 
-        entity = new TweetEntity(3, "Example content", new Date(System.currentTimeMillis()),0, 2);
-        entity.setRootTweetId(1);
+        entity = TweetEntity.builderInstance()
+                .withTweetId(3)
+                .withContent("Example content")
+                .withPubDate(new Date(System.currentTimeMillis()))
+                .withState(0)
+                .withAuthorId(2)
+                .withRootTweetId(1)
+                .build();
         tweets.add(entity);
 
         DBConnection.insertTweets(tweets);

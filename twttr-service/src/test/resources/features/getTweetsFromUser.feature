@@ -1,4 +1,4 @@
-Feature: Get all tweets of a member
+Feature: Get all tweets of a user
   This feature file describes the behaviour of the system for GET requests at the endpoint on /api/{userId}/tweets for receiving a sorted list of the last tweets the specified tweet.
   - If the request contains the header "Authorization" with a valid token, then the http response body contains a list of the last 3 tweets in state "PUBLISH" from the specified user, sorted by theIR publish date and the http response status-code will be 200
   - If the QueryParam "index" of the request is higher than 0, then its value describes how many of the last tweets in status "PUBLISH" will be skipped for the response
@@ -32,7 +32,7 @@ Feature: Get all tweets of a member
 
   Scenario: Get tweets of a user
     When a client sends a GET "/users/2/tweets" request for user "max" to get a list of tweets from user john
-    Then the HTTP response status-code will be 200
+    Then the client will receive the "OK" Status Code
     And the HTTP response body will contain following JSON with tweets from user john
     """
     [
@@ -81,7 +81,7 @@ Feature: Get all tweets of a member
   Scenario: Moderator requests tweets from an user
     Given the moderator "werner" is authenticated
     When a client sends a GET "/users/2/tweets" request for moderator "werner" to get a list of tweets from user john
-    Then the HTTP response status-code will be 200
+    Then the client will receive the "OK" Status Code
     And the HTTP response body will contain following JSON with tweets from user john
     """
     [
@@ -138,7 +138,7 @@ Feature: Get all tweets of a member
     When a client sends a GET "/users/2/tweets" request for user "max" to get a list of tweets from user john with following Query Params
       | queryParam: | numTweets   | index   |
       | value:      | <numTweets> | <index> |
-    Then the HTTP response status-code will be 200
+    Then the client will receive the "OK" Status Code
     And the HTTP response body contains the tweets with the ids <testIds> in presented order
 
     Examples: No params are setted
@@ -170,4 +170,4 @@ Feature: Get all tweets of a member
   The request must contain a valid token of a user
 
     When a client sends a GET "/users/2/tweets" request without a valid token to get a list of tweets from user john
-    Then the HTTP response status-code will be 401
+    Then the client will receive the "UNAUTHORIZED" Status Code

@@ -14,7 +14,7 @@ Feature: Get follower
     Given the user "max" is authenticated
     And the user john with id 2 has two followers jane and lena
     When a client sends a GET "/users/2/follower" request for user "max" to get a list of follower from user john
-    Then the HTTP response status-code will be 200
+    Then the client will receive the "OK" Status Code
     And the HTTP response body will contain following JSON with a list of users who follows the user john
         """
           [
@@ -38,7 +38,7 @@ Feature: Get follower
   The request must contain a valid token of an user
 
     When a client sends a GET "/users/2/follower" request without a valid token to get a list of follower from user john
-    Then the HTTP response status-code will be 401
+    Then the client will receive the "UNAUTHORIZED" Status Code
 
 
 
@@ -47,7 +47,7 @@ Feature: Get follower
 
     Given the user "max" is authenticated
     When a client sends a GET "/users/4/follower" request for user "max" to get a list of follower from a moderator
-    Then the HTTP response status-code will be 400
+    Then the client will receive the "BAD_REQUEST" Status Code
     And the HTTP response body contains following JSON of an error message:
       """
       {
@@ -60,7 +60,7 @@ Feature: Get follower
 
     Given the moderator "werner" is authenticated
     When a client sends a GET "/users/2/follower" request for moderator "werner" to get a list of follower from user john
-    Then the HTTP response status-code will be 403
+    Then the client will receive the "FORBIDDEN" Status Code
 
 
   Scenario: User to get the list of follower from doesn´t exist
@@ -69,4 +69,4 @@ Feature: Get follower
     Given the user "max" is authenticated
     But there is no user with id 9999
     When a client sends a GET "/users/9999/follower" request for user "max" to get a list of the specified tweet
-    Then the HTTP response status-code will be 404
+    Then the client will receive the "NOT_FOUND" Status Code

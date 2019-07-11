@@ -31,13 +31,13 @@ public class GetUsersSteps {
         this.domain = domain;
     }
 
-    @Given("the system has persisted users")
-    public void the_system_has_persisted_users(List<AccountEntity> accounts) {
+    @Given("the system has persisted accounts")
+    public void the_system_has_persisted_accounts(List<AccountEntity> accounts) {
         try {
             DBConnection.updateAccounts(accounts);
         } catch (DatabaseUnitException | SQLException e) {
             e.printStackTrace();
-            throw new RuntimeException();
+            throw new RuntimeException("Could not persist accounts");
         }
     }
 

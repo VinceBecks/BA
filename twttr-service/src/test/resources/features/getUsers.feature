@@ -1,4 +1,4 @@
-Feature: Get users
+Feature: Get user information
   This feature file describes the behaviour of the system for GET requests at the endpoint on /api/users to get a list of users
   There should be following behaviour at the system:
   - If the request contains the header "Authorization" with a valid token, then the http response body will contain a list of 3 users, sorted in first grade by their userName, in second grade by their firstName and in third grade by their lastName and the http response status-code will be 200

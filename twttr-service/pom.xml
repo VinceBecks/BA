@@ -255,14 +255,7 @@
             <artifactId>cucumber-core</artifactId>
             <version>${version.cucumber}</version>
         </dependency>
-        <!-- Kommt mit PicoContainer nicht klar
-        <dependency>
-            <groupId>com.github.dbunit-rules</groupId>
-            <artifactId>cucumber</artifactId>
-            <version>0.15.1</version>
-            <scope>test</scope>
-        </dependency>
-        -->
+
 
 
         <!-- Pico Container -->

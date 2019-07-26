@@ -1,4 +1,4 @@
-Feature: Get all Tweets
+Feature: Get tweets
   This feature file describes the behaviour of the system for GET requests at the endpoint on /api/tweets for receiving a sorted list of the last tweets of users the requesint user is following
   There should be follwoing behaviour at the system:
   - If the request contains the header "Authorization" with a valid token of an user, then the http response body contains a list of the last 3 tweets in status "PUBLISH" from users the requesting user is following, sorted by their publish date and the http response status-code will be 200

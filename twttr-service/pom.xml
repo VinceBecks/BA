@@ -30,7 +30,7 @@
 
         <version.apache_commons-lang>3.6</version.apache_commons-lang>
 
-        <version.junit>4.12</version.junit>
+        <version.junit>4.13.1</version.junit>
         <version.assertj>3.9.1</version.assertj>
         <version.mockito>2.18.0</version.mockito>
 
